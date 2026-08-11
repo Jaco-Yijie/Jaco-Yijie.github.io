@@ -20,15 +20,30 @@ export function usePrefersReducedMotion() {
   return reduced
 }
 
-/** 进入视口 15% 时触发一次（§16.3） */
+/**
+ * 进入视口 15% 时触发一次（§16.3）。
+ *
+ * 兜底很重要：内容的可见性绝不能只依赖 IntersectionObserver。
+ * 只要它因为任何原因没有派发（渲染被节流、页面在后台、环境不支持），
+ * 元素就会永远停在 opacity:0 —— 对一个求职作品集来说，
+ * 这意味着招聘方可能看到一片空白。所以无论如何都在 1.2s 后强制显示。
+ */
+const FALLBACK_MS = 1200
+
 function useInView<T extends HTMLElement>(enabled: boolean) {
   const ref = useRef<T>(null)
   const [seen, setSeen] = useState(!enabled)
 
   useEffect(() => {
     if (!enabled || seen) return
+
+    const timer = window.setTimeout(() => setSeen(true), FALLBACK_MS)
+
     const el = ref.current
-    if (!el) return
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      return () => window.clearTimeout(timer)
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -39,7 +54,11 @@ function useInView<T extends HTMLElement>(enabled: boolean) {
       { threshold: 0.15, rootMargin: '0px 0px -5% 0px' },
     )
     io.observe(el)
-    return () => io.disconnect()
+
+    return () => {
+      window.clearTimeout(timer)
+      io.disconnect()
+    }
   }, [enabled, seen])
 
   return { ref, seen }
