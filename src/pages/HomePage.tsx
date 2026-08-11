@@ -1,5 +1,4 @@
 import { Hero } from '../components/Hero'
-import { ProofMetrics } from '../components/ProofMetrics'
 import { SelectedWork } from '../components/SelectedWork'
 import {
   EvalsFeature,
@@ -14,7 +13,6 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <ProofMetrics />
       <SelectedWork />
       <EvalsFeature />
       <Capabilities />

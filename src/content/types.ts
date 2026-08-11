@@ -121,7 +121,6 @@ export type Bundle = {
     before: string
     after: string
     projectProof: string
-    keyProof: string
     from: string
     all: string
     filterNotes: string
@@ -149,6 +148,8 @@ export type Bundle = {
     portfolio: string
   }
   footer: { tagline: string }
+  /** 项目状态徽章与 Case Study 中的状态说明 */
+  status: Record<'development', { label: string; note: string }>
   projects: Record<ProjectSlug, ProjectCopy>
   capabilities: CapabilityCopy[]
   moreWork: MoreItemCopy[]

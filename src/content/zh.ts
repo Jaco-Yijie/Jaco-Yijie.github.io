@@ -119,7 +119,6 @@ export const zh: Bundle = {
     before: '改造前',
     after: '改造后',
     projectProof: '项目关键数据',
-    keyProof: '关键数据',
     from: '来自',
     all: '全部',
     filterNotes: '按分类筛选',
@@ -161,6 +160,13 @@ export const zh: Bundle = {
     tagline: '王一杰 · Jaco Wang — AI 产品方向',
   },
 
+  status: {
+    development: {
+      label: '开发中',
+      note: '当前状态：持续开发与迭代中。',
+    },
+  },
+
   projects: {
     'seller-profit': {
       title: '拼多多新手卖家利润试算助手',
@@ -176,8 +182,9 @@ export const zh: Bundle = {
     },
     arcana: {
       title: 'Arcana',
-      subtitleAlt: '沉浸式数字塔罗 AI 产品',
-      subtitle: 'LLM 不参与抽牌，只解读已经冻结的结果。',
+      subtitleAlt: '沉浸式数字塔罗产品',
+      subtitle:
+        '探索线上塔罗体验中的用户自主性、随机性，以及确定性交互与 LLM 解读之间的产品边界。',
       problem:
         '最省事的做法是让模型一次性完成抽牌和解读。那样更快也更便宜，但会毁掉用户来抽牌的理由。',
       outcome:

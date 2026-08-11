@@ -376,7 +376,7 @@ const sellerProfit: CaseStudy = {
 const arcana: CaseStudy = {
   slug: 'arcana',
   title: 'Arcana',
-  titleZh: '沉浸式塔罗抽牌 Web MVP',
+  titleZh: 'Immersive Digital Tarot Experience',
   tagline: 'The LLM never draws the cards. It only interprets a result the user has already frozen.',
   meta: { role: 'Solo — product spec, engine, evaluation', timeline: '2026', context: 'React 19 · TypeScript · DeepSeek' },
   source: 'GitHub · Jaco-Yijie/arcana',

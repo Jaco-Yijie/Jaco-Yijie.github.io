@@ -8,6 +8,7 @@ import { useContent } from '../hooks'
 import { useLang, useLangHref } from '../i18n'
 import { Metric } from '../components/Metric'
 import { Button, Eyebrow, Tag } from '../components/ui'
+import { StatusBadge } from '../components/StatusBadge'
 import { Reveal } from '../components/motion'
 
 /* ── 单个内容块渲染 —— DESIGN_SYSTEM §9.3 ────────────────── */
@@ -195,6 +196,13 @@ export function CaseStudyPage() {
             {study.titleZh && (
               <p className="mt-2 text-[1.25rem] font-medium text-ink-2">{study.titleZh}</p>
             )}
+
+            {project?.status && (
+              <div className="mt-5">
+                <StatusBadge status={project.status} />
+              </div>
+            )}
+
             <p className="mt-6 max-w-[52ch] text-body-l text-ink">{study.tagline}</p>
 
             {project && (
@@ -217,6 +225,12 @@ export function CaseStudyPage() {
                 </div>
               ))}
             </dl>
+
+            {project?.status && (
+              <p className="mt-6 max-w-[52ch] border-l border-line-strong pl-4 text-body-s text-ink-2">
+                {c.status[project.status].note}
+              </p>
+            )}
 
             {project && (
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">

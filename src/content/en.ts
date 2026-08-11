@@ -111,7 +111,6 @@ export const en: Bundle = {
     before: 'Before',
     after: 'After',
     projectProof: 'Project proof',
-    keyProof: 'Key proof metrics',
     from: 'From',
     all: 'All',
     filterNotes: 'Filter notes by category',
@@ -155,6 +154,13 @@ export const en: Bundle = {
     tagline: 'Jaco Wang · 王一杰 — AI Product Candidate',
   },
 
+  status: {
+    development: {
+      label: 'In Development',
+      note: 'Current status: active development and iteration.',
+    },
+  },
+
   projects: {
     'seller-profit': {
       title: 'Seller Profit Calculator',
@@ -170,8 +176,9 @@ export const en: Bundle = {
     },
     arcana: {
       title: 'Arcana',
-      subtitleAlt: '沉浸式数字塔罗 AI 产品',
-      subtitle: 'The LLM never draws the cards — it only interprets a frozen result.',
+      subtitleAlt: 'Immersive Digital Tarot Experience',
+      subtitle:
+        'An immersive digital tarot product exploring user agency, randomness and the boundary between deterministic interaction and LLM interpretation.',
       problem:
         'The obvious build lets the model draw and interpret in one step. That is cheaper, faster, and it destroys the reason people do a tarot draw at all.',
       outcome:

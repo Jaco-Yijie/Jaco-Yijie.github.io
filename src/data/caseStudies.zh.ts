@@ -351,7 +351,7 @@ const sellerProfit: CaseStudy = {
 const arcana: CaseStudy = {
   slug: 'arcana',
   title: 'Arcana',
-  titleZh: '沉浸式数字塔罗 AI 产品',
+  titleZh: '沉浸式数字塔罗产品',
   tagline: 'LLM 从不参与抽牌，它只解读一个用户已经亲手冻结的结果。',
   meta: { role: '独立完成 — 产品规格、引擎、评测', timeline: '2026', context: 'React 19 · TypeScript · DeepSeek' },
   source: 'GitHub · Jaco-Yijie/arcana',

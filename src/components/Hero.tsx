@@ -4,15 +4,19 @@ import { Button, Eyebrow } from './ui'
 
 /**
  * Hero —— DESIGN_SYSTEM.md §6
- * min-height 88vh 而非 100vh，让 Proof Metrics 第一行数字在首屏底部露出，
- * 这是让 HR 继续滚动的唯一诱因（§6.3）。移动端用 dvh 规避地址栏跳变。
+ *
+ * 原本用 88dvh 是为了让下方 Proof Metrics 的第一行数字在首屏底部露出。
+ * 那一组数字已移除，这个理由不再成立，因此改为 76dvh：
+ * 首屏仍然由 Hero 主导，同时 Selected Work 的分隔线会自然进入视野，
+ * 而不会在 CTA 与项目区之间留下一大片空白。
+ * 移动端用 dvh 规避地址栏高度跳变。
  */
 export function Hero() {
   const c = useContent()
 
   return (
     <section id="hero" aria-labelledby="hero-heading">
-      <div className="shell flex min-h-[88dvh] flex-col justify-center pt-[72px] pb-16 md:pb-[88px] lg:pb-[120px]">
+      <div className="shell flex min-h-[76dvh] flex-col justify-center pt-[88px] pb-10 md:pb-12 lg:pb-16">
         <Eyebrow>{c.hero.eyebrow}</Eyebrow>
 
         <h1 id="hero-heading" className="mt-6 text-display-xl text-ink">

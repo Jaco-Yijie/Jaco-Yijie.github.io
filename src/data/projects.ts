@@ -1,7 +1,8 @@
 /**
- * Selected Work 的【结构】层：顺序、slug、链接、Proof 引用。
- * 所有文案（标题、副标题、problem、outcome、tags）在 content/{en,zh}.ts。
- * 所有 Proof 数字在 data/metrics.ts。这里一个字符串都不该出现。
+ * Selected Work 的【结构】层：顺序、slug、状态、链接、Proof 引用。
+ *
+ * 顺序由这个数组决定 —— 组件不做任何手工重排，中英文自然一致。
+ * 所有文案在 content/{en,zh}.ts；所有 Proof 数字在 data/metrics.ts。
  */
 import { links, type MaybeLink } from './links'
 import { projectMetricIds } from './metrics'
@@ -9,9 +10,14 @@ import type { ProjectSlug } from '../content/types'
 
 export type CtaKind = 'caseStudy' | 'tryDemo' | 'liveDemo' | 'github'
 
+/** 目前只有一种非默认状态；未来要加 'archived' 之类在这里扩展即可 */
+export type ProjectStatus = 'development'
+
 export type ProjectShell = {
   index: string
   slug: ProjectSlug
+  /** 不设则为常规状态，不渲染任何徽章 */
+  status?: ProjectStatus
   metricIds: typeof projectMetricIds[string]
   ctas: { kind: CtaKind; href: MaybeLink; variant: 'primary' | 'secondary' | 'tertiary'; external?: boolean }[]
 }
@@ -28,16 +34,6 @@ export const projects: ProjectShell[] = [
   },
   {
     index: '02',
-    slug: 'arcana',
-    metricIds: projectMetricIds.arcana,
-    ctas: [
-      { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
-      { kind: 'github', href: links.repos.arcana, variant: 'secondary', external: true },
-      { kind: 'liveDemo', href: links.demos.arcana, variant: 'secondary', external: true },
-    ],
-  },
-  {
-    index: '03',
     slug: 'stock-news',
     metricIds: projectMetricIds['stock-news'],
     ctas: [
@@ -47,12 +43,24 @@ export const projects: ProjectShell[] = [
     ],
   },
   {
-    index: '04',
+    index: '03',
     slug: 'taobao-analysis',
     metricIds: projectMetricIds['taobao-analysis'],
     ctas: [{ kind: 'caseStudy', href: '/work/taobao-analysis', variant: 'tertiary' }],
   },
+  {
+    index: '04',
+    slug: 'arcana',
+    status: 'development',
+    metricIds: projectMetricIds.arcana,
+    ctas: [
+      { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
+      { kind: 'github', href: links.repos.arcana, variant: 'secondary', external: true },
+      // Live Demo 未提供 → isLive() 过滤掉，不渲染灰色失效按钮
+      { kind: 'liveDemo', href: links.demos.arcana, variant: 'secondary', external: true },
+    ],
+  },
 ]
 
-/** More Work 的链接与项目文案分离，按顺序对应 content.moreWork */
+/** More Work 的链接与文案分离，按顺序对应 content.moreWork */
 export const moreWorkLinks: MaybeLink[] = [links.repos.teslaFyp, null, null]

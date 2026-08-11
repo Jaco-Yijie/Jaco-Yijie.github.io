@@ -58,9 +58,6 @@ export const metricValues: Record<MetricId, MetricValue> = {
   memory: { prefix: '~', value: '50', suffix: '%', source: 'Resume', verified: true },
 }
 
-/** Homepage Hero 下方四个 —— CONTENT_AUDIT.md §3 */
-export const heroMetricIds: MetricId[] = ['evalCases', 'ctxVars', 'sectors', 'logs']
-
 /** 各项目卡的 Proof 组合 */
 export const projectMetricIds: Record<string, MetricId[]> = {
   'seller-profit': ['evalCases', 'ctxVars', 'prdIterations'],

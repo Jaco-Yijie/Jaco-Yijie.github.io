@@ -5,6 +5,7 @@ import { useContent } from '../hooks'
 import { useLangHref } from '../i18n'
 import { Metric } from './Metric'
 import { Button, Eyebrow, Tag } from './ui'
+import { StatusBadge } from './StatusBadge'
 import { Reveal } from './motion'
 
 /**
@@ -57,6 +58,12 @@ export function SelectedWork() {
                       <p className="mt-1 text-[17px] font-medium leading-snug text-ink-2">
                         {copy.subtitleAlt}
                       </p>
+                    )}
+
+                    {p.status && (
+                      <div className="relative z-10 mt-4">
+                        <StatusBadge status={p.status} />
+                      </div>
                     )}
 
                     <p className="mt-4 max-w-[48ch] text-body text-ink">{copy.subtitle}</p>
