@@ -361,8 +361,41 @@ export const en: Bundle = {
       ['Prompt versioning', 'Version hashed into the cache key; two versions kept for A/B'],
       ['Regression validation', '160 runnable assertions across engine and reading'],
       ['Cost & latency', 'Measured benchmarks; separate timeouts per task type'],
+      ['Probe design', 'Six probes against a product: numbers, sourcing, transparency, tools, decisions, memory'],
+      ['Layer separation', 'Testing numeric and qualitative output as two different reliability profiles'],
+      ['Evidence grading', 'Marking which conclusions survive one observation and which need repeated sampling'],
     ],
     failures: [
+      {
+        mode: 'Numbers move, conclusions hold',
+        detail:
+          'The same cost question in two fresh sessions produced figures 9.7% apart while the qualitative conclusions were identical. Numeric and qualitative output do not fail the same way.',
+        from: 'Boundary probing',
+      },
+      {
+        mode: 'Declared limits, ignored in the same answer',
+        detail:
+          'It stated an assumption at the top and contradicted it in the calculation below; elsewhere it noted that no official comparison existed, then printed a precise comparison table. Two unrelated tasks, one behaviour.',
+        from: 'Boundary probing',
+      },
+      {
+        mode: 'Accurate where sourced, invented where not',
+        detail:
+          'Of four benchmark figures, the two published officially were exact; the two never published were still given to one decimal place. Both unverifiable ones favoured a competitor — fabricated precision, not bias.',
+        from: 'Boundary probing',
+      },
+      {
+        mode: 'Derived figures that its own model cannot produce',
+        detail:
+          'Reconstructing its sensitivity table from the model it had just stated, only the first row reproduced. The rest were generated in the right direction and were not computed at all.',
+        from: 'Boundary probing',
+      },
+      {
+        mode: 'Semantic control that belongs to someone else',
+        detail:
+          'An external tool returned a field named cost with value "68.00". The model presented it as an average spend per person. The data was real; the unit, the qualifier and the meaning were added.',
+        from: 'MCP integration',
+      },
       {
         mode: 'A prompt constraint that never took effect',
         detail:
@@ -426,89 +459,148 @@ export const en: Bundle = {
     ],
   },
 
+  learningTrail: {
+    label: "What I'm learning",
+    items: ['Prompt Engineering', 'Context Engineering', 'RAG', 'LLM Evaluation', 'Agent', 'MCP'],
+  },
+
   learning: {
     heroTitle: 'Notes from the work, not from a syllabus.',
     heroLead:
-      'Short write-ups of things that changed how I build. Each one comes out of a specific decision in a specific project, and says which one.',
+      'What I learned, where it failed, and where it ended up in a project. Some of these are applied in shipped work; others are marked as study notes.',
     categories: {
       'Prompt Engineering': 'Prompt Engineering',
-      'LLM Evaluation': 'LLM Evaluation',
+      'Context Engineering': 'Context Engineering',
       RAG: 'RAG',
-      'AI Product': 'AI Product',
-      MCP: 'MCP',
+      'LLM Evaluation': 'LLM Evaluation',
+      Agent: 'Agent',
+      MCP: 'MCP & Tool Use',
+      'AI Product': 'AI Product Systems',
+    },
+    path: [
+      'Prompt Engineering',
+      'Context Engineering',
+      'RAG',
+      'LLM Evaluation',
+      'Agent',
+      'MCP',
+      'AI Product',
+    ],
+    labels: {
+      keyIdea: 'Key idea',
+      failure: 'Common failure',
+      tradeoff: 'Trade-off',
+      applied: 'How I used it',
+      relatedWork: 'Related work',
+      learningNote: 'Study note — not yet used in a shipped project',
     },
     notes: [
+      /* ── Prompt Engineering ─────────────────────────── */
       {
         slug: 'prompt-is-a-soft-constraint',
         category: 'Prompt Engineering',
         title: 'A prompt is a soft constraint, not a hard switch',
         summary:
           'Telling a model not to do something is a request, not a mechanism. If correctness depends on it, move it out of the prompt.',
+        keyIdea:
+          'A prompt can shape behaviour. It cannot guarantee it. If a behaviour must hold, it needs a structural guarantee.',
+        failure:
+          'Four rounds of stronger wording to stop a model doing arithmetic. Forbidding it did nothing; passing computed values in helped partially; banning all arithmetic still left small sums in the output.',
+        applied:
+          'Calculation moved into a code node. Once the numbers stopped reaching the model, the entire class of failure disappeared — not because the instruction improved, but because there was nothing left to compute.',
+        relatedProjects: ['seller-profit'],
         from: 'Seller Profit Calculator',
         readingTime: '2 min',
-        body: [
-          'I spent four rounds strengthening prompt language to stop a model performing arithmetic. Forbidding recalculation did nothing. Passing the computed values in explicitly helped partially. Banning all arithmetic still left small sums appearing in the output.',
-          'The prompt was never the right layer. Once calculation moved into code and the numbers stopped reaching the model at all, the class of failure disappeared — not because the instruction got better, but because there was nothing left to compute.',
-          'The practical rule I now use: if a behaviour must hold, it needs a structural guarantee. A prompt can shape behaviour. It cannot guarantee it.',
-        ],
+        source: 'PRD-v5.md §7.2',
       },
       {
-        slug: 'what-to-put-in-context',
+        slug: 'guardrails-live-in-the-failure-branch',
         category: 'Prompt Engineering',
+        title: 'Guardrails are tuned on the failure branch, not the happy path',
+        summary:
+          'I wrote ten retrieval questions and deliberately included ones the data could not answer. Both failures came from guardrail scope, not from the model.',
+        keyIdea:
+          'The behaviour worth specifying is what happens when there is no answer. That branch is where most tuning actually happens.',
+        failure:
+          'Asked about a product category outside the dataset, the assistant reasoned about it anyway — the boundary was written too wide. Asked for a figure it did not have, it admitted the gap and then produced a number labelled "inferred".',
+        tradeoff:
+          'Narrowing scope makes the assistant refuse more often. For a user deciding whether to spend money, a refusal is cheaper than a plausible number.',
+        applied:
+          'Two patches: restrict the category explicitly, and forbid any unsupported figure — including one labelled as an inference. Qualitative judgment stays allowed.',
+        readingTime: '2 min',
+        source: '第一个月完整学习档案_建认知.md · Week 3',
+      },
+
+      /* ── Context Engineering ────────────────────────── */
+      {
+        slug: 'what-to-put-in-context',
+        category: 'Context Engineering',
         title: 'Deciding what belongs in context',
         summary:
           'The question is not whether a value is important. It is whether the model can combine it with something else.',
+        keyIdea:
+          'Values that share a unit and can be added together will be combined. A set of ratios summing to a meaningful total is an invitation.',
+        failure:
+          'An audit found the model receiving 16 variables, 12 of them plain numbers written into the system prompt through variable rendering. One output added two ratios together and reported the sum as a new figure.',
+        tradeoff:
+          'Less context means the model can say less. That is the point: anything it cannot say, it also cannot get wrong.',
+        applied:
+          'The test that survived: what does this number give the user coming out of the model that it does not already give them in the table? Sixteen variables became two, both qualitative.',
+        relatedProjects: ['seller-profit'],
         from: 'Seller Profit Calculator',
         readingTime: '2 min',
-        body: [
-          'An audit of one workflow found the model receiving 16 variables, 12 of them plain numbers. They were not leaking in from conversation history — they had been written into the system prompt through variable rendering.',
-          'What made them dangerous was not their individual importance. It was that they shared a unit and could be added together. A set of ratios that sums to a meaningful total is an invitation, and the model accepted it: one output combined two of them into a third.',
-          'The test that survived: what does this number give the user coming out of the model, that it does not already give them sitting in the table? Anything without an answer was removed. Sixteen became two, and both survivors are qualitative strings the table cannot express.',
-        ],
+        source: 'PRD-v5.md §6.3 / §7.5',
       },
       {
-        slug: 'evaluation-passing-by-coincidence',
-        category: 'LLM Evaluation',
-        title: 'A passing test case is not evidence of correct behaviour',
+        slug: 'four-layers-of-control',
+        category: 'Context Engineering',
+        title: 'LLM → Prompt → RAG → Agent is a ladder of control',
         summary:
-          'Some of my cases passed for the wrong reason. Reading why they passed changed the architecture.',
-        from: 'Seller Profit Calculator',
+          'Each layer exists to cover the previous one\u2019s gap, and each one hands more control to the model.',
+        keyIdea:
+          'A base model completes text but does not know what you want. A prompt gives instructions but cannot hold much data, and what it holds is frozen. RAG attaches a knowledge base that can be updated, but it is a passive store — it never decides anything. An Agent hands over control of the process itself.',
+        tradeoff:
+          'Capability and controllability move in opposite directions. Every step up the ladder makes failures harder to contain: a workflow gets one step wrong, an Agent gets a whole path wrong.',
+        applied:
+          'It is the question I ask before adding a layer: what is the current layer failing at? Twice the answer was "nothing" — which is why the profit calculator uses neither retrieval nor tool calling.',
         readingTime: '2 min',
-        body: [
-          'In a set of evaluation cases checking whether a model used deterministic results, some passed. It would have been easy to treat those as the working baseline and focus on the failures.',
-          'They passed by coincidence. Their underlying values happened to survive rounding, so the model’s independent arithmetic matched the code output exactly. Change the input so the raw value carries one more decimal place, and the same case fails.',
-          'The conclusion was not "some cases work". It was that the constraint had never been in effect. That reframing is what justified an architectural change rather than another round of prompt edits.',
-          'Since then I read passing cases as carefully as failing ones, and ask what would have to change for this to break.',
-        ],
+        source: '第一个月总收官_建认知.md',
       },
+
+      /* ── RAG ────────────────────────────────────────── */
       {
-        slug: 'assertion-based-llm-evaluation',
-        category: 'LLM Evaluation',
-        title: 'Evaluating what a model must not do',
+        slug: 'retrieval-quality-is-chunk-quality',
+        category: 'RAG',
+        title: 'Retrieval quality is mostly chunking quality',
         summary:
-          'Boundary properties are testable in a way that output quality is not — and they should be tested in both directions.',
-        from: 'Arcana',
-        readingTime: '2 min',
-        body: [
-          'Judging whether a generated reading is good is hard. Judging whether it changed a card is trivial. So the assertions target the boundary: card count preserved, nothing invented, orientations untouched, relationships referencing only cards actually present.',
-          'That gives a suite anyone can run and reproduce, without needing to agree on what a good reading is.',
-          'The tone checks taught me something separate. It is not enough to assert that a violation is caught — the suite also asserts that restrained, careful phrasing is not flagged. A guard that over-triggers quietly degrades every output, and only a two-directional test catches it.',
-        ],
-      },
-      {
-        slug: 'measure-before-optimising-llm-latency',
-        category: 'LLM Evaluation',
-        title: 'The obvious LLM optimisation is often the wrong one',
-        summary:
-          'The prompt was long, so shortening it looked like the fix. Measurement said the input phase was about 1% of the time.',
-        from: 'Arcana',
+          'A similarity score tells you how alike two things look. It does not tell you whether the retrieved chunk is useful.',
+        keyIdea:
+          'Score measures resemblance, not correctness. Top-K controls quantity; a score threshold controls quality. Without the threshold, K will be filled regardless of whether anything relevant exists.',
+        failure:
+          'A question about fine-tuning returned a 26-character chunk containing nothing but a section heading. The document had been split so that a heading became its own semantically thin chunk, and Top-K = 3 padded it in to make up the count.',
+        tradeoff:
+          'Re-ranking adds a precision pass after vector search, at extra cost and latency. Worth it on a large noisy corpus; unnecessary on a small one.',
+        applied:
+          'Turn on the score threshold rather than raising K. Most disappointing RAG results are a document-splitting problem, not a model problem.',
         readingTime: '3 min',
-        body: [
-          'A reading took around 90 seconds and the prompt was large, so compressing it seemed obviously right. Before doing that I benchmarked against the live API.',
-          'Over 99% of input tokens were served from cache and the whole input phase accounted for roughly 1% of wall-clock time. Halving the prompt would have saved a fraction of a second and cost reading quality.',
-          'The real lever was reasoning-token generation. Disabling it took time-to-first-content from about 51 seconds to about 1, halved total time, and cost close to nothing in a blind read of the output.',
-          'Two things also came out of it that I did not expect: the model I had previously recommended as faster was not, and the parameter that nominally lowers reasoning effort made things more than twice as slow. Both had been assumptions based on a couple of noisy samples.',
-        ],
+        source: '第一个月完整学习档案_建认知.md · Week 3',
+      },
+      {
+        slug: 'rag-output-is-capped-by-the-knowledge-base',
+        category: 'RAG',
+        title: 'A RAG pipeline cannot be better than the knowledge base behind it',
+        summary:
+          'I debugged every connection until retrieval genuinely reached the model — and the output was still only as good as the test data in the store.',
+        keyIdea:
+          'Once the plumbing is correct, quality is a content problem, not an engineering one. The real bottleneck in deploying RAG is maintaining the knowledge base, not model capability.',
+        failure:
+          'Four separate breakages in one evening, each looking identical from the outside: retrieval ran but the result was never attached to the model; it was attached but never referenced in the prompt; the reference was typed as text instead of inserted as a variable, so it stayed inert; and finally the store simply did not contain the requested material.',
+        tradeoff:
+          'Fabricating realistic-looking data would have made the demo look finished. It would also have laundered a hallucination into a data source, which is worse than the model inventing it live.',
+        applied:
+          'Two checks that cannot be fooled: watch input token count — if retrieved content genuinely entered the context, it rises sharply — and read the trace panel node by node to see exactly which step dropped the data.',
+        readingTime: '3 min',
+        source: 'Week4_周三周四复盘_RAG工作流搭建与调试.md',
       },
       {
         slug: 'when-not-to-add-rag',
@@ -516,14 +608,211 @@ export const en: Bundle = {
         title: 'When not to add RAG',
         summary:
           'Two very different inputs produced nearly identical conclusions. The bottleneck was upstream, and retrieval could not have reached it.',
+        keyIdea:
+          'Retrieval is the reflexive answer to thin output. It only helps when the thinness is caused by missing knowledge.',
+        failure:
+          'The tier judgment feeding the model had only three levels, so genuinely different situations arrived labelled the same. The information was being flattened before the model ever saw it.',
+        tradeoff:
+          'A knowledge base holding factual claims turns an analysis tool into a data source, and creates two authorities that can contradict each other. Situational rules are safe to store; changing platform parameters are not.',
+        applied:
+          'Added a fourth tier in code. Problem solved without retrieval.',
+        relatedProjects: ['seller-profit'],
         from: 'Seller Profit Calculator',
         readingTime: '2 min',
-        body: [
-          'The trigger for considering a knowledge base was output that felt thin: two very different margins produced nearly the same conclusion. Retrieval is the reflexive answer to thin output.',
-          'The cause was upstream. The tier judgment feeding the model only had three levels, so genuinely different situations arrived labelled the same. Adding a fourth tier in code fixed it. No retrieval system could have, because the information was being flattened before the model ever saw it.',
-          'There is a second reason I decided against it. A knowledge base holding factual claims — fee rates, typical figures — turns the product from an analysis tool into a data source, and creates two authorities that can contradict each other. Situational judgment rules would have been safe to store; facts about a changing platform would not.',
-          'Add retrieval when the bottleneck is actually knowledge retrieval.',
-        ],
+        source: 'PRD-v5.md §11.3',
+      },
+
+      /* ── LLM Evaluation ─────────────────────────────── */
+      {
+        slug: 'numeric-and-qualitative-reliability-differ',
+        category: 'LLM Evaluation',
+        title: 'A model\u2019s numeric layer and qualitative layer fail differently',
+        summary:
+          'I asked a consumer assistant the same cost question in two fresh sessions. The numbers differed by 9.7%. The qualitative conclusions were identical.',
+        keyIdea:
+          'It is not that an LLM is unreliable. It is that its numeric output and its qualitative output have different reliability — and a product can be cut along that seam.',
+        failure:
+          'Both answers were internally inconsistent in different ways: one declared an assumption at the top and then contradicted it in the calculation; the other counted the same shipping cost twice. Neither figure survived checking. And when I reconstructed its sensitivity figures from its own stated model, only the first line reproduced — the rest were generated, not computed.',
+        applied:
+          'This turned an engineering choice into a product judgment with a controlled observation behind it. Deterministic calculation in code, qualitative interpretation in the model, is not a workaround — it is a split along a real fault line.',
+        relatedProjects: ['seller-profit'],
+        readingTime: '3 min',
+        source: '豆包竞品拆解_完整记录_20260801.md · 探针 1 / 5',
+      },
+      {
+        slug: 'probe-based-boundary-testing',
+        category: 'LLM Evaluation',
+        title: 'Probing a product for its boundary, not its best answer',
+        summary:
+          'Six probes against a consumer AI assistant: numeric reliability, retrieve-or-invent, source transparency, tool triggering, decision boundary, memory.',
+        keyIdea:
+          'How good a product looks when it answers well tells you very little. What matters is what it does when it cannot answer.',
+        failure:
+          'Of four benchmark figures it quoted, the two published officially were exact and the two never published were still given to one decimal place. Both unverifiable figures favoured a competitor — so this was not bias, it was fabricated precision. Those are different problems and should not be conflated.',
+        tradeoff:
+          'It declines to ask clarifying questions, which buys a smooth "one answer, done" experience and costs the user a number built on assumptions they never saw.',
+        applied:
+          'I now separate two claims that get merged constantly: capability and boundary clarity. A product can be strong at one and weak at the other.',
+        readingTime: '3 min',
+        source: '豆包竞品拆解_完整记录_20260801.md',
+      },
+      {
+        slug: 'evaluation-passing-by-coincidence',
+        category: 'LLM Evaluation',
+        title: 'A passing test case is not evidence of correct behaviour',
+        summary:
+          'Some of my cases passed for the wrong reason. Reading why they passed changed the architecture.',
+        keyIdea:
+          'Read passing cases as carefully as failing ones, and ask what would have to change for this to break.',
+        failure:
+          'Cases passed because their values happened to survive rounding, so the model\u2019s independent arithmetic matched the code output exactly. One more decimal place and the same case fails.',
+        applied:
+          'The conclusion was not "some cases work" but "the constraint had never been in effect" — which is what justified an architectural change rather than another round of prompt edits.',
+        relatedProjects: ['seller-profit'],
+        from: 'Seller Profit Calculator',
+        readingTime: '2 min',
+        source: 'PRD-v5.md §7.1',
+      },
+      {
+        slug: 'assertion-based-llm-evaluation',
+        category: 'LLM Evaluation',
+        title: 'Evaluating what a model must not do',
+        summary:
+          'Boundary properties are testable in a way that output quality is not — and they should be tested in both directions.',
+        keyIdea:
+          'Judging whether a generated reading is good is hard. Judging whether it changed a card is trivial. Point the assertions at the boundary.',
+        failure:
+          'A tone guard that only checks for violations will over-trigger and quietly degrade every output. The suite also has to assert that restrained phrasing is not flagged.',
+        applied:
+          'Card count preserved, nothing invented, orientations untouched, relationships referencing only cards actually present — a suite anyone can clone and reproduce without agreeing on what a good reading is.',
+        relatedProjects: ['arcana'],
+        from: 'Arcana',
+        readingTime: '2 min',
+        source: 'arcana · scripts/reading-eval.ts',
+      },
+      {
+        slug: 'measure-before-optimising-llm-latency',
+        category: 'LLM Evaluation',
+        title: 'The obvious LLM optimisation is often the wrong one',
+        summary:
+          'The prompt was long, so shortening it looked like the fix. Measurement said the input phase was about 1% of the time.',
+        keyIdea:
+          'Benchmark before optimising. Intuitions about model latency are unusually bad, because the expensive part is invisible.',
+        failure:
+          'Over 99% of input tokens were served from cache. Halving the prompt would have saved a fraction of a second and cost reading quality. Meanwhile the parameter that nominally lowers reasoning effort more than doubled total time.',
+        applied:
+          'The real lever was reasoning-token generation. Disabling it took time-to-first-content from about 51 seconds to about 1 and halved total time, at close to no cost in a blind read.',
+        relatedProjects: ['arcana'],
+        from: 'Arcana',
+        readingTime: '3 min',
+        source: 'arcana · docs/v2/14-perf-investigation.md',
+      },
+
+      /* ── Agent ──────────────────────────────────────── */
+      {
+        slug: 'who-holds-the-decision',
+        category: 'Agent',
+        title: 'What separates a workflow from an agent is who decides',
+        summary:
+          'Not capability. Control. In a workflow I fix the steps; in an agent the model chooses them.',
+        keyIdea:
+          'Calling a tool does not make something an agent. The question is whether it can decide how many steps to take and change the next step based on the last one.',
+        failure:
+          'The same object changes category depending on who controls it: a knowledge base wired into a workflow is not a tool, because retrieval is forced every turn. The same knowledge base inside an agent is a tool, because the model may decide not to use it.',
+        tradeoff:
+          'Handing over control buys the ability to handle vague, multi-step tasks. It also means errors propagate along a path instead of stopping at a node.',
+        applied:
+          'Four defences for that trade: clarify before executing, checkpoint and attribute at key steps, keep a human in the loop for anything irreversible, and cap steps so a wrong path terminates.',
+        readingTime: '3 min',
+        source: '第一个月完整学习档案_建认知.md · Week 4',
+      },
+      {
+        slug: 'better-planning-more-convincing-hallucination',
+        category: 'Agent',
+        title: 'The better an agent plans, the more convincing its hallucinations are',
+        summary:
+          'I traced a multi-hop search: three rounds, later queries built from earlier results, strategy revised mid-run. Genuine planning — and a fabricated conclusion.',
+        keyIdea:
+          'Unable to find the figure it needed, it substituted a related national statistic, called the two "broadly consistent", and buried that substitution in the process while stating the conclusion as fact.',
+        failure:
+          'A visible, coherent chain of reasoning reads as evidence of correctness. It is evidence of effort. The presentation quality of the process and the reliability of the result are independent.',
+        tradeoff:
+          'Showing the process builds trust and invites scrutiny; hiding it produces a cleaner answer and removes the reader\u2019s ability to catch a substitution like this one.',
+        applied:
+          'It reset where I look for failure. In a single-shot answer the error is in the output; in a planned run it can be in a step nobody reads.',
+        readingTime: '2 min',
+        source: '第一个月完整学习档案_建认知.md · Week 4 周二',
+      },
+
+      /* ── MCP & Tool Use ─────────────────────────────── */
+      {
+        slug: 'mcp-does-not-replace-function-calling',
+        category: 'MCP',
+        title: 'MCP did not replace function calling',
+        summary:
+          'They sit at different layers, and conflating them is the most common mistake I hear.',
+        keyIdea:
+          'Function calling is the model layer: the model decides which tool to call and emits the arguments. MCP is the layer between an application and a tool provider: how tools are described, discovered and connected. The first did not change.',
+        failure:
+          'The clearest evidence came from my own logs. The run metadata said the agent mode was function calling, while every tool in that run came from an MCP server.',
+        tradeoff:
+          'The deeper difference is not who defines the tools but when they are fixed. Function calling as I first used it means the tool list is written into the application at design time — adding one means changing code. MCP asks the server at runtime, so an agent can gain capabilities after it is already running.',
+        applied:
+          'Also worth knowing that a server exposes three kinds of primitive, not one: tools the model may call, resources the application injects, and prompt templates the user selects. Their risk profiles are different, and most discussion only covers the first.',
+        readingTime: '3 min',
+        source: 'MCP学习记录_Week9周二.md · §1',
+      },
+      {
+        slug: 'enabling-a-tool-is-not-free',
+        category: 'MCP',
+        title: 'Enabling a tool costs tokens whether or not it is called',
+        summary:
+          'I connected a maps server to a workflow, enabled all fifteen tools, and measured what that actually costs.',
+        keyIdea:
+          'Every enabled tool ships its name, description and parameter schema with each request — the model cannot choose from a menu it has not been shown. A conversation that called zero tools still consumed roughly 2,600 tokens.',
+        failure:
+          'Cost scales as iterations × total tool description size. An agent run is multi-round, and the full menu is sent again every round: one three-round question came to roughly 17,600 tokens while using three of the fifteen tools.',
+        tradeoff:
+          'Enable tools selectively rather than switching everything on. The tool count is also set by the server, so a provider adding ten tools raises your cost without notifying you.',
+        applied:
+          'Ran the numbers before deciding, rather than after. Still outstanding: a controlled all-on versus all-off comparison to isolate the standing cost of the descriptions.',
+        readingTime: '3 min',
+        source: 'MCP学习记录_Week9周二.md · §2.3',
+      },
+      {
+        slug: 'field-semantics-you-do-not-own',
+        category: 'MCP',
+        title: 'Connecting an external server hands away semantic control',
+        summary:
+          'The server returned a field named cost with the value "68.00". The model presented it to the user as an average spend per person.',
+        keyIdea:
+          'The data was real. The interpretation was invented. "Per person", "approximately" and the currency unit were all added by the model, and whether that field actually means per-person spend is defined by the provider, not by me.',
+        failure:
+          'This class of error does not raise anything: the output is correctly formatted, no exception is thrown, and it is unfalsifiable from the outside. Guess right and nobody notices; guess wrong and nobody notices either.',
+        tradeoff:
+          'A prompt cannot fix it, because the field definition lives on the other side of the boundary and can change without warning.',
+        applied:
+          'This became the deciding argument against connecting the profit calculator to an external server. For a product where a seller acts on the number, an unverifiable semantic inference is not an acceptable risk.',
+        relatedProjects: ['seller-profit'],
+        readingTime: '2 min',
+        source: 'MCP学习记录_Week9周二.md · §2.4 / §3',
+      },
+
+      /* ── AI Product Systems ─────────────────────────── */
+      {
+        slug: 'capability-is-not-boundary-clarity',
+        category: 'AI Product',
+        title: 'Being capable and having clear boundaries are separate achievements',
+        summary:
+          'The assistant I tested was genuinely strong: it retrieved rather than recalled, corrected conflicting reports on a release date, and refused to flatter its own vendor.',
+        keyIdea:
+          'Its weakness was not opacity or capability. It declares a limitation and then acts against it — stating that no official comparison exists, then producing a precise comparison table.',
+        failure:
+          'A recurring pattern across four different situations: an external field\u2019s meaning, a missing business assumption, a sensitivity figure, an unpublished benchmark score. In each case the model filled the gap silently, in the right direction, with detail that cannot be checked.',
+        applied:
+          'The improvement I would ship is cheap: the assumptions are already tracked inside the session — it can recite them accurately when asked — so exposing them as visible, editable switches is surfacing existing state, not building a new capability.',
+        readingTime: '3 min',
+        source: '豆包竞品分析_500字_20260801.md',
       },
       {
         slug: 'rule-engine-plus-llm-review',
@@ -531,27 +820,31 @@ export const en: Bundle = {
         title: 'Rules first, model second',
         summary:
           'Sending everything to a model is the straightforward design. Selective invocation is cheaper, more stable, and explainable.',
+        keyIdea:
+          'The model can only confirm or veto — it cannot introduce a category. The taxonomy stays with the rules and the judgment stays with the model, which is what makes the output explainable.',
+        failure:
+          'Classifying every article with an LLM is expensive at volume, non-deterministic across identical inputs, and impossible to explain when a result looks wrong.',
+        applied:
+          'Weighted keyword rules emit a score, a confidence value and matched keywords as evidence. The model is invoked only on low confidence, a generic-term match, or a score near the threshold.',
+        relatedProjects: ['stock-news'],
         from: 'Stock News Intelligence',
         readingTime: '2 min',
-        body: [
-          'Classifying every article with an LLM is expensive at volume, non-deterministic across identical inputs, and impossible to explain when a result looks wrong.',
-          'Weighted keyword rules handle classification and emit a score, a confidence value and the matched keywords as evidence. The model is invoked only where the rules are demonstrably weak — low confidence in a high-risk category, a match resting on a generic term, or a score sitting near the minimum threshold.',
-          'The model can only confirm or veto. It cannot introduce a category. That keeps the taxonomy owned by the rules and the judgment owned by the model, which is the split that makes the output explainable.',
-        ],
+        source: 'stock_news · classifier.py',
       },
       {
         slug: 'prompt-versioning-and-caching',
         category: 'AI Product',
         title: 'Prompts belong in the cache key',
         summary:
-          'If model responses are cached and the prompt changes, the cache is now serving answers from a system that no longer exists.',
+          'If model responses are cached and the prompt changes, the cache is serving answers from a system that no longer exists.',
+        keyIdea:
+          'The prompt is an input to the response. Editing it invalidates every cached answer that depended on it.',
+        applied:
+          'Prompt version and rule version are hashed into the cache key alongside provider, model and content. Changing either invalidates the affected entries automatically.',
+        relatedProjects: ['stock-news'],
         from: 'Stock News Intelligence',
         readingTime: '2 min',
-        body: [
-          'Caching model calls is standard. What is easy to miss is that the prompt is an input to the response, so editing it invalidates every cached answer that depended on it.',
-          'Here the prompt version and the rule version are hashed into the cache key alongside the provider, the model and the article content. Changing either version invalidates the affected entries automatically, with no manual clearing step and no stale results surviving a rewrite.',
-          'That is what treating a prompt as a versioned component actually looks like in practice.',
-        ],
+        source: 'stock_news · classifier.py',
       },
       {
         slug: 'silent-errors-in-decision-support',
@@ -559,26 +852,14 @@ export const en: Bundle = {
         title: 'A fix that makes a failure invisible is not a fix',
         summary:
           'After one repair the output became fully self-consistent — and the user lost their only way to detect it was wrong.',
+        keyIdea:
+          'After every repair, ask whether the user can still notice this failure. If the answer moved from yes to no, the repair was negative.',
+        failure:
+          'A follow-up request re-ran with stale parameters and produced a complete, internally consistent, correctly formatted report. Nothing looked wrong.',
+        relatedProjects: ['seller-profit'],
         from: 'Seller Profit Calculator',
         readingTime: '2 min',
-        body: [
-          'Before the fix, the table and the text disagreed. It looked broken, which meant a user could see it was broken.',
-          'After the fix, a follow-up request re-ran with stale parameters and produced a complete, internally consistent, correctly formatted report. Nothing looked wrong. In a product people use to decide whether to spend money, that is worse.',
-          'The question I now ask after every repair: can the user still notice this failure? If the answer moved from yes to no, the repair was negative.',
-        ],
-      },
-      {
-        slug: 'mcp-and-function-calling',
-        category: 'MCP',
-        title: 'Notes on MCP and function calling',
-        summary:
-          'Working notes on where each sits — kept short deliberately, since my hands-on depth here is still limited.',
-        readingTime: '1 min',
-        body: [
-          'Function calling gives a model a set of tool signatures within one application. The application owns the tools, the schemas and the execution.',
-          'MCP moves that contract outside the application, so a tool server can be written once and connected to different clients rather than reimplemented per integration.',
-          'I am keeping this note short on purpose. I have read the specification and built against tool-calling APIs, but I have not shipped a production MCP server, and I would rather mark the edge of what I have done than write past it.',
-        ],
+        source: 'PRD-v5.md §7.5',
       },
     ],
   },

@@ -147,7 +147,15 @@ export function MoreWork() {
 export function LatestLearning() {
   const c = useContent()
   const withLang = useLangHref()
-  const latest = c.learning.notes.slice(0, 3)
+  // 只展示 3 条最有代表性的，不铺满卡片（PORTFOLIO_PRD §10.4）
+  const featured = [
+    'numeric-and-qualitative-reliability-differ',
+    'rag-output-is-capped-by-the-knowledge-base',
+    'enabling-a-tool-is-not-free',
+  ]
+  const latest = featured
+    .map((slug) => c.learning.notes.find((n) => n.slug === slug))
+    .filter((n): n is NonNullable<typeof n> => Boolean(n))
 
   return (
     <Section
@@ -191,6 +199,7 @@ export function LatestLearning() {
    ══════════════════════════════════════════════════════════ */
 export function About() {
   const c = useContent()
+  const withLangAbout = useLangHref()
   const f = c.about.facts
 
   return (
@@ -231,6 +240,26 @@ export function About() {
             <div>
               <dt className="text-label uppercase text-ink-3">{f.focusLabel}</dt>
               <dd className="mt-2 text-body-s text-ink-2">{f.focus}</dd>
+            </div>
+
+            {/* 用内容本身证明持续学习，而不是写「学习能力强」 */}
+            <div>
+              <dt className="text-label uppercase text-ink-3">{c.learningTrail.label}</dt>
+              <dd className="mt-2">
+                <ul className="flex flex-wrap gap-x-3 gap-y-2">
+                  {c.learningTrail.items.map((it) => (
+                    <li key={it} className="text-body-s text-ink-2">
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={withLangAbout('/learning')}
+                  className="mt-3 inline-flex text-body-s text-accent transition-colors hover:text-accent-hover"
+                >
+                  {c.cta.exploreLearning} →
+                </Link>
+              </dd>
             </div>
           </dl>
         </aside>

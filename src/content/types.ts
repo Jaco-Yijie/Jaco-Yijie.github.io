@@ -34,14 +34,25 @@ export type MoreItemCopy = {
   points: string[]
 }
 
+/**
+ * Learning Note —— 不写成教科书条目，写成「我学到了什么 / 怎么用的」。
+ * keyIdea / failure / tradeoff / applied 都是可选：只填真实材料支持的部分。
+ * `source` 仅供内部核查，永远不渲染（网站不出现本地路径）。
+ */
 export type NoteCopy = {
   slug: string
   category: string
   title: string
   summary: string
+  keyIdea?: string
+  failure?: string
+  tradeoff?: string
+  applied?: string
+  body?: string[]
+  relatedProjects?: ProjectSlug[]
   from?: string
   readingTime: string
-  body: string[]
+  source: string
 }
 
 export type Bundle = {
@@ -175,6 +186,18 @@ export type Bundle = {
     heroTitle: string
     heroLead: string
     categories: Record<string, string>
+    /** Learning Path 的展示顺序；只列实际有材料支撑的分类 */
+    path: string[]
+    labels: {
+      keyIdea: string
+      failure: string
+      tradeoff: string
+      applied: string
+      relatedWork: string
+      learningNote: string
+    }
     notes: NoteCopy[]
   }
+  /** About 里的「正在学什么」入口 —— 用内容本身证明持续学习 */
+  learningTrail: { label: string; items: string[] }
 }

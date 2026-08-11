@@ -27,7 +27,9 @@ export function LearningPage() {
     window.scrollTo(0, 0)
   }, [])
 
-  const categories = Array.from(new Set(c.learning.notes.map((n) => n.category)))
+  // 按 Learning Path 的顺序展示，且只保留真的有笔记的分类
+  const present = new Set(c.learning.notes.map((n) => n.category))
+  const categories = c.learning.path.filter((cat) => present.has(cat))
   const shown =
     active === '__all__' ? c.learning.notes : c.learning.notes.filter((n) => n.category === active)
 
@@ -73,9 +75,14 @@ export function LearningPage() {
                       {c.learning.categories[n.category] ?? n.category}
                     </span>
                     <p className="text-caption mt-3 text-ink-3">{n.readingTime}</p>
-                    {n.from && (
+                    {n.from ? (
                       <p className="text-caption mt-1 text-ink-3">
                         {c.sections.from} <span className="text-ink-2">{n.from}</span>
+                      </p>
+                    ) : (
+                      /* 区分「会了」和「学过」：没有项目支撑的明确标注出来 */
+                      <p className="text-caption mt-3 max-w-[24ch] text-ink-3">
+                        {c.learning.labels.learningNote}
                       </p>
                     )}
                   </div>
@@ -83,13 +90,56 @@ export function LearningPage() {
                   <div className="lg:col-span-8 lg:col-start-5">
                     <h2 className="max-w-[26ch] text-heading-l text-ink">{n.title}</h2>
                     <p className="mt-3 max-w-[60ch] text-body text-ink-2">{n.summary}</p>
-                    <div className="mt-6 max-w-[68ch] space-y-5">
-                      {n.body.map((p, j) => (
-                        <p key={j} className="font-prose text-prose text-ink-2">
-                          {p}
+
+                    <dl className="mt-7 max-w-[68ch] space-y-6">
+                      {(
+                        [
+                          ['keyIdea', n.keyIdea],
+                          ['failure', n.failure],
+                          ['tradeoff', n.tradeoff],
+                          ['applied', n.applied],
+                        ] as const
+                      )
+                        .filter(([, v]) => Boolean(v))
+                        .map(([k, v]) => (
+                          <div key={k}>
+                            <dt className="text-label uppercase text-ink-3">
+                              {c.learning.labels[k]}
+                            </dt>
+                            <dd className="mt-2 font-prose text-prose text-ink-2">{v}</dd>
+                          </div>
+                        ))}
+                    </dl>
+
+                    {n.body && (
+                      <div className="mt-6 max-w-[68ch] space-y-5">
+                        {n.body.map((p, j) => (
+                          <p key={j} className="font-prose text-prose text-ink-2">
+                            {p}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+
+                    {n.relatedProjects && n.relatedProjects.length > 0 && (
+                      <div className="mt-7">
+                        <p className="text-label uppercase text-ink-3">
+                          {c.learning.labels.relatedWork}
                         </p>
-                      ))}
-                    </div>
+                        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+                          {n.relatedProjects.map((slug) => (
+                            <li key={slug}>
+                              <Link
+                                to={withLang(`/work/${slug}`)}
+                                className="text-body-s text-accent transition-colors hover:text-accent-hover"
+                              >
+                                {c.projects[slug].title} →
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </article>
