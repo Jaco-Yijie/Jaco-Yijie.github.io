@@ -35,10 +35,13 @@ export const links = {
   },
 } as const
 
-/** Contact 仅四项 —— PORTFOLIO_PRD.md §12.3 */
-export const contact = [
-  { label: 'Email', value: links.email, href: `mailto:${links.email}` },
-  { label: 'GitHub', value: 'github.com/Jaco-Yijie', href: links.github },
-  { label: 'Resume', value: 'Download (CN)', href: links.resume },
-  { label: 'Portfolio', value: 'jaco-yijie.github.io', href: links.portfolio },
+/**
+ * Contact 仅四项 —— PORTFOLIO_PRD.md §12.3
+ * key 对应语言包里的 contact.* 标签，这里只放与语言无关的地址。
+ */
+export const contactRows = [
+  { key: 'email', value: links.email, href: `mailto:${links.email}`, external: false },
+  { key: 'github', value: 'github.com/Jaco-Yijie', href: links.github, external: true },
+  { key: 'resume', value: '', href: links.resume, external: true },
+  { key: 'portfolio', value: 'jaco-yijie.github.io', href: links.portfolio, external: true },
 ] as const

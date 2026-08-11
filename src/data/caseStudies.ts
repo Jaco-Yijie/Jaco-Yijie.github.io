@@ -892,6 +892,4 @@ const taobao: CaseStudy = {
   ],
 }
 
-export const caseStudies: CaseStudy[] = [sellerProfit, arcana, stockNews, taobao]
-
-export const getCaseStudy = (slug: string) => caseStudies.find((c) => c.slug === slug)
+export const caseStudiesEn: CaseStudy[] = [sellerProfit, arcana, stockNews, taobao]

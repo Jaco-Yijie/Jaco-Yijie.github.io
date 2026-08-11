@@ -114,7 +114,10 @@ export function CountUp({ value }: { value: string }) {
     const start = performance.now()
     let raf = 0
     const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / 900)
+      // 必须钳制到 [0,1]：rAF 回调拿到的是当前帧【开始】的时间戳，
+      // 它可能早于上面记录的 start，进度变负会让缓动算出负数，
+      // 于是数字会闪一下 "-4M+" 这种东西。
+      const p = Math.min(1, Math.max(0, (now - start) / 900))
       const eased = 1 - Math.pow(1 - p, 3)
       setShown((target * eased).toFixed(decimals))
       if (p < 1) raf = requestAnimationFrame(tick)

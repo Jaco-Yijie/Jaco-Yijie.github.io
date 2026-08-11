@@ -1,5 +1,8 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { LanguageProvider } from './i18n'
+import { useContent } from './hooks'
+import { Seo } from './components/Seo'
 import { Nav } from './components/Nav'
 import { Footer } from './components/HomeSections'
 import { HomePage } from './pages/HomePage'
@@ -18,15 +21,17 @@ function HashScroll() {
   return null
 }
 
-export default function App() {
+function Shell() {
+  const c = useContent()
   return (
-    <BrowserRouter>
+    <>
+      <Seo />
       <HashScroll />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-200 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-on"
       >
-        Skip to content
+        {c.nav.skipToContent}
       </a>
       <Nav />
       <main id="main">
@@ -39,6 +44,16 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <LanguageProvider>
+        <Shell />
+      </LanguageProvider>
     </BrowserRouter>
   )
 }
