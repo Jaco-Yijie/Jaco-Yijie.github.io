@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import { projects } from '../data/projects'
 import { isLive } from '../data/links'
+import { projectOverrides } from '../data/projectUpdates'
 import { useContent } from '../hooks'
-import { useLangHref } from '../i18n'
+import { useLang, useLangHref } from '../i18n'
 import { Metric } from './Metric'
 import { Button, Eyebrow, Tag } from './ui'
 import { StatusBadge } from './StatusBadge'
@@ -15,6 +16,7 @@ import { Reveal } from './motion'
  */
 export function SelectedWork() {
   const c = useContent()
+  const { lang } = useLang()
   const withLang = useLangHref()
 
   return (
@@ -31,6 +33,7 @@ export function SelectedWork() {
         <ul className="border-t border-line">
           {projects.map((p, i) => {
             const copy = c.projects[p.slug]
+            const override = projectOverrides[p.slug]?.[lang]
             return (
               <Reveal as="li" key={p.slug} delay={i * 60} className="group block border-b border-line">
                 <article className="relative grid grid-cols-1 gap-x-6 gap-y-8 py-7 transition-colors duration-[240ms] md:py-9 lg:grid-cols-12 lg:py-12 lg:group-hover:bg-surface-1">
@@ -66,7 +69,9 @@ export function SelectedWork() {
                       </div>
                     )}
 
-                    <p className="mt-4 max-w-[48ch] text-body text-ink">{copy.subtitle}</p>
+                    <p className="mt-4 max-w-[48ch] text-body text-ink">
+                      {override?.subtitle ?? copy.subtitle}
+                    </p>
 
                     <dl className="mt-5 max-w-[52ch] space-y-3">
                       <div>
@@ -75,7 +80,7 @@ export function SelectedWork() {
                       </div>
                       <div>
                         <dt className="text-label uppercase text-ink-3">{c.sections.outcome}</dt>
-                        <dd className="mt-1 text-body-s text-ink-2">{copy.outcome}</dd>
+                        <dd className="mt-1 text-body-s text-ink-2">{override?.outcome ?? copy.outcome}</dd>
                       </div>
                     </dl>
 
@@ -112,9 +117,9 @@ export function SelectedWork() {
 
                     <p className="mt-7 border-l border-line-strong pl-4 text-body-s text-ink-3 lg:mt-8">
                       <span className="text-label mr-2 uppercase text-ink-2">
-                        {copy.highlightLabel}
+                        {override?.highlightLabel ?? copy.highlightLabel}
                       </span>
-                      {copy.highlight}
+                      {override?.highlight ?? copy.highlight}
                     </p>
                   </div>
                 </article>
