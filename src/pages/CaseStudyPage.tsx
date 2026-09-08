@@ -3,7 +3,8 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import type { Block } from '../data/caseStudies'
 import { getCaseStudies, getCaseStudy } from '../content'
 import { projects } from '../data/projects'
-import { isLive } from '../data/links'
+import { isLive, links } from '../data/links'
+import { arcanaMvpQuickRead, stockPrdQuickRead } from '../data/projectUpdates'
 import { useContent } from '../hooks'
 import { useLang, useLangHref } from '../i18n'
 import { Metric } from '../components/Metric'
@@ -162,6 +163,43 @@ function BlockView({ b, labels }: { b: Block; labels: { before: string; after: s
   }
 }
 
+function QuickReadPanel({
+  data,
+  cta,
+}: {
+  data: { eyebrow: string; title: string; lead: string; items: readonly (readonly [string, string])[] }
+  cta?: { label: string; href: string }
+}) {
+  return (
+    <section className="border-b border-line bg-surface-1">
+      <div className="shell py-12 lg:py-16">
+        <Eyebrow>{data.eyebrow}</Eyebrow>
+        <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-6">
+          <div className="lg:col-span-5">
+            <h2 className="text-display-m text-ink">{data.title}</h2>
+            <p className="mt-5 max-w-[52ch] text-body text-ink-2">{data.lead}</p>
+            {cta && (
+              <div className="mt-6">
+                <Button href={cta.href} variant="secondary" size="sm" external>
+                  {cta.label}
+                </Button>
+              </div>
+            )}
+          </div>
+          <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 lg:col-span-7">
+            {data.items.map(([label, value]) => (
+              <div key={label} className="border-t border-line-strong pt-3">
+                <dt className="text-label uppercase text-ink-3">{label}</dt>
+                <dd className="mt-2 text-body-s text-ink-2">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ── 页面 ─────────────────────────────────────────────────── */
 export function CaseStudyPage() {
   const { slug = '' } = useParams()
@@ -247,6 +285,11 @@ export function CaseStudyPage() {
                       {c.cta[cta.kind]}
                     </Button>
                   ))}
+                {slug === 'stock-news' && isLive(links.prds.stockNews) && (
+                  <Button href={links.prds.stockNews} variant="secondary" size="md" external>
+                    {lang === 'zh' ? '查看完整 PRD' : 'View full PRD'}
+                  </Button>
+                )}
               </div>
             )}
           </div>
@@ -265,6 +308,18 @@ export function CaseStudyPage() {
           </div>
         </section>
       )}
+
+      {slug === 'stock-news' && (
+        <QuickReadPanel
+          data={stockPrdQuickRead[lang]}
+          cta={{
+            label: lang === 'zh' ? '查看完整 PRD' : 'View full PRD',
+            href: links.prds.stockNews,
+          }}
+        />
+      )}
+
+      {slug === 'arcana' && <QuickReadPanel data={arcanaMvpQuickRead[lang]} />}
 
       {/* Body */}
       <div className="shell py-16 lg:py-24">
