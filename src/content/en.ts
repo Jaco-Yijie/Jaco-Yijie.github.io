@@ -8,6 +8,7 @@ export const en: Bundle = {
         'AI product portfolio focused on LLM evaluation, prompt systems, product thinking and data.',
     },
     routeTitles: {
+      '/work/stock-news/prd': 'Stock News Intelligence — Full PRD V1.4 — Jaco Wang',
       '/work/seller-profit': 'Seller Profit Calculator — Case Study — Jaco Wang',
       '/work/arcana': 'Arcana — Case Study — Jaco Wang',
       '/work/stock-news': 'Stock News Intelligence — Case Study — Jaco Wang',
@@ -32,6 +33,7 @@ export const en: Bundle = {
   },
 
   cta: {
+    fullPrd: 'View full PRD',
     caseStudy: 'Read Case Study',
     liveDemo: 'Live Demo',
     tryDemo: 'Try Live Demo',
@@ -64,9 +66,10 @@ export const en: Bundle = {
     ctxVars: 'LLM Context Variables',
     sectors: 'Industry Sectors',
     logs: 'Behavior Logs',
+    cardFaces: 'Card Faces · 5 Decks',
     assertions: 'Reproducible Assertions',
     redLines: 'Product Red Lines',
-    firstContent: 'First Content, from 51.6s',
+    firstContent: 'Historical V2 First Content',
     prdIterations: 'PRD Iterations',
     prdVersion: 'Product Version',
     highIntent: 'High-intent Users',
@@ -155,6 +158,10 @@ export const en: Bundle = {
   },
 
   status: {
+    mvp: {
+      label: 'MVP · Iterating',
+      note: 'The six-step draw and server-side readings are implemented; iteration continues.',
+    },
     development: {
       label: 'In Development',
       note: 'Current status: active development and iteration.',
@@ -171,20 +178,20 @@ export const en: Bundle = {
       outcome:
         'Evaluation showed the model re-deriving numbers instead of using the deterministic result. I moved calculation into code and cut the model’s context to two qualitative variables.',
       highlightLabel: 'Try it',
-      highlight: 'The only project here you can use directly — no repository required.',
+      highlight: 'Open the demo, enter costs, and inspect the profit calculation.',
       tags: ['AI Product', 'LLM Evaluation', 'Prompt Engineering'],
     },
     arcana: {
       title: 'Arcana',
       subtitleAlt: 'Immersive Digital Tarot Experience',
       subtitle:
-        'An immersive digital tarot product exploring user agency, randomness and the boundary between deterministic interaction and LLM interpretation.',
+        'An immersive tarot Web MVP: shuffle, cut, spread, select, place and reveal by hand; AI interprets the frozen result.',
       problem:
         'The obvious build lets the model draw and interpret in one step. That is cheaper, faster, and it destroys the reason people do a tarot draw at all.',
       outcome:
-        'Shuffle, cut, draw and orientation belong to a deterministic engine. The model receives a frozen result — and 160 runnable assertions keep it there.',
+        'Six interactive steps, five complete visual decks and server-side DeepSeek readings now work together. Card identity is independent of artwork; history stays local.',
       highlightLabel: 'Reproducible',
-      highlight: 'Clone the repo and run the evaluation yourself: 64 + 96 assertions, 0 failed.',
+      highlight: 'Clone the repo and run the evaluation yourself: 64 + 118 assertions, 0 failed.',
       tags: ['AI Product', 'Interaction Design', 'LLM Evaluation'],
     },
     'stock-news': {
@@ -333,7 +340,7 @@ export const en: Bundle = {
         slug: 'arcana',
         headline: 'Boundary properties as runnable assertions',
         points: [
-          '64 engine assertions and 96 reading assertions, reproducible from a clone',
+          '64 engine assertions and 118 reading assertions, reproducible from a clone',
           '10 reading cases across one-, three- and five-card spreads and a high-risk topic',
           'Tone checks run in both directions — catch violations, and do not flag restraint',
           'Two prompt versions kept side by side and compared through a dedicated A/B script',
@@ -359,7 +366,7 @@ export const en: Bundle = {
       ['Evidence validation', 'Rule-layer score and matched keywords passed to the reviewer'],
       ['Failure analysis', 'Reading why a case passed as carefully as why one failed'],
       ['Prompt versioning', 'Version hashed into the cache key; two versions kept for A/B'],
-      ['Regression validation', '160 runnable assertions across engine and reading'],
+      ['Regression validation', '182 runnable assertions across engine and reading'],
       ['Cost & latency', 'Measured benchmarks; separate timeouts per task type'],
       ['Probe design', 'Six probes against a product: numbers, sourcing, transparency, tools, decisions, memory'],
       ['Layer separation', 'Testing numeric and qualitative output as two different reliability profiles'],

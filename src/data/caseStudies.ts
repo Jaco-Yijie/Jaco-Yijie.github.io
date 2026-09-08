@@ -393,6 +393,12 @@ const arcana: CaseStudy = {
           kind: 'p',
           text: 'The interesting part of this project is not what the AI does. It is the list of things the AI is not allowed to touch, and the test suite that keeps it out.',
         },
+        { kind: 'p', text: 'The current MVP connects the six-step draw to server-side readings and offers five complete 78-card visual decks. A deck changes artwork, while meanings, randomness and reading prompts stay invariant.' },
+        { kind: 'list', items: [
+          'The browser calls the same-origin reading API; the DeepSeek key is read only by the server.',
+          'Without a key or an explicit provider, local Mock readings are used. Explicit DeepSeek configuration without a key produces an error instead of silently falling back.',
+          'Sessions and journals stay in browser localStorage. Starting a full reading sends the revealed cards, question and spread; follow-up questions send their relevant context to the server.',
+        ] },
       ],
     },
     {
@@ -477,13 +483,13 @@ const arcana: CaseStudy = {
         },
         {
           kind: 'code',
-          caption: 'Verified locally on 2026-08-11',
+          caption: 'Verified locally on 2026-09-08 · e7ccaec · mock readings',
           lines: [
             'git clone https://github.com/Jaco-Yijie/arcana',
             'npm install',
             '',
             'npm run engine:check    ->  64 assertions, 0 failed',
-            'npm run reading:check   ->  96 assertions, 0 failed',
+            'npm run reading:check   ->  118 assertions, 0 failed',
           ],
         },
         {
@@ -497,6 +503,23 @@ const arcana: CaseStudy = {
         {
           kind: 'p',
           text: 'The tone checks run in both directions. It is not enough to catch a violation — the suite also asserts that restrained, careful phrasing is not flagged. A guard that over-triggers quietly degrades every reading.',
+        },
+        {
+          kind: 'p',
+          text: 'Local verification on 2026-09-08 · Arcana e7ccaec. These are assertions per check script, not user counts or model accuracy.',
+        },
+        {
+          kind: 'table',
+          head: ['Check', 'Assertions', 'Result'],
+          rows: [
+            ['engine', '64', 'Passed'],
+            ['deck', '338', 'Passed'],
+            ['layout', '119', 'Passed'],
+            ['artwork', '89', 'Passed'],
+            ['reading (Mock)', '118', 'Passed'],
+            ['release', '60', 'Passed'],
+            ['deployment', '54', 'Passed'],
+          ],
         },
       ],
     },
@@ -533,11 +556,11 @@ const arcana: CaseStudy = {
     },
     {
       num: '07',
-      title: 'Performance Investigation',
+      title: 'Performance Investigation · Historical V2 Experiment',
       blocks: [
         {
           kind: 'p',
-          text: 'Readings were taking around 90 seconds. Before changing anything I measured, running the same fixed input three times per model against the live API.',
+          text: 'In the early V2 investigation, readings took around 90 seconds. These are historical experiment results, not current public-demo latency. Before changing anything I measured, running the same fixed input three times per model against the live API.',
         },
         {
           kind: 'p',

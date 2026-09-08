@@ -25,6 +25,7 @@ export type MetricId =
   | 'ctxVars'
   | 'sectors'
   | 'logs'
+  | 'cardFaces'
   | 'assertions'
   | 'redLines'
   | 'firstContent'
@@ -38,11 +39,12 @@ export const metricValues: Record<MetricId, MetricValue> = {
   ctxVars: { value: '16', infix: '→', value2: '2', source: 'PRD-v5.md §6.3', verified: true },
   sectors: { value: '38', source: 'stock_news/data/sectors_config.json', verified: true },
   logs: { value: '100', suffix: 'M+', source: 'Resume (简历—V5.pdf)', verified: true },
+  cardFaces: { value: '390', source: 'arcana assets:check, 5 × 78 (2026-09-08)', verified: true },
   assertions: {
     value: '64',
     infix: '+',
-    value2: '96',
-    source: 'npm run engine:check / reading:check (2026-08-11)',
+    value2: '118',
+    source: 'npm run engine:check / reading:check (2026-09-08, e7ccaec; mock reading provider)',
     verified: true,
   },
   redLines: { value: '24', source: 'arcana docs/01-product-spec.md G-01~G-24', verified: true },
@@ -61,7 +63,7 @@ export const metricValues: Record<MetricId, MetricValue> = {
 /** 各项目卡的 Proof 组合 */
 export const projectMetricIds: Record<string, MetricId[]> = {
   'seller-profit': ['evalCases', 'ctxVars', 'prdIterations'],
-  arcana: ['assertions', 'redLines', 'firstContent'],
+  arcana: ['cardFaces', 'assertions', 'redLines'],
   'stock-news': ['sectors', 'prdVersion'],
   'taobao-analysis': ['logs', 'highIntent', 'memory'],
 }

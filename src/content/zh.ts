@@ -18,6 +18,7 @@ export const zh: Bundle = {
         '聚焦 AI 产品、大模型评测、Prompt Engineering 与数据分析的个人作品集。',
     },
     routeTitles: {
+      '/work/stock-news/prd': 'A股板块新闻监控系统 — 完整 PRD V1.4 — 王一杰',
       '/work/seller-profit': '拼多多新手卖家利润试算助手 — 案例 — 王一杰',
       '/work/arcana': 'Arcana 沉浸式数字塔罗 — 案例 — 王一杰',
       '/work/stock-news': 'A股板块新闻监控系统 — 案例 — 王一杰',
@@ -42,6 +43,7 @@ export const zh: Bundle = {
   },
 
   cta: {
+    fullPrd: '查看完整 PRD',
     caseStudy: '查看案例',
     liveDemo: '体验 Demo',
     tryDemo: '体验 Demo',
@@ -74,9 +76,10 @@ export const zh: Bundle = {
     ctxVars: 'LLM 上下文变量',
     sectors: '个行业板块',
     logs: '用户行为日志',
+    cardFaces: '完整牌面 · 5 套牌组',
     assertions: '条可复现断言',
     redLines: '条产品红线',
-    firstContent: '首屏解读，原 51.6 秒',
+    firstContent: 'V2 性能实验首字（历史）',
     prdIterations: 'PRD 迭代版本',
     prdVersion: '产品版本',
     highIntent: '高意向用户',
@@ -161,6 +164,10 @@ export const zh: Bundle = {
   },
 
   status: {
+    mvp: {
+      label: 'MVP 已成型',
+      note: '六步抽牌流程与服务端解读已实现，持续迭代。',
+    },
     development: {
       label: '开发中',
       note: '当前状态：持续开发与迭代中。',
@@ -177,20 +184,20 @@ export const zh: Bundle = {
       outcome:
         '评测发现 LLM 会自行重新计算，而不是引用确定性结果。我把计算移进代码，并把模型的上下文压缩到两个定性变量。',
       highlightLabel: '可直接体验',
-      highlight: '本站唯一一个不用看代码、打开就能用的项目。',
+      highlight: '打开 Demo，直接输入成本并查看利润试算。',
       tags: ['AI 产品', 'LLM Evaluation', 'Prompt Engineering'],
     },
     arcana: {
       title: 'Arcana',
       subtitleAlt: '沉浸式数字塔罗产品',
       subtitle:
-        '探索线上塔罗体验中的用户自主性、随机性，以及确定性交互与 LLM 解读之间的产品边界。',
+        '沉浸式数字塔罗 Web MVP：亲手洗牌、切牌、摊牌、选牌、摆牌、翻牌，AI 只解读冻结后的结果。',
       problem:
         '最省事的做法是让模型一次性完成抽牌和解读。那样更快也更便宜，但会毁掉用户来抽牌的理由。',
       outcome:
-        '洗牌、切牌、抽牌、正逆位全部交给确定性引擎，模型只拿到冻结后的结果 —— 160 条可复现断言保证它待在边界内。',
+        '六步交互、5 套完整牌组与 DeepSeek 服务端解读已打通；抽牌结果与牌组画面解耦，记录保存在本地。',
       highlightLabel: '可复现',
-      highlight: 'clone 仓库就能自己跑评测：64 + 96 条断言，0 失败。',
+      highlight: 'clone 仓库就能自己跑评测：64 + 118 条断言，0 失败。',
       tags: ['AI 产品', '交互设计', 'LLM Evaluation'],
     },
     'stock-news': {
@@ -325,7 +332,7 @@ export const zh: Bundle = {
         slug: 'arcana',
         headline: '把 AI 边界写成可执行的断言',
         points: [
-          '64 条引擎断言与 96 条解读断言，clone 下来即可复现',
+          '64 条引擎断言与 118 条解读断言，clone 下来即可复现',
           '10 组解读用例，覆盖单张、三张、五张牌阵与高风险话题',
           '语气校验是双向的 —— 既要抓到违规，也不能误杀克制的表达',
           '两版 Prompt 并存，通过专门的 A/B 脚本对比',
@@ -351,7 +358,7 @@ export const zh: Bundle = {
       ['证据校验', '把规则层的得分与命中关键词一并交给复核环节'],
       ['失败分析', '认真读通过的用例，和读失败的用例一样认真'],
       ['Prompt 版本化', '版本参与缓存 key；两版并存用于 A/B 对比'],
-      ['回归验证', '引擎与解读合计 160 条可执行断言'],
+      ['回归验证', '引擎与解读合计 182 条可执行断言'],
       ['成本与延迟', '基于实测数据；不同任务分别设置超时'],
       ['探针设计', '用六个探针测一个产品：数值、是否检索、来源透明度、工具触发、决策边界、记忆'],
       ['分层评测', '把数值输出与定性输出当作两种不同的可靠性来分别检验'],

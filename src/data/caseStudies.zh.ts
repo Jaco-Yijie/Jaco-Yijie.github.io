@@ -368,6 +368,12 @@ const arcana: CaseStudy = {
           kind: 'p',
           text: '这个项目真正值得说的不是 AI 做了什么，而是 AI 被禁止碰哪些东西，以及用什么把它挡在外面。',
         },
+        { kind: 'p', text: '当前 MVP 已打通六步抽牌与服务端解读，提供 5 套 × 78 张完整牌面。Deck 只改变画面，不改变牌义、抽牌随机逻辑与解读 Prompt。' },
+        { kind: 'list', items: [
+          '前端只请求本站解读 API；DeepSeek API Key 只在服务端读取。',
+          '未配置 Key 且未指定 Provider 时使用 Mock 示例；显式选择 DeepSeek 却缺少 Key 时明确报错，不静默降级。',
+          '会话与日记保存在浏览器 localStorage。开始完整解读时发送已翻开的牌、问题与牌阵；追问时向服务端提交相应上下文。',
+        ] },
       ],
     },
     {
@@ -452,13 +458,13 @@ const arcana: CaseStudy = {
         },
         {
           kind: 'code',
-          caption: '2026-08-11 本地实跑验证',
+          caption: '2026-09-08 · e7ccaec 本地实跑，解读使用 Mock',
           lines: [
             'git clone https://github.com/Jaco-Yijie/arcana',
             'npm install',
             '',
             'npm run engine:check    ->  64 条断言，0 失败',
-            'npm run reading:check   ->  96 条断言，0 失败',
+            'npm run reading:check   ->  118 条断言，0 失败',
           ],
         },
         {
@@ -472,6 +478,23 @@ const arcana: CaseStudy = {
         {
           kind: 'p',
           text: '语气校验是双向的。只抓到违规还不够 —— 测试同时断言克制、谨慎的表达不会被误判。一个过度触发的校验会悄悄拉低每一次解读的质量。',
+        },
+        {
+          kind: 'p',
+          text: '2026-09-08 本地验证 · Arcana e7ccaec。以下为各检查脚本的断言数，不是用户测试人数或模型准确率。',
+        },
+        {
+          kind: 'table',
+          head: ['检查', '断言数', '结果'],
+          rows: [
+            ['engine', '64', '通过'],
+            ['deck', '338', '通过'],
+            ['layout', '119', '通过'],
+            ['artwork', '89', '通过'],
+            ['reading (Mock)', '118', '通过'],
+            ['release', '60', '通过'],
+            ['deployment', '54', '通过'],
+          ],
         },
       ],
     },
@@ -508,11 +531,11 @@ const arcana: CaseStudy = {
     },
     {
       num: '07',
-      title: '性能调查',
+      title: '性能调查 · V2 历史实验',
       blocks: [
         {
           kind: 'p',
-          text: '一次解读大约需要 90 秒。在动手改任何东西之前，我先做了测量：固定同一份输入，每个模型跑三次真实 API 调用。',
+          text: '早期 V2 性能调查中，一次解读大约需要 90 秒。以下保留当时的实验结果，不代表当前公网延迟。在动手改任何东西之前，我先做了测量：固定同一份输入，每个模型跑三次真实 API 调用。',
         },
         {
           kind: 'p',

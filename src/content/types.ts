@@ -74,6 +74,7 @@ export type Bundle = {
     languageLabel: string
   }
   cta: {
+    fullPrd: string
     caseStudy: string
     liveDemo: string
     tryDemo: string
@@ -160,7 +161,7 @@ export type Bundle = {
   }
   footer: { tagline: string }
   /** 项目状态徽章与 Case Study 中的状态说明 */
-  status: Record<'development', { label: string; note: string }>
+  status: Record<'development' | 'mvp', { label: string; note: string }>
   projects: Record<ProjectSlug, ProjectCopy>
   capabilities: CapabilityCopy[]
   moreWork: MoreItemCopy[]

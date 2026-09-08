@@ -27,11 +27,11 @@ export const links = {
   demos: {
     sellerProfit: 'https://udify.app/chat/NTlMX91jzOFzzQpo',
     stockNews: 'https://stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app/',
-    arcana: null as MaybeLink, // 未提供
+    arcana: 'https://arcana-e190.onrender.com', // arcana docs/v2/32-e2-real-deployment.md §6
   },
 
   prds: {
-    stockNews: 'https://github.com/Jaco-Yijie/stock_news/blob/main/docs/PRD.md' as MaybeLink,
+    stockNews: '/work/stock-news/prd' as MaybeLink,
   },
 } as const
 

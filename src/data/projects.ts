@@ -8,10 +8,9 @@ import { links, type MaybeLink } from './links'
 import { projectMetricIds } from './metrics'
 import type { ProjectSlug } from '../content/types'
 
-export type CtaKind = 'caseStudy' | 'tryDemo' | 'liveDemo' | 'github'
+export type CtaKind = 'caseStudy' | 'tryDemo' | 'liveDemo' | 'github' | 'fullPrd'
 
-/** 目前只有一种非默认状态；未来要加 'archived' 之类在这里扩展即可 */
-export type ProjectStatus = 'development'
+export type ProjectStatus = 'development' | 'mvp'
 
 export type ProjectShell = {
   index: string
@@ -38,8 +37,9 @@ export const projects: ProjectShell[] = [
     metricIds: projectMetricIds['stock-news'],
     ctas: [
       { kind: 'caseStudy', href: '/work/stock-news', variant: 'tertiary' },
+      { kind: 'liveDemo', href: links.demos.stockNews, variant: 'primary', external: true },
       { kind: 'github', href: links.repos.stockNews, variant: 'secondary', external: true },
-      { kind: 'liveDemo', href: links.demos.stockNews, variant: 'secondary', external: true },
+      { kind: 'fullPrd', href: links.prds.stockNews, variant: 'secondary' },
     ],
   },
   {
@@ -51,12 +51,12 @@ export const projects: ProjectShell[] = [
   {
     index: '04',
     slug: 'arcana',
+    status: 'mvp',
     metricIds: projectMetricIds.arcana,
     ctas: [
       { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
+      { kind: 'liveDemo', href: links.demos.arcana, variant: 'primary', external: true },
       { kind: 'github', href: links.repos.arcana, variant: 'secondary', external: true },
-      // Live Demo 未提供 → isLive() 过滤掉，不渲染灰色失效按钮
-      { kind: 'liveDemo', href: links.demos.arcana, variant: 'secondary', external: true },
     ],
   },
 ]

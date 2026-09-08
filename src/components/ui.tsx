@@ -29,7 +29,7 @@ type ButtonProps = {
 const sizeCls = {
   lg: 'h-[52px] px-7 text-body',
   md: 'h-11 px-[22px] text-[15px]',
-  sm: 'h-9 px-4 text-body-s',
+  sm: 'h-11 px-4 text-body-s md:h-9',
 }
 
 export function Button({ href, variant = 'secondary', size = 'md', external = false, children }: ButtonProps) {
@@ -42,7 +42,7 @@ export function Button({ href, variant = 'secondary', size = 'md', external = fa
       ? `${base} ${sizeCls[size]} bg-accent text-accent-on hover:bg-accent-hover`
       : variant === 'secondary'
         ? `${base} ${sizeCls[size]} border border-line-strong text-ink hover:border-accent/30 hover:bg-accent/10`
-        : 'group inline-flex items-center gap-2 text-[15px] font-medium text-accent transition-colors duration-[180ms] hover:text-accent-hover'
+        : 'group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-accent transition-colors duration-[180ms] hover:text-accent-hover'
 
   const arrow = (
     <span

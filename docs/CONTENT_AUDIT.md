@@ -1,5 +1,7 @@
 # CONTENT_AUDIT.md — 内容审计与事实源规则
 
+> 2026-09-08 更新：Stock News 完整 PRD 与 Arcana 的状态、链接和校验数量以 [PORTFOLIO_UPDATE_AUDIT.md](PORTFOLIO_UPDATE_AUDIT.md) 为准。下文保留此前审计记录。
+
 > **版本**：v3（2026-08-11）
 > v2 → v3 变更：移除 Resume/PRD 数字冲突分析；PDD Evaluation 统一表述为 `10 AI Evaluation Cases`，不展示任何准确率数字；全部 GitHub 仓库按 Public 处理；Stock News 保留 Live Demo 链接、不做可访问性说明；Contact 移除微信。
 

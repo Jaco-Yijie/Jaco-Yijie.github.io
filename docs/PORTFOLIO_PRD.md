@@ -1,5 +1,7 @@
 # PORTFOLIO_PRD.md — AI Product Portfolio 产品需求文档
 
+> 2026-09-08 更新：Stock News 完整 PRD 与 Arcana 的状态、链接和校验数量以 [PORTFOLIO_UPDATE_AUDIT.md](PORTFOLIO_UPDATE_AUDIT.md) 为准。下文保留此前审计记录。
+
 > **版本**：v2（2026-08-11）
 > v1 → v2 变更：Hero Proof 改为 `10 / 16→2 / 38 / 100M+`；PDD 叙事去除准确率数字；GitHub 全部按 Public 处理；Contact 移除微信；Stock News 恢复 Live Demo 按钮；IDSC 进入 More Work。
 > **上游唯一事实源**：`CONTENT_AUDIT.md`。冲突时以其为准。

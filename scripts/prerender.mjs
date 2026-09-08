@@ -16,6 +16,11 @@ const NAME = 'Jaco Wang'
 
 const routes = [
   {
+    path: 'work/stock-news/prd',
+    title: `Stock News Intelligence — Full PRD V1.4 — ${NAME}`,
+    desc: 'Original Chinese PRD V1.4: complete requirements, 26 acceptance criteria, metrics, roadmap and risks.',
+  },
+  {
     path: 'work/seller-profit',
     title: `Seller Profit Calculator — Case Study — ${NAME}`,
     desc: 'Prompt constraints were not enough, so I redesigned the architecture so the LLM could no longer perform the calculation.',
@@ -23,7 +28,7 @@ const routes = [
   {
     path: 'work/arcana',
     title: `Arcana — Case Study — ${NAME}`,
-    desc: 'The LLM never draws the cards. It only interprets a result the user has already frozen. 160 runnable assertions keep it there.',
+    desc: 'The LLM never draws the cards. It only interprets a result the user has already frozen. 182 runnable engine and reading assertions keep it there.',
   },
   {
     path: 'work/stock-news',

@@ -5,6 +5,7 @@ import { useContent } from './hooks'
 import { Seo } from './components/Seo'
 import { Nav } from './components/Nav'
 import { Footer } from './components/HomeSections'
+import { StockNewsPrdPage } from './pages/StockNewsPrdPage'
 import { HomePage } from './pages/HomePage'
 import { CaseStudyPage } from './pages/CaseStudyPage'
 import { AIEvalsPage } from './pages/AIEvalsPage'
@@ -37,6 +38,7 @@ function Shell() {
       <main id="main">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/work/stock-news/prd" element={<StockNewsPrdPage />} />
           <Route path="/work/:slug" element={<CaseStudyPage />} />
           <Route path="/ai-evals" element={<AIEvalsPage />} />
           <Route path="/learning" element={<LearningPage />} />
