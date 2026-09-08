@@ -31,7 +31,7 @@ export const links = {
   },
 
   prds: {
-    stockNews: TODO_LINK as MaybeLink, // PRD V1.4 存在于仓库之外
+    stockNews: 'https://github.com/Jaco-Yijie/stock_news/blob/main/docs/PRD.md' as MaybeLink,
   },
 } as const
 
