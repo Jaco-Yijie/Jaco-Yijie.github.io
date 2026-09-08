@@ -51,7 +51,6 @@ export const projects: ProjectShell[] = [
   {
     index: '04',
     slug: 'arcana',
-    status: 'development',
     metricIds: projectMetricIds.arcana,
     ctas: [
       { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
