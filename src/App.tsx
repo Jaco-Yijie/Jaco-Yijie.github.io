@@ -13,12 +13,23 @@ import { LearningPage } from './pages/LearningPage'
 
 /** 带 hash 的站内跳转（/#work）落地后滚到对应锚点 */
 function HashScroll() {
-  const { pathname, hash } = useLocation()
+  const { pathname, search, hash } = useLocation()
   useEffect(() => {
     if (!hash) return
-    const el = document.getElementById(hash.slice(1))
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [pathname, hash])
+    let cancelled = false
+    let frame = 0
+    // Font metrics can move a deep target after the browser's initial hash scroll.
+    void document.fonts.ready.then(() => {
+      if (cancelled) return
+      frame = requestAnimationFrame(() => {
+        document.getElementById(hash.slice(1))?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+          block: 'start',
+        })
+      })
+    })
+    return () => { cancelled = true; cancelAnimationFrame(frame) }
+  }, [pathname, search, hash])
   return null
 }
 

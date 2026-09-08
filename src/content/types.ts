@@ -96,6 +96,7 @@ export type Bundle = {
     name: string
     nameAlt: string
     statement: string
+    statementLines?: string[]
     supporting: string
     meta: string
   }

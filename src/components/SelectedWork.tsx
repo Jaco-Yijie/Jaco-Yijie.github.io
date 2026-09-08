@@ -7,6 +7,7 @@ import { Metric } from './Metric'
 import { Button, Eyebrow, Tag } from './ui'
 import { StatusBadge } from './StatusBadge'
 import { Reveal } from './motion'
+import { ProjectPreview } from './ProjectPreview'
 
 /**
  * Selected Work —— DESIGN_SYSTEM.md §8
@@ -19,10 +20,10 @@ export function SelectedWork() {
 
   return (
     <section id="work" aria-labelledby="work-heading" className="border-t border-line">
-      <div className="shell section-y">
+      <div className="shell py-12 md:py-16 lg:py-20">
         <header className="mb-8 md:mb-10 lg:mb-12">
           <Eyebrow>{c.sections.workEyebrow}</Eyebrow>
-          <h2 id="work-heading" className="mt-4 text-display-m text-ink">
+          <h2 id="work-heading" className="mt-4 text-display-m text-balance text-ink">
             {c.sections.workTitle}
           </h2>
           <p className="mt-5 max-w-[58ch] text-body-l text-ink-2">{c.sections.workLead}</p>
@@ -106,6 +107,7 @@ export function SelectedWork() {
                   </div>
 
                   <div className="lg:col-span-4 lg:col-start-9">
+                    <ProjectPreview slug={p.slug} />
                     <dl className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-1 lg:gap-y-7">
                       {p.metricIds.map((id) => (
                         <Metric key={id} id={id} variant="card" />

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useLocation } from 'react-router-dom'
 import type { Block } from '../data/caseStudies'
 import { getCaseStudies, getCaseStudy } from '../content'
 import { projects } from '../data/projects'
@@ -9,6 +9,7 @@ import { useLang, useLangHref } from '../i18n'
 import { Metric } from '../components/Metric'
 import { Button, Eyebrow, Tag } from '../components/ui'
 import { StatusBadge } from '../components/StatusBadge'
+import { ReadingContents } from '../components/ReadingContents'
 import { Reveal } from '../components/motion'
 
 /* ── 单个内容块渲染 —— DESIGN_SYSTEM §9.3 ────────────────── */
@@ -165,6 +166,7 @@ function BlockView({ b, labels }: { b: Block; labels: { before: string; after: s
 /* ── 页面 ─────────────────────────────────────────────────── */
 export function CaseStudyPage() {
   const { slug = '' } = useParams()
+  const { hash } = useLocation()
   const { lang } = useLang()
   const c = useContent()
   const withLang = useLangHref()
@@ -172,8 +174,8 @@ export function CaseStudyPage() {
   const project = projects.find((p) => p.slug === slug)
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [slug])
+    if (!hash) window.scrollTo(0, 0)
+  }, [slug, hash])
 
   if (!study) return <Navigate to="/" replace />
 
@@ -185,7 +187,7 @@ export function CaseStudyPage() {
     <>
       {/* Header */}
       <header className="border-b border-line">
-        <div className="shell pt-[104px] pb-14 lg:pt-[140px] lg:pb-20">
+        <div className="shell pt-[96px] pb-10 lg:pt-[112px] lg:pb-14">
           <Link to={withLang('/')+'#work'} className="text-body-s text-ink-3 transition-colors hover:text-ink">
             {c.cta.backToWork}
           </Link>
@@ -206,33 +208,6 @@ export function CaseStudyPage() {
             <p className="mt-6 max-w-[52ch] text-body-l text-ink">{study.tagline}</p>
 
             {project && (
-              <div className="mt-6 flex flex-wrap gap-2">
-                {c.projects[project.slug].tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))}
-              </div>
-            )}
-
-            <dl className="mt-8 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-3 lg:max-w-[820px]">
-              {[
-                [c.sections.role, study.meta.role],
-                [c.sections.timeline, study.meta.timeline],
-                [c.sections.context, study.meta.context],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <dt className="text-label uppercase text-ink-3">{k}</dt>
-                  <dd className="mt-1 text-body-s text-ink-2">{v}</dd>
-                </div>
-              ))}
-            </dl>
-
-            {project?.status && (
-              <p className="mt-6 max-w-[52ch] border-l border-line-strong pl-4 text-body-s text-ink-2">
-                {c.status[project.status].note}
-              </p>
-            )}
-
-            {project && (
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 {project.ctas
                   .filter((cta) => isLive(cta.href) && cta.variant !== 'tertiary')
@@ -247,9 +222,29 @@ export function CaseStudyPage() {
                       {c.cta[cta.kind]}
                     </Button>
                   ))}
-
               </div>
             )}
+
+            {project && (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {c.projects[project.slug].tags.map((t) => (
+                  <Tag key={t}>{t}</Tag>
+                ))}
+              </div>
+            )}
+
+            <dl className="mt-8 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 lg:max-w-[820px]">
+              {[
+                [c.sections.role, study.meta.role],
+                [c.sections.timeline, study.meta.timeline],
+                [c.sections.context, study.meta.context],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <dt className="text-label uppercase text-ink-3">{k}</dt>
+                  <dd className="mt-1 text-body-s text-ink-2">{v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </header>
@@ -268,31 +263,18 @@ export function CaseStudyPage() {
       )}
 
       {/* Body */}
-      <div className="shell py-16 lg:py-24">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-6">
-          {/* Sticky 章节导航 —— ≥1200px */}
-          <nav aria-label={c.sections.chapters} className="hidden lg:col-span-2 lg:block">
-            <ol className="sticky top-[120px] space-y-2">
-              {study.chapters.map((ch) => (
-                <li key={ch.num}>
-                  <a
-                    href={`#ch-${ch.num}`}
-                    className="group flex gap-2 text-body-s text-ink-3 transition-colors hover:text-ink"
-                  >
-                    <span className="font-mono text-[12px]">{ch.num}</span>
-                    <span>{ch.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+      <div className="shell pt-12 pb-24 lg:py-20">
+        <div className="xl:grid xl:grid-cols-12 xl:gap-10">
+          <aside className="contents xl:col-span-3 xl:block">
+            <ReadingContents label={c.sections.chapters} items={study.chapters.map((ch) => ({ id: `ch-${ch.num}`, num: ch.num, title: ch.title }))} />
+          </aside>
 
-          <div className="min-w-0 lg:col-span-8 lg:col-start-4">
+          <div className="min-w-0 xl:col-span-8 xl:col-start-5">
             {study.chapters.map((ch) => (
               <Reveal as="section" key={ch.num} className="mb-14 scroll-mt-[100px] lg:mb-24">
-                <div id={`ch-${ch.num}`}>
+                <div>
                   <p className="text-eyebrow uppercase text-accent">{ch.num}</p>
-                  <h2 className="mt-3 text-display-m text-ink">{ch.title}</h2>
+                  <h2 id={`ch-${ch.num}`} tabIndex={-1} className="reading-anchor mt-3 text-display-m text-ink">{ch.title}</h2>
                   <div className="mt-4 h-px w-10 bg-line-strong" aria-hidden="true" />
                   <div className="mt-6 max-w-[68ch] space-y-6">
                     {ch.blocks.map((b, i) => (

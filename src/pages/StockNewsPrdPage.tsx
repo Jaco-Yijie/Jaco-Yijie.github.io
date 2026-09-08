@@ -1,94 +1,61 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { stockNewsPrd as document, type PrdBlock } from '../data/stockNewsPrd.zh'
 import { useLang, useLangHref } from '../i18n'
+import { ReadingContents, type ReadingItem } from '../components/ReadingContents'
 import { Eyebrow } from '../components/ui'
+
+const featureId = (text: string) => `prd-feature-${text.slice(0, 3).replace('.', '-')}`
+
+const contents: ReadingItem[] = document.sections.flatMap((section) => [
+  { id: `prd-${section.num}`, num: section.num, title: section.title },
+  ...(section.num === '05' ? section.blocks.filter((block) => block.kind === 'heading').map((block) => ({
+    id: featureId(block.text), num: block.text.slice(0, 3), title: block.text.slice(4), level: 2 as const,
+  })) : []),
+])
+contents.push({ id: 'prd-source-note', num: '10', title: '变更记录 · 原目录项' })
 
 function DocumentBlock({ block }: { block: PrdBlock }) {
   switch (block.kind) {
     case 'heading':
-      return <h3 className="pt-6 text-heading-l text-ink">{block.text}</h3>
+      return <h3 id={/^5\.[1-8]/.test(block.text) ? featureId(block.text) : undefined} tabIndex={-1} className="reading-anchor pt-6 text-heading-l text-ink">{block.text}</h3>
     case 'p':
       return <p className="text-body-l text-ink-2">{block.text}</p>
     case 'list':
       return <ul className="list-disc space-y-3 pl-5 text-body-l text-ink-2">{block.items.map((item) => <li key={item}>{item}</li>)}</ul>
     case 'flow':
       return <div role="region" aria-label="系统链路，可横向滚动" tabIndex={0} className="overflow-x-auto rounded-lg bg-surface-2 p-6"><pre className="font-mono text-mono text-ink-2">{block.lines.join('\n')}</pre></div>
-    case 'table':
+    case 'table': {
+      const requirements = block.head[0] === '编号'
       return (
-        <div role="region" aria-label={`${block.head.join('、')}表，可横向滚动`} tabIndex={0} className="overflow-x-auto">
-          <p className="mb-3 text-caption text-ink-3 sm:hidden">表格可左右滑动，查看全部列 →</p>
-          <table className="w-full min-w-[640px] border-collapse text-left text-body">
+        <div role="region" aria-label={`${block.head.join('、')}表${requirements ? '' : '，可横向滚动'}`} tabIndex={0} className="overflow-x-auto">
+          {!requirements && <p className="mb-3 text-caption text-ink-3 sm:hidden">表格可左右滑动，查看全部列 →</p>}
+          <table className={`w-full border-collapse text-left text-body ${requirements ? 'requirements-table md:min-w-[640px]' : 'min-w-[640px]'}`}>
             <thead><tr className="border-b border-line-strong">{block.head.map((title) => <th scope="col" key={title} className="py-4 pr-6 text-body-s font-medium text-ink-2">{title}</th>)}</tr></thead>
             <tbody>{block.rows.map((row) => (
               <tr key={row[0]} data-requirement={/^F\d-\d$/.test(row[0]) ? row[0] : undefined} className="border-b border-line align-top">
                 {row.map((cell, index) => index === 0
                   ? <th scope="row" key={index} className="min-w-20 py-5 pr-6 font-medium text-ink">{cell}</th>
-                  : <td key={index} className="py-5 pr-6 text-ink-2">{cell}</td>)}
+                  : <td key={index} className="py-5 pr-6 text-ink-2">{requirements && <span aria-hidden="true" className="mb-1 block text-caption text-ink-3 md:hidden">{block.head[index]}</span>}{cell}</td>)}
               </tr>
             ))}</tbody>
           </table>
         </div>
       )
+    }
   }
 }
 
 export function StockNewsPrdPage() {
   const { lang } = useLang()
   const withLang = useLangHref()
-  const { hash, pathname, search } = useLocation()
-  const navigate = useNavigate()
-  const [active, setActive] = useState('01')
+  const { hash } = useLocation()
   const zh = lang === 'zh'
   const back = zh ? '返回 Case Study' : 'Back to case study'
 
   useEffect(() => {
     if (!hash) window.scrollTo(0, 0)
   }, [hash])
-
-  useEffect(() => {
-    let frame = 0
-    const update = () => {
-      const current = [...document.sections].reverse().find(({ num }) => {
-        const element = window.document.getElementById(`prd-${num}`)
-        return element && element.getBoundingClientRect().top <= 160
-      })
-      setActive(current?.num ?? '01')
-    }
-    const schedule = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(update)
-    }
-    window.addEventListener('scroll', schedule, { passive: true })
-    window.addEventListener('resize', schedule)
-    schedule()
-    return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', schedule)
-      window.removeEventListener('resize', schedule)
-    }
-  }, [])
-
-  const toc = (
-    <ol className="space-y-1" lang="zh-CN">
-      {document.sections.map(({ num, title }) => (
-        <li key={num}>
-          <a href={`#prd-${num}`} aria-current={active === num ? 'location' : undefined}
-            onClick={(event) => {
-              event.preventDefault()
-              navigate({ pathname, search, hash: `#prd-${num}` })
-              setActive(num)
-              window.document.getElementById(`prd-title-${num}`)?.focus({ preventScroll: true })
-            }}
-            className={`flex min-h-11 items-center gap-3 border-l-2 py-2 pl-3 text-body-s transition-colors hover:text-ink ${active === num ? 'border-accent text-ink' : 'border-transparent text-ink-3'}`}>
-            <span className="font-mono text-caption">{num}</span><span>{title}</span>
-          </a>
-        </li>
-      ))}
-      <li><a href="#prd-source-note" className="flex min-h-11 items-center gap-3 py-2 pl-3 text-body-s text-ink-3"><span className="font-mono text-caption">10</span>变更记录 · 原目录项</a></li>
-    </ol>
-  )
-
   return (
     <>
       <header className="border-b border-line">
@@ -103,16 +70,10 @@ export function StockNewsPrdPage() {
         </div>
       </header>
 
-      <div className="shell py-12 lg:py-20">
+      <div className="shell pt-12 pb-24 lg:py-20">
         <div className="grid min-w-0 grid-cols-1 gap-10 xl:grid-cols-[220px_minmax(0,1fr)] xl:gap-16">
-          <aside className="min-w-0">
-            <nav aria-label={zh ? 'PRD 目录' : 'PRD contents'} className="sticky top-[104px] hidden max-h-[calc(100dvh-128px)] overflow-y-auto xl:block">
-              <p className="mb-4 text-label uppercase text-ink-2">{zh ? '文档目录' : 'Contents'}</p>{toc}
-            </nav>
-            <details className="border-y border-line py-3 xl:hidden">
-              <summary className="flex min-h-11 cursor-pointer items-center text-body text-ink">{zh ? '文档目录 · 展开 / 收起' : 'Contents · expand / collapse'}</summary>
-              <nav aria-label={zh ? 'PRD 目录' : 'PRD contents'}>{toc}</nav>
-            </details>
+          <aside className="contents xl:block">
+            <ReadingContents label={zh ? 'PRD 目录' : 'PRD contents'} items={contents} contentLang="zh-CN" />
           </aside>
 
           <article lang="zh-CN" className="min-w-0 break-words">
@@ -129,7 +90,7 @@ export function StockNewsPrdPage() {
                 <div className="mt-6 space-y-6">{section.blocks.map((block, index) => <DocumentBlock key={index} block={block} />)}</div>
               </section>
             ))}
-            <aside id="prd-source-note" className="scroll-mt-[104px] border-t border-line pt-8 text-body-s text-ink-3">
+            <aside tabIndex={-1} id="prd-source-note" className="scroll-mt-[104px] border-t border-line pt-8 text-body-s text-ink-3">
               <p>原文说明：原始 PDF 的目录含「10. 变更记录」，但所附 8 页未包含该章正文。此处保留目录记录，不补写变更内容。F2-1 中「七大类」及其列举按原文保留。</p>
             </aside>
           </article>

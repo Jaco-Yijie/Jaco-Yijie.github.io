@@ -168,3 +168,34 @@
     }
   }
 }
+
+/* Chinese long-form text uses the same legible system sans as the interface. */
+html[lang="zh-CN"] .font-prose {
+  font-family: var(--font-display);
+}
+.reading-anchor {
+  scroll-margin-top: 104px;
+}
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+@media (max-width: 767px) {
+  .requirements-table, .requirements-table tbody,
+  .requirements-table tr, .requirements-table th, .requirements-table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+  .requirements-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .requirements-table tbody tr { padding-block: 20px; }
+  .requirements-table tbody th { padding: 0 0 12px; font-family: var(--font-mono); }
+  .requirements-table td { padding: 0 0 12px; }
+  .requirements-table td:last-child { padding-bottom: 0; }
+}

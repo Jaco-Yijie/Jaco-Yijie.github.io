@@ -66,6 +66,7 @@ export const zh: Bundle = {
     name: '王一杰',
     nameAlt: 'Jaco Wang',
     statement: '我关注如何把 AI 能力转化为真正可用的产品。',
+    statementLines: ['我关注如何把 AI 能力', '转化为真正可用的产品。'],
     supporting:
       '数据科学背景，专注 AI 产品设计、大模型评测、Prompt Engineering 与数据驱动的产品决策。',
     meta: '马来西亚国立大学 · 一周内可到岗 · 可实习半年以上',
