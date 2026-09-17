@@ -25,10 +25,9 @@ export type MetricId =
   | 'ctxVars'
   | 'sectors'
   | 'logs'
-  | 'cardFaces'
+  | 'deckWorlds'
   | 'assertions'
-  | 'redLines'
-  | 'firstContent'
+  | 'silentWindow'
   | 'prdIterations'
   | 'prdVersion'
   | 'highIntent'
@@ -39,19 +38,19 @@ export const metricValues: Record<MetricId, MetricValue> = {
   ctxVars: { value: '16', infix: '→', value2: '2', source: 'PRD-v5.md §6.3', verified: true },
   sectors: { value: '38', source: 'stock_news/data/sectors_config.json', verified: true },
   logs: { value: '100', suffix: 'M+', source: 'Resume (简历—V5.pdf)', verified: true },
-  cardFaces: { value: '390', source: 'arcana assets:check, 5 × 78 (2026-09-08)', verified: true },
   assertions: {
-    value: '64',
-    infix: '+',
-    value2: '118',
-    source: 'npm run engine:check / reading:check (2026-09-08, e7ccaec; mock reading provider)',
+    value: '785',
+    source: 'Arcana working tree 789f2b5 + local changes, 2026-09-17: engine 64 + deck 367 + layout 147 + artwork 89 + reading 118. node --import tsx scripts/<check>.ts; Mock provider. Excludes release failures and skipped DB tests; CONTENT_AUDIT.md §2.2.',
     verified: true,
   },
-  redLines: { value: '24', source: 'arcana docs/01-product-spec.md G-01~G-24', verified: true },
-  firstContent: {
-    value: '1.1',
-    suffix: 's',
-    source: 'arcana docs/v2/14-perf-investigation.md §5',
+  deckWorlds: {
+    value: '10', infix: '/', value2: '5',
+    source: 'Arcana src/atmosphere/signatures.ts, decks/registry.ts, artwork/resolver.ts, DeckLibraryPage.tsx; deck:check / artwork:check, 2026-09-17. Defined / selectable; not ten published decks.',
+    verified: true,
+  },
+  silentWindow: {
+    value: '2.57', suffix: 's',
+    source: 'Arcana docs/v2/35-e3-reading-experience-v2.md §2: one documented investigation, longest silent gap 9.6s → 2.57s. Source and progressive rendering code checked 2026-09-17; latency not remeasured.',
     verified: true,
   },
   prdIterations: { value: 'V1–V5', source: 'PRD v1–v5 files', verified: true },
@@ -63,7 +62,7 @@ export const metricValues: Record<MetricId, MetricValue> = {
 /** 各项目卡的 Proof 组合 */
 export const projectMetricIds: Record<string, MetricId[]> = {
   'seller-profit': ['evalCases', 'ctxVars', 'prdIterations'],
-  arcana: ['cardFaces', 'assertions', 'redLines'],
+  arcana: ['assertions', 'deckWorlds', 'silentWindow'],
   'stock-news': ['sectors', 'prdVersion'],
   'taobao-analysis': ['logs', 'highIntent', 'memory'],
 }

@@ -1,3 +1,4 @@
+import { projectOverrides } from '../data/projectUpdates'
 import type { Bundle } from './types'
 
 export const en: Bundle = {
@@ -66,10 +67,9 @@ export const en: Bundle = {
     ctxVars: 'LLM Context Variables',
     sectors: 'Industry Sectors',
     logs: 'Behavior Logs',
-    cardFaces: 'Card Faces · 5 Decks',
-    assertions: 'Reproducible Assertions',
-    redLines: 'Product Red Lines',
-    firstContent: 'Historical V2 First Content',
+    deckWorlds: "Deck Worlds: Defined / Selectable",
+    assertions: "Core Assertions · Five Suites",
+    silentWindow: "Longest Silent Gap · One Investigation, Previously 9.6s",
     prdIterations: 'PRD Iterations',
     prdVersion: 'Product Version',
     highIntent: 'High-intent Users',
@@ -181,19 +181,7 @@ export const en: Bundle = {
       highlight: 'Open the demo, enter costs, and inspect the profit calculation.',
       tags: ['AI Product', 'LLM Evaluation', 'Prompt Engineering'],
     },
-    arcana: {
-      title: 'Arcana',
-      subtitleAlt: 'Immersive Digital Tarot Experience',
-      subtitle:
-        'An immersive tarot Web MVP: shuffle, cut, spread, select, place and reveal by hand; AI interprets the frozen result.',
-      problem:
-        'The obvious build lets the model draw and interpret in one step. That is cheaper, faster, and it destroys the reason people do a tarot draw at all.',
-      outcome:
-        'Six interactive steps, five complete visual decks and server-side DeepSeek readings now work together. Card identity is independent of artwork; history stays local.',
-      highlightLabel: 'Reproducible',
-      highlight: 'Clone the repo and run the evaluation yourself: 64 + 118 assertions, 0 failed.',
-      tags: ['AI Product', 'Interaction Design', 'LLM Evaluation'],
-    },
+    arcana: projectOverrides.en.arcana,
     'stock-news': {
       title: 'Stock News Intelligence',
       subtitleAlt: 'A股板块新闻监控系统',
@@ -340,7 +328,7 @@ export const en: Bundle = {
         slug: 'arcana',
         headline: 'Boundary properties as runnable assertions',
         points: [
-          '64 engine assertions and 118 reading assertions, reproducible from a clone',
+          '785 assertions passed across five core suites; readings use a mock provider, not a live-model quality benchmark',
           '10 reading cases across one-, three- and five-card spreads and a high-risk topic',
           'Tone checks run in both directions — catch violations, and do not flag restraint',
           'Two prompt versions kept side by side and compared through a dedicated A/B script',

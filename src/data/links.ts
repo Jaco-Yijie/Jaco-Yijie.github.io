@@ -27,7 +27,7 @@ export const links = {
   demos: {
     sellerProfit: 'https://udify.app/chat/NTlMX91jzOFzzQpo',
     stockNews: 'https://stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app/',
-    arcana: 'https://arcana-e190.onrender.com', // arcana docs/v2/32-e2-real-deployment.md §6
+    arcana: 'https://arcana-e190.onrender.com', // docs/v2/32-e2-real-deployment.md §6; public Arcana entry verified 2026-09-17 (not latest local features)
   },
 
   prds: {

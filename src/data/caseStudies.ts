@@ -1,3 +1,4 @@
+import { arcanaQuickRead } from './projectUpdates'
 /**
  * Case Study 内容层。
  *
@@ -376,245 +377,374 @@ const sellerProfit: CaseStudy = {
 const arcana: CaseStudy = {
   slug: 'arcana',
   title: 'Arcana',
-  titleZh: 'Immersive Digital Tarot Experience',
-  tagline: 'The LLM never draws the cards. It only interprets a result the user has already frozen.',
-  meta: { role: 'Solo — product spec, engine, evaluation', timeline: '2026', context: 'React 19 · TypeScript · DeepSeek' },
-  source: 'GitHub · Jaco-Yijie/arcana',
+  titleZh: 'Immersive AI Tarot',
+  tagline: 'Deterministic systems own the draw. AI interprets frozen results. The experience preserves user participation.',
+  meta: {
+    role: 'Solo — product, interaction, build and evaluation',
+    timeline: '2026 · In development',
+    context: 'React · TypeScript · DeepSeek'
+  },
+  source: 'Arcana working tree 789f2b5 + local changes · audited 2026-09-17',
   chapters: [
     {
       num: '01',
-      title: 'Overview',
+      title: 'Project Overview',
       blocks: [
         {
           kind: 'p',
-          text: 'An online tarot draw where the user performs the whole ritual themselves — shuffle, cut, spread, select, place, reveal — and the model appears only afterwards, to interpret cards it had no part in choosing.',
+          text: 'Arcana explores the boundary between deterministic interaction and probabilistic interpretation in a consumer AI product. Users perform the draw; the model enters only after the result is frozen. Still in development, it now connects multiple decks, an immersive ritual and a complete first-use journey.'
         },
         {
-          kind: 'p',
-          text: 'The interesting part of this project is not what the AI does. It is the list of things the AI is not allowed to touch, and the test suite that keeps it out.',
+          kind: 'statement',
+          text: 'Current Product State'
         },
-        { kind: 'p', text: 'The current MVP connects the six-step draw to server-side readings and offers five complete 78-card visual decks. A deck changes artwork, while meanings, randomness and reading prompts stay invariant.' },
-        { kind: 'list', items: [
-          'The browser calls the same-origin reading API; the DeepSeek key is read only by the server.',
-          'Without a key or an explicit provider, local Mock readings are used. Explicit DeepSeek configuration without a key produces an error instead of silently falling back.',
-          'Sessions and journals stay in browser localStorage. Starting a full reading sends the revealed cards, question and spread; follow-up questions send their relevant context to the server.',
-        ] },
-      ],
+        arcanaQuickRead.en
+      ]
     },
     {
       num: '02',
-      title: 'Problem',
+      title: 'The Problem Behind the Product',
       blocks: [
         {
           kind: 'p',
-          text: 'The obvious way to build an AI tarot product is to let the model draw and interpret in one step. It is faster to build, cheaper to run, and it destroys the thing people come for.',
+          text: '“Enter a question → click → receive random cards → read an AI answer” is easy to build. It also invites a reasonable doubt: had the system already decided everything, and did my actions matter?'
         },
         {
           kind: 'p',
-          text: 'What makes a physical draw meaningful is that the person did it. They shuffled, they cut, they chose which card to turn over. Replace that with a generated result and a shuffling animation, and the ritual becomes a slot machine with better typography.',
-        },
-      ],
-    },
-    {
-      num: '03',
-      title: 'Product Principle',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'The project brief opens with a single question that every interaction decision is checked against.',
-        },
-        {
-          kind: 'quote',
-          text: 'Is this interaction helping the user draw their own cards — or is the system drawing for them again?',
-        },
-        {
-          kind: 'p',
-          text: 'It comes with an explicit priority order for resolving conflicts, and a veto rule that has actually been used to cut features.',
-        },
-        {
-          kind: 'statement',
-          text: 'Core product value > user experience > engineering convenience > visual appeal.',
-        },
-        {
-          kind: 'quote',
-          text: 'Any feature that reduces the user\'s control over the six core steps, or lets the system "helpfully" complete one of them, is rejected — even if it looks better, runs faster, or saves development time.',
-        },
-        {
-          kind: 'p',
-          text: 'These are not aspirations in a README. The spec carries 15 acceptance criteria and 24 numbered product red lines, and the ones covering AI boundary are enforced by tests rather than by review.',
-        },
-      ],
-    },
-    {
-      num: '04',
-      title: 'AI Boundary',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'The division is absolute. The randomness engine owns identity; the model owns language.',
-        },
-        {
-          kind: 'table',
-          head: ['Deterministic engine', 'LLM'],
-          rows: [
-            ['Shuffle', 'Interpretation'],
-            ['Cut', 'Narrative'],
-            ['Draw', 'Answer to the question'],
-            ['Orientation (upright / reversed)', 'Relationships between cards'],
-          ],
-        },
-        {
-          kind: 'p',
-          text: 'The technical premise behind the feeling: card identity is fixed the moment the session begins. The user\'s actions discover it — they do not trigger its generation. That distinction is invisible in the UI and is the entire reason the draw feels like theirs.',
-        },
-        {
-          kind: 'statement',
-          text: 'The model is handed a frozen result. It cannot change a card, an orientation, or a count.',
-        },
-      ],
-    },
-    {
-      num: '05',
-      title: 'Evaluation',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'Both halves of the boundary are covered by runnable assertion suites. Anyone can clone the repository and reproduce the numbers below.',
-        },
-        {
-          kind: 'code',
-          caption: 'Verified locally on 2026-09-08 · e7ccaec · mock readings',
-          lines: [
-            'git clone https://github.com/Jaco-Yijie/arcana',
-            'npm install',
-            '',
-            'npm run engine:check    ->  64 assertions, 0 failed',
-            'npm run reading:check   ->  118 assertions, 0 failed',
-          ],
-        },
-        {
-          kind: 'p',
-          text: 'The engine suite tests that the draw is real: same seed and same gesture sequence reproduce an identical deck; a cut point differing by 0.01 produces different cards; 1,000 distinct seeds produce 1,000 distinct decks; restoring a session leaves the order and the already-drawn cards untouched.',
-        },
-        {
-          kind: 'p',
-          text: 'The reading suite tests that the model stayed inside its boundary — card count preserved, no cards invented, orientations unmodified, relationships referencing only cards actually present, and a single-card spread not inventing relationships to pad the output. It runs across 10 reading cases covering one-, three- and five-card spreads, mixed and fully reversed orientations, contradictory faces, and a high-risk topic.',
-        },
-        {
-          kind: 'p',
-          text: 'The tone checks run in both directions. It is not enough to catch a violation — the suite also asserts that restrained, careful phrasing is not flagged. A guard that over-triggers quietly degrades every reading.',
-        },
-        {
-          kind: 'p',
-          text: 'Local verification on 2026-09-08 · Arcana e7ccaec. These are assertions per check script, not user counts or model accuracy.',
-        },
-        {
-          kind: 'table',
-          head: ['Check', 'Assertions', 'Result'],
-          rows: [
-            ['engine', '64', 'Passed'],
-            ['deck', '338', 'Passed'],
-            ['layout', '119', 'Passed'],
-            ['artwork', '89', 'Passed'],
-            ['reading (Mock)', '118', 'Passed'],
-            ['release', '60', 'Passed'],
-            ['deployment', '54', 'Passed'],
-          ],
-        },
-      ],
-    },
-    {
-      num: '06',
-      title: 'Prompt Design',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'The reading prompt went through a version change worth describing, because the second version is shorter than the first on purpose.',
-        },
-        {
-          kind: 'p',
-          text: 'V2.2 was rule-heavy. It pinned the model inside a safe zone with a long list of "you must phrase it this way" clauses. Output became very stable and very hollow — every card completed the required motions without a single real judgment. Contradictory cards got smoothed over; difficult cards got bent into growth and new beginnings.',
-        },
-        {
-          kind: 'quote',
-          text: 'The user wants a reading. What they get is compliant text.',
-          cite: 'From the V2.3 rewrite notes',
-        },
-        {
-          kind: 'p',
-          text: 'V2.3 went the other way: hard constraints collapsed to eight, and the fixed-phrasing lists, per-field length caps and pre-delivery checklists were deleted. The space they freed went to context — spread, position, orientation, suit, element, number, symbolism, statistics — and to explicit permission to reach a judgment, name a difficulty, and leave a contradiction standing.',
-        },
-        {
-          kind: 'statement',
-          text: 'Tell the model less about how it must speak, and more about what it may reason from.',
-        },
-        {
-          kind: 'p',
-          text: 'Both versions are still in the repository and run side by side through a dedicated A/B script. Server-side schema validation and the tone guard sit behind them as independent layers — the prompt is not the only thing holding the boundary.',
-        },
-      ],
-    },
-    {
-      num: '07',
-      title: 'Performance Investigation · Historical V2 Experiment',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'In the early V2 investigation, readings took around 90 seconds. These are historical experiment results, not current public-demo latency. Before changing anything I measured, running the same fixed input three times per model against the live API.',
-        },
-        {
-          kind: 'p',
-          text: 'The first result reversed an earlier recommendation of my own. I had previously suggested the faster-tier model based on one or two noisy samples. Measured properly, the two differed by about 8% — and the cheaper model was slower to first content, because it generated roughly five times more reasoning tokens.',
-        },
-        {
-          kind: 'table',
-          head: ['Change', 'Time to first content', 'Total'],
-          rows: [
-            ['Baseline', '51.6s', '106.4s'],
-            ['Reasoning disabled', '1.1s', '52.1s'],
-          ],
-        },
-        {
-          kind: 'p',
-          text: 'Disabling reasoning cut time-to-first-content by a factor of about 47 and halved total time. Blind scoring across eight dimensions put the quality loss near the noise floor — the reading still cited specific cards and positions, read orientations, and produced structural observations rather than dictionary entries.',
-        },
-        {
-          kind: 'p',
-          text: 'The second finding killed the optimisation I had assumed I would do. The prompt is long, so shortening it looks like the obvious win. It is not: 99.2% of input tokens were served from cache, and the entire input phase accounted for roughly 1% of wall-clock time.',
-        },
-        {
-          kind: 'statement',
-          text: 'Prompt length was not the bottleneck. Cutting it would have cost reading quality and bought nothing.',
-        },
-        {
-          kind: 'p',
-          text: 'One parameter behaved backwards: the setting that nominally reduces reasoning effort more than doubled total time, and was dropped. The investigation shipped as a document first and as code second — the findings are traceable to the commit that implemented them.',
-        },
-      ],
-    },
-    {
-      num: '08',
-      title: 'What I Learned',
-      blocks: [
-        {
-          kind: 'p',
-          text: 'The most valuable decision in this project was subtractive. Deciding where the model must not go produced a clearer product than any feature I could have added to it.',
-        },
-        {
-          kind: 'p',
-          text: 'The second was methodological. I had a strong intuition about which model was faster and about which optimisation would help. Both were wrong, and only measurement showed it. The loading copy in the UI is written to reflect our own waiting state rather than implying the model is thinking — for the same reason: not pretending to know something we do not.',
+          text: 'Participation, ritual and trust in randomness became design goals. The response was to preserve meaningful choices and visible feedback throughout the draw, rather than rely on mystical language.'
         },
         {
           kind: 'limits',
           items: [
-            'Quality scoring across the eight dimensions is my own judgment, not blind multi-rater evaluation.',
-            'The reading suite runs against a mock provider by default; the same cases can be run live with an API key.',
-            'Benchmarks are three runs per model on one fixed input — enough to overturn a wrong assumption, not enough to characterise the model.',
-          ],
-        },
-      ],
+            'Agency and trust remain design goals. There is not enough user research to claim that these changes improved retention or conversion.'
+          ]
+        }
+      ]
     },
-  ],
+    {
+      num: '03',
+      title: 'The Product Boundary',
+      blocks: [
+        {
+          kind: 'statement',
+          text: 'Engine owns facts. LLM owns interpretation.'
+        },
+        {
+          kind: 'table',
+          head: [
+            'Deterministic system',
+            'LLM'
+          ],
+          rows: [
+            [
+              'Card identity, count and orientation',
+              'Card meanings in the context of the question'
+            ],
+            [
+              'Spread, user selection and placement',
+              'Relationships between the drawn cards'
+            ],
+            [
+              'Frozen results and session recovery',
+              'Narrative, answers and reflection prompts'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'The model cannot draw cards, change their number or orientation, or override a selection. Retrying a reading must not redraw. The server rebuilds context and validates the response to keep generated text within that boundary.'
+        },
+        {
+          kind: 'diagram',
+          lines: [
+            'Browser',
+            '  ↓ /api/tarot/reading (stream: /api/tarot/reading/stream)',
+            'Server → DeepSeek'
+          ],
+          caption: 'The browser calls the application API. Provider keys remain on the server.'
+        }
+      ]
+    },
+    {
+      num: '04',
+      title: 'The Complete Ritual',
+      blocks: [
+        {
+          kind: 'steps',
+          items: [
+            {
+              label: 'Shuffle',
+              text: 'User actions enter the engine process; an animation does not stand in for the draw.'
+            },
+            {
+              label: 'Cut',
+              text: 'The user sets a cut point that changes the order.'
+            },
+            {
+              label: 'Spread',
+              text: 'Present cards to choose from instead of dealing automatically.'
+            },
+            {
+              label: 'Select',
+              text: 'Preserve the choice of which card to take.'
+            },
+            {
+              label: 'Place',
+              text: 'Assign the chosen cards to spread positions.'
+            },
+            {
+              label: 'Reveal',
+              text: 'Reveal the established identities and orientations.'
+            },
+            {
+              label: 'Read',
+              text: 'Request interpretation after freezing the result. Recovery and retries preserve the facts.'
+            }
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'This takes longer than a one-click answer, deliberately. The opportunity is to simplify understanding and feedback without removing the choices that make the ritual participatory.'
+        }
+      ]
+    },
+    {
+      num: '05',
+      title: 'Multi-Deck Architecture',
+      blocks: [
+        {
+          kind: 'p',
+          text: 'Multiple decks should not mean multiple random engines. Separating semantics, card visuals and atmosphere lets the experience evolve while the factual boundary stays stable.'
+        },
+        {
+          kind: 'table',
+          head: [
+            'Layer',
+            'Responsibility'
+          ],
+          rows: [
+            [
+              'Semantic',
+              'cardId, meanings, orientation, spread logic, random engine and reading prompts stay invariant.'
+            ],
+            [
+              'Deck Visual',
+              'Artwork, card backs, borders, typography and decoration.'
+            ],
+            [
+              'Atmosphere',
+              'Motifs, textures, motion, page atmosphere and reading surfaces.'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'The Fool can look different across decks while retaining the same cardId. A deck is not a stronger, rarer or more accurate reading system; visual differences should not suggest a hierarchy of capability.'
+        }
+      ]
+    },
+    {
+      num: '06',
+      title: 'Deck Worlds and Session Identity',
+      blocks: [
+        {
+          kind: 'p',
+          text: 'Changing hue alone makes decks feel like reskins. Distinct motifs, silhouettes, textures, reading surfaces and motion now establish each world: foliage for Forest, constellation lines for Celestial, and book and engraving structures for Classic.'
+        },
+        {
+          kind: 'table',
+          head: [
+            'State',
+            'Verified scope'
+          ],
+          rows: [
+            [
+              'Defined',
+              '10 deck definitions and distinct visual signatures.'
+            ],
+            [
+              'Available / Selectable',
+              '5 legacy decks support the complete draw and reading in the current local code.'
+            ],
+            [
+              'Published / release readiness',
+              'The other 5 artwork decks lack complete assets and remain unselectable. 10 definitions do not mean ten published decks; the deployed version is separate from local development.'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'A reading keeps the background, card area, headings, accents and paper surface of its frozen session deck. Changing the global deck later cannot change that completed reading. One experience keeps its own visual identity.'
+        },
+        {
+          kind: 'limits',
+          items: [
+            'Independent historical themes for Journal and shared records have not been extended as part of this work.'
+          ]
+        }
+      ]
+    },
+    {
+      num: '07',
+      title: 'Reading Experience: Model Latency Is Not Perceived Latency',
+      blocks: [
+        {
+          kind: 'p',
+          text: 'The model was already streaming, but the UI held relationships, narrative and reflection fields until the complete JSON response reached done. Part of the silent wait was created by presentation logic.'
+        },
+        {
+          kind: 'p',
+          text: 'Partial relationship and string extraction now release completed fields as they become usable. Streaming and completed states share ReadingBody. Content follows generation order and is appended below the existing text, preserving the reader’s position.'
+        },
+        {
+          kind: 'table',
+          head: [
+            'One documented investigation',
+            'Before',
+            'After'
+          ],
+          rows: [
+            [
+              'Longest interval without new content',
+              '9.6s',
+              '2.57s'
+            ],
+            [
+              'First visible content',
+              'About 1.9s',
+              'About 1.56s'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'Card-by-card analysis still precedes the conclusion. I kept that sequence rather than move the answer forward for a faster-looking result. Progressive presentation improves perceived waiting; actual response time still depends on the model and network.'
+        },
+        {
+          kind: 'limits',
+          items: [
+            'These figures come from one documented Reading Experience V2 investigation. Live latency was not remeasured in this audit; the figures are not averages or a service guarantee.'
+          ]
+        }
+      ]
+    },
+    {
+      num: '08',
+      title: 'Immersion and First-Use Experience',
+      blocks: [
+        {
+          kind: 'p',
+          text: 'An Intro Cover and staged entrance establish the setting. CSS 3D cards, pointer parallax, a ritual table and shuffle feedback connect actions to visible state changes. Their purpose is participation and a sense of ownership of the chosen cards.'
+        },
+        {
+          kind: 'p',
+          text: 'The first-use journey connects What is Tarot? → First Reading Guide → completed reading → Restart / New Reading. Chinese and English cover navigation, instructions, decks, the draw and results, rather than stopping at the homepage.'
+        },
+        {
+          kind: 'p',
+          text: 'Brand, ritual text, body copy and generated readings have distinct typographic roles. Cinzel, Cormorant Garamond and the Chinese WenKai subset serve display copy; unpredictable AI prose uses readable full-coverage fallbacks to avoid character-by-character font mixing.'
+        }
+      ]
+    },
+    {
+      num: '09',
+      title: 'Engineering and Validation',
+      blocks: [
+        {
+          kind: 'p',
+          text: 'Validation protects the product decisions first: actions affect the draw, retries preserve cards, decks preserve semantics, and partial streaming content cannot masquerade as a complete result.'
+        },
+        {
+          kind: 'table',
+          head: [
+            'Core suite rerun in this audit',
+            'Passing assertions'
+          ],
+          rows: [
+            [
+              'Engine',
+              '64'
+            ],
+            [
+              'Deck',
+              '367'
+            ],
+            [
+              'Layout',
+              '147'
+            ],
+            [
+              'Artwork',
+              '89'
+            ],
+            [
+              'Reading · Mock',
+              '118'
+            ],
+            [
+              'Total across these five suites',
+              '785'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'A further 30 performance guards, 56 deployment checks and 7 design tests passed. Deployment checks inspect existing artifacts and configuration; they do not establish that the latest working tree is deployed.'
+        },
+        {
+          kind: 'p',
+          text: 'The code retains reduced-motion handling, less continuous motion on mobile/coarse pointers, thumbnails, self-hosted fonts and asset budgets. Deck Worlds documentation records checks at 375 / 390 / 430 widths; design tests check reading-surface contrast. CSS and SVG avoid requiring an additional WebGL or video runtime.'
+        },
+        {
+          kind: 'limits',
+          items: [
+            'Release checks passed 67/70. Font preloading, the shared-question default and the JS budget failed; release readiness is not established.',
+            'Database integration tests were skipped without an isolated TEST_DATABASE_URL. A mock HTTP test was blocked by sandbox listener permissions. Earlier local acceptance records do not replace a fresh run.',
+            'Low-end Android, physical iOS Safari devices, sustained GPU use and real production latency still need broader validation.'
+          ]
+        }
+      ]
+    },
+    {
+      num: '10',
+      title: 'Current State and Next Steps',
+      blocks: [
+        {
+          kind: 'table',
+          head: [
+            'Stage',
+            'Actual state'
+          ],
+          rows: [
+            [
+              'Implemented',
+              'Complete draw and server-side reading, progressive content, multiple decks, session-bound reading worlds, immersive interaction and bilingual onboarding.'
+            ],
+            [
+              'Implemented locally; not deployed',
+              'Registration and login, PostgreSQL accounts/sessions/readings/feedback, access control and Admin Analytics.'
+            ],
+            [
+              'Dashboard capability',
+              'Real SQL aggregates for registration, DAU/WAU/MAU, readings, feedback and D1/D7/D30 retention. No verified public operating results are claimed.'
+            ],
+            [
+              'Not established / not implemented',
+              'No WeChat OAuth or login implementation was found; it is not presented as supported.'
+            ]
+          ]
+        },
+        {
+          kind: 'p',
+          text: 'User System documentation records acceptance against isolated local PostgreSQL. Admin documentation explicitly states that it has not connected to production or been deployed. Guests retain local journals; cloud-history APIs exist, but cross-device history UI, email verification and password recovery are outside the current version.'
+        },
+        {
+          kind: 'p',
+          text: 'Next: resolve release checks, rerun database and permission validation, complete unreleased artwork, then validate deployment and physical-device experience. Mainland network performance remains unverified; domestic deployment optimisation is not described as complete.'
+        }
+      ]
+    }
+  ]
 }
 
 /* ═══════════════════════════════════════════════════════════

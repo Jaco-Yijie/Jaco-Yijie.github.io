@@ -14,7 +14,7 @@
 | 项目 | Source | Status | GitHub | Live Demo | PRD |
 |---|---|---|---|---|---|
 | **01 Seller Profit Calculator**<br>拼多多新手卖家利润试算助手 | `PRD-v5.md` | Verified from PRD | — | ✅ `udify.app/chat/NTlMX91jzOFzzQpo` | 不公开 |
-| **02 Arcana**<br>Immersive AI Tarot Experience | GitHub `Jaco-Yijie/arcana` | Repository verified | ✅ Public | 未提供 | — |
+| **04 Arcana**<br>Immersive AI Tarot Experience | GitHub `Jaco-Yijie/arcana` | Repository verified | ✅ Public | 已验证入口，见 §2.2 | — |
 | **03 Stock News Intelligence**<br>A 股板块新闻监控系统 | GitHub + External PRD V1.4 | Mixed evidence | ✅ Public | ✅ `stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app` | `TODO_LINK` |
 | **04 Taobao User Behavior Analysis**<br>淘宝用户行为分析 | Resume only | Resume-grounded | — | — | — |
 | **More · Tesla FYP** | GitHub `Jaco-Yijie/tesla-stock-prediction-fyp` | Repository verified | ✅ Public | — | — |
@@ -50,7 +50,7 @@ PRD 没有记录的 → 不写成事实 → 标 `VERIFY_REQUIRED`。
 
 | 仓库 | 语言 | 最近推送 | Portfolio 用途 |
 |---|---|---|---|
-| `arcana` | TypeScript | 2026-08-05 | **Featured #2** |
+| `arcana` | TypeScript | 本地 working tree 2026-09-17 | **Featured #4 · 开发中** |
 | `stock_news` | Python | 2026-07-28 | **Featured #3** |
 | `tesla-stock-prediction-fyp` | Python | 2026-07-22 | **More Work** |
 | `A_Stock_review` | Python | 2026-08-04 | 不展示（README 为乱码占位符） |
@@ -383,74 +383,56 @@ Prompt Constraint → Evaluation → Failure Analysis
 
 ---
 
-## 2.2 Arcana
+## 2.2 Arcana — 2026-09-17 当前状态审计
 
-> **Source: GitHub `Jaco-Yijie/arcana`（Public）｜Status: Repository verified**
-> React 19 + TypeScript + Vite + Tailwind 4 + Framer Motion｜服务端 `node:http` 零依赖 + tsx｜LLM: DeepSeek
-> 按钮：`View on GitHub ↗` · `Case Study ↗`（Live Demo 未提供，不设）
+事实优先级：`/Users/wangyijie/Desktop/arcana` 当前工作区（HEAD `789f2b5`，包含未提交代码）> GitHub > 用户补充。未修改 Arcana 工作区。
+Portfolio 修改基线为 `3739da6`，包含远端 HEAD `2f73f00` 之后已有的导航与响应式改进。保留这两项已有提交及其他项目内容。
 
-### 核心命题：Where AI should NOT be used
+| Fact | Source（Arcana 仓库相对路径） | Verified status | Date |
+|---|---|---|---|
+| 第 04，开发中；引擎控制牌、正逆位、数量和选择，LLM 只解释冻结结果 | engine-selfcheck、buildReadingRequest、server/context/rebuild、readingSchema | 代码 + 引擎/Mock 解读实跑 | 2026-09-17 |
+| Shuffle → Cut → Spread → Select → Place → Reveal → Reading | src/pages、src/features/table、engine-selfcheck | 代码 + 会话模拟 | 2026-09-17 |
+| 浏览器 → 本站 reading API → 服务端 → DeepSeek，密钥不进入浏览器 | server/index.ts、server/api/readingRoute.ts、server/providers/deepseek.ts | 代码；未调用真实模型 | 2026-09-17 |
+| 10 个已定义视觉世界，5 个 legacy Deck 可选；其他 5 个 artwork Deck 未满足资产门槛 | src/decks/registry.ts、artwork/resolver.ts、src/atmosphere/signatures.ts、DeckLibraryPage.tsx | 代码 + deck/artwork 实跑；不代表 10 套已发布 | 2026-09-17 |
+| 语义/视觉/氛围分层；Reading 保留冻结 session 的 Deck | src/atmosphere/visualScope.ts、src/pages/ReadingPage.tsx、docs/deck-worlds-v1.md | 代码；历史 UI 验收为文档证据 | 2026-09-17 |
+| 最长静默窗口 9.6s → 2.57s；首批可见约 1.9s → 1.56s | docs/v2/35-e3-reading-experience-v2.md §2、streamClient、ReadingBody | 一次文档调查；非均值，本轮未重新测时 | 2026-09-17 |
+| Intro Cover、3D Hero、Ritual Table、首次指南、What is Tarot、New Reading | src/pages、src/components/immersive、docs/home-entrance-v1.md、docs/immersive-3d-v1.md | 代码，未声称带来运营增长 | 2026-09-17 |
+| 中英覆盖导航/操作/Deck/结果；展示字体与 AI 正文分离 | src/i18n、src/styles/theme.css、docs/arcana-design-system-v1.md | i18n 静态检查 18 项通过，设计测试 7 项通过 | 2026-09-17 |
+| 注册登录、PostgreSQL 与 Admin Analytics 已在本地实现，未部署 | server/auth.ts、server/api/userRoute.ts、adminRoute.ts、server/db/migrations/001/002、server/admin/queries.ts、docs/user-system-v1.md、docs/admin-dashboard-v1.md | 代码存在，历史本地集成验收有记录；本轮 DB 测试跳过 | 2026-09-17 |
+| 未发现微信登录实现 | 对 server/src/tests 搜索 WeChat/wechat/微信，无命中 | 未实现证据；禁止表述为支持 | 2026-09-17 |
+| reduced motion、粗指针降运动、缩略图、自托管字体、阅读对比度 | styles、performance-check、design-system.test.ts、docs/deck-worlds-v1.md | 代码与检查；375/390/430 为历史 Arcana 验收，非本轮真机复测 | 2026-09-17 |
 
-**LLM 不参与** Shuffle 洗牌 · Cut 切牌 · Draw 抽牌 · Orientation 正逆位 —— 全部由确定性随机引擎决定。
-**LLM 只在结果冻结之后**负责 Interpretation。
+### 本轮自动化结果与口径
 
-**最高优先原则（`docs/00-brief.md`）**：
-> 「这个交互是在帮助用户自己抽牌，还是系统又在替用户抽牌？」
-> **核心产品价值 > 用户体验 > 技术便利 > 视觉效果**
+`npm run ...:check` 最初被沙箱禁止 tsx IPC 管道。改为 `node --import tsx scripts/<实际脚本>.ts` 运行同一脚本；没有修改测试代码或断言。
 
-**否决规则**：
-> 任何功能，如果它减少了用户在核心六步中的操作权/选择权/摆牌权/翻牌权，一律否决——即使它更好看、更快、更省开发量。
+| Suite | Passed | Failed / skipped | Scope |
+|---|---:|---|---|
+| engine | 64 | 0 | 当前源码 |
+| deck | 367 | 0 | 资产缺失作为未发布状态报告 |
+| layout | 147 | 0 | 当前源码 |
+| artwork | 89 | 0 | 当前源码与资产登记 |
+| reading | 118 | 0 | Mock Provider，非真实模型评分 |
+| **核心五组总量** | **785** | **0** | 首页 Proof，仅上述五组 |
+| release | 67 | 3 failed | 字体预加载、分享问题默认值、JS 总体积预算 |
+| deployment | 56 | 0 | 包含已有构建产物检查，不等于最新源码已部署 |
+| performance | 30 | 0 | 渐进呈现/边界保护，不是延迟测量 |
+| i18n 静态 | 18 | 0 | 未包含 i18n:runtime |
+| design | 7 | 0 | 含十套视觉签名及文字对比度 |
+| user | 2 | 1 listener EPERM; 1 DB skipped | 未提供独立 TEST_DATABASE_URL |
+| admin | 1 | 3 DB skipped | 不将 skip 算作通过 |
 
-**技术前提**：牌的身份在进入 Session 那一刻就已隐藏地确定，用户操作只是**发现**它，而不是**触发**它被生成。
+不展示所有检查相加的“全部通过”。不更改 Arcana 来修复这些失败，本轮范围仅同步 Portfolio。
 
-### 实跑验证（本次审计亲自执行）
+### 旧事实处理
 
-| 事实 | 命令 | 结果 |
-|---|---|---|
-| 抽牌引擎断言 | `npm run engine:check` | **64 项，0 失败** |
-| 解读评测断言 | `npm run reading:check` | **96 项，0 失败** |
-| 解读评测用例 | 同上 | **10 组** |
-| 完整牌组 | engine 断言 | 78 张 |
-| 产品验收标准 | `docs/01-product-spec.md` | AC-01 ~ AC-15（15 条） |
-| 产品红线 | 同上 | **G-01 ~ G-24（24 条）** |
-| 文档数 | `docs/` | 11 份 |
-
-**引擎层关键断言**：同 seed + 同操作序列 → 完全相同的牌；同 seed 仅切点差 0.01 → 抽到的牌不同；1000 个不同 seed 产生 1000 个不同牌组；会话恢复后牌序不变。
-
-**解读层关键断言**：牌数一致 / 没有凭空出现的牌 / 正逆位未被改动 / 关系只引用真实存在的牌 / 单张牌阵不硬凑关系 / 语气红线**既抓违规也不误杀克制表达**。
-
-### Performance Investigation（`docs/v2/14-perf-investigation.md`）
-
-数据来自真实 API 调用（`scripts/reading-bench.ts`，每模型 3 次）：
-
-| 发现 | 数字 |
-|---|---|
-| 关闭推理后首个正文出现时间 | **51.6s → 1.1s（47 倍）** |
-| 关闭推理后总时长 | 106.4s → 52.1s |
-| 质量损失（人工 8 维度评分） | 40 → 39 分（2.5%，可忽略） |
-| Prompt 输入缓存命中率 | **99.2%** |
-| 输入处理占总时长 | 约 1% |
-
-**三条结论**：
-1. 「**Prompt 长度不是瓶颈，砍它是做无用功**，还会牺牲解读质量。」
-2. 推翻自己此前对模型的推荐——原文：「**那个判断是错的**」
-3. 「**不伪造 Progress**」——只渲染 `content`，不展示 `reasoning_content`
-
-**闭环可追溯**：`339e17f docs(v2.2): 性能调查` → `e0647ac feat(v2.3): 用户可选解读深度 + Prompt 松绑 + 流式渲染`
-
-### Prompt A/B（V2.2 → V2.3）
-
-两版 Prompt **并存**（629 行 / 640 行）+ 专用 A/B 脚本 `scripts/prompt-ab.ts`。
-
-> V2.2 的 Prompt 是 RULE-HEAVY 的……输出很稳定，但**片面、保守、信息量不足**……用户要的是读牌，拿到的是合规文本。
-> 本版的改造方向不是「再加几条规则」，而是**减少不必要的规则**：硬约束从 5 大节收敛为 **8 条**。
-> **少告诉模型「你必须怎么说」，多给模型「你可以依据什么信息进行判断」。**
-
-服务端独立校验层：`validation/readingSchema.ts`（259 行）+ `validation/toneGuard.ts`（507 行）。
-
-### 建议顺手修（不阻塞）
-
-`README.md` 写「106 项断言」，实跑为 **96**；`.env.example` 推荐的模型与性能调研结论及 `env.ts` 默认值不一致。
+- 删除首页 390 张牌面、24 条红线与旧 64 + 96 / 64 + 118 组合，改为三个有明确口径的 Proof。
+- 390 的资产登记仍有代码依据，但不等于十套完整牌组，不再作为首页规模主张。
+- 1.1s 属更早性能实验，不能当当前响应速度；改用带调查限定的渐进呈现数据。
+- “MVP 已成型”改为“开发中 / In Development”；Quick Read 为“当前产品状态”。
+- 不再把 localStorage 描述成产品唯一持久化：游客本地日记与本地开发中的 PostgreSQL 账号持久化并存。
+- 不公开合成测试用户数、DAU/MAU、留存或 SQL 性能为真实运营成绩。
+- Live Demo 的历史来源为 docs/v2/32-e2-real-deployment.md；本轮先见 Render 唤醒页，随后浏览器成功打开 Arcana 品牌页与“开始一次解读”按钮。保留真实地址 `https://arcana-e190.onrender.com`；未验证付费模型请求，也不将本地新增功能视为线上功能。
 
 ---
 
@@ -635,7 +617,7 @@ export const links = {
   demos: {
     sellerProfit: 'https://udify.app/chat/NTlMX91jzOFzzQpo',
     stockNews:    'https://stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app/',
-    arcana:       null,   // 未提供
+    arcana:       'https://arcana-e190.onrender.com', // 2026-09-17 入口已验证
   },
 
   prds: {
@@ -663,7 +645,7 @@ export const links = {
 | ❌ 禁止 | ✅ 改为 |
 |---|---|
 | `40% → 100%` / `40%` / `4/10` / `6/6` / `复测 Pending` | `10 AI Evaluation Cases` |
-| Arcana `106` reading assertions | `96` |
+| Arcana 旧 reading 断言数 | 当前 Mock 实跑 118；核心五组 785，详见 §2.2 |
 | 淘宝 `X GB → X GB` | `~50% Memory Reduction` |
 | 淘宝 Conversion / Revenue / CTR / GMV Lift、A/B 结果 | 只写 `Proposed` 方向 |
 | 淘宝 Outcome 写 `Achieved` / `Improved` | `Proposed` |
@@ -680,3 +662,11 @@ export const links = {
 ---
 
 *本文件为 Content Source 与 Verification 的唯一依据。*
+
+### 2026-09-17 Portfolio 验证补充
+
+- `npm run typecheck`、`npm run lint`、`npm run build`、`npm test`（7 项）通过。
+- 新增测试锁定第 04 / development、双语 10 章、6 条 Quick Read、数字口径、其他三个项目原文不变。
+- 浏览器实际打开 `/?lang=zh`、`/?lang=en`、`/work/arcana?lang=zh`、`/work/arcana?lang=en`。
+- CSS 视口 375 / 391 / 431 / 1440 下四页均无页面横向溢出，Proof 单元均无溢出。浏览器缩放使 390 / 430 目标落在 391 / 431，未将其冒充精确真机尺寸。
+- 语言切换、手机目录展开及第 06 章跳转/焦点验证通过；未改通用组件和样式。

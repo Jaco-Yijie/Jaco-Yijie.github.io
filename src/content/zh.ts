@@ -1,3 +1,4 @@
+import { projectOverrides } from '../data/projectUpdates'
 import type { Bundle } from './types'
 
 /**
@@ -77,10 +78,9 @@ export const zh: Bundle = {
     ctxVars: 'LLM 上下文变量',
     sectors: '个行业板块',
     logs: '用户行为日志',
-    cardFaces: '完整牌面 · 5 套牌组',
-    assertions: '条可复现断言',
-    redLines: '条产品红线',
-    firstContent: 'V2 性能实验首字（历史）',
+    deckWorlds: "视觉世界：已定义 / 可选",
+    assertions: "条核心断言 · 五组检查",
+    silentWindow: "最长静默窗口 · 单次调查原为 9.6s",
     prdIterations: 'PRD 迭代版本',
     prdVersion: '产品版本',
     highIntent: '高意向用户',
@@ -188,19 +188,7 @@ export const zh: Bundle = {
       highlight: '打开 Demo，直接输入成本并查看利润试算。',
       tags: ['AI 产品', 'LLM Evaluation', 'Prompt Engineering'],
     },
-    arcana: {
-      title: 'Arcana',
-      subtitleAlt: '沉浸式数字塔罗产品',
-      subtitle:
-        '沉浸式数字塔罗 Web MVP：亲手洗牌、切牌、摊牌、选牌、摆牌、翻牌，AI 只解读冻结后的结果。',
-      problem:
-        '最省事的做法是让模型一次性完成抽牌和解读。那样更快也更便宜，但会毁掉用户来抽牌的理由。',
-      outcome:
-        '六步交互、5 套完整牌组与 DeepSeek 服务端解读已打通；抽牌结果与牌组画面解耦，记录保存在本地。',
-      highlightLabel: '可复现',
-      highlight: 'clone 仓库就能自己跑评测：64 + 118 条断言，0 失败。',
-      tags: ['AI 产品', '交互设计', 'LLM Evaluation'],
-    },
+    arcana: projectOverrides.zh.arcana,
     'stock-news': {
       title: 'A股板块新闻监控系统',
       subtitleAlt: 'Stock News Intelligence',
@@ -333,7 +321,7 @@ export const zh: Bundle = {
         slug: 'arcana',
         headline: '把 AI 边界写成可执行的断言',
         points: [
-          '64 条引擎断言与 118 条解读断言，clone 下来即可复现',
+          '核心五组检查共 785 条断言通过；解读使用 Mock，不代表真实模型质量评分',
           '10 组解读用例，覆盖单张、三张、五张牌阵与高风险话题',
           '语气校验是双向的 —— 既要抓到违规，也不能误杀克制的表达',
           '两版 Prompt 并存，通过专门的 A/B 脚本对比',
