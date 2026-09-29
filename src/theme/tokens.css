@@ -1,0 +1,84 @@
+/* Semantic colors are shared by Tailwind utilities and the portfolio components. */
+:root {
+  --color-bg: #f6f4ee;
+  --color-surface-1: #efeee7;
+  --color-surface-2: #e6e9df;
+  --color-surface-3: #dde2d6;
+  --color-line: #dcded3;
+  --color-line-strong: #bec5b9;
+  --color-ink: #25312b;
+  --color-ink-2: #536057;
+  --color-ink-3: #667067;
+  --color-accent: #405d49;
+  --color-accent-hover: #2c4835;
+  --color-accent-press: #253d2d;
+  --color-accent-on: #fafaf5;
+  --glass-bg: #f9f9f0b8;
+  --glass-scrolled: #f6f6edef;
+  --glass-highlight: #ffffffc0;
+  --panel-bg: #fbfaf6;
+  --panel-shadow: #3446300b;
+  --stage-bg: #e8ece2;
+  --stage-light: #d2dac8;
+  --stage-shadow: #354b3a24;
+  --hero-base: #f2f3e9;
+  --hero-sage: #b6c7ad80;
+  --hero-warm: #ead7b693;
+  --hero-silver: #d7e2d8;
+  --hero-glint: #fcfff7da;
+  --hero-arc: #8da08245;
+  --hero-shade: #7d95792e;
+  --hero-fade: #f6f4ee00;
+  --hero-text-scrim: #f6f4ee8c;
+  --noise-opacity: 0.055;
+  --media-control-bg: #16201de6;
+  --media-control-text: #f7f7ee;
+  --media-control-border: #e7eee530;
+  --media-error: #914d2b;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #141a17;
+  --color-surface-1: #1b2420;
+  --color-surface-2: #26312a;
+  --color-surface-3: #324036;
+  --color-line: #303d33;
+  --color-line-strong: #4e6051;
+  --color-ink: #f1f0e6;
+  --color-ink-2: #bec9bc;
+  --color-ink-3: #a0b19f;
+  --color-accent: #c6d2af;
+  --color-accent-hover: #e3ead3;
+  --color-accent-press: #b1c49c;
+  --color-accent-on: #1a251c;
+  --glass-bg: #202b23ba;
+  --glass-scrolled: #1a241eef;
+  --glass-highlight: #e1efd412;
+  --panel-bg: #1a231e;
+  --panel-shadow: #030a0640;
+  --stage-bg: #1e2a23;
+  --stage-light: #3d4d39;
+  --stage-shadow: #02090580;
+  --hero-base: #18231b;
+  --hero-sage: #69815a6b;
+  --hero-warm: #99815a50;
+  --hero-silver: #7e947638;
+  --hero-glint: #d4e8b759;
+  --hero-arc: #bbd19d34;
+  --hero-shade: #020b0559;
+  --hero-fade: #141a1700;
+  --hero-text-scrim: #141a1770;
+  --noise-opacity: 0.035;
+  --media-error: #efc6a4;
+}
+
+body {
+  transition:
+    background-color 240ms ease,
+    color 240ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}

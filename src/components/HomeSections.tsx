@@ -309,36 +309,14 @@ export function Contact() {
    ══════════════════════════════════════════════════════════ */
 export function Footer() {
   const c = useContent()
-
-  return (
-    <footer className="border-t border-line">
-      <div className="shell flex flex-col gap-4 py-10 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-caption text-ink-3">{c.footer.tagline}</p>
-        <div className="flex flex-wrap items-center gap-6">
-          <a
-            href={links.github}
-            target="_blank"
-            rel="noreferrer"
-            className="text-caption text-ink-3 transition-colors hover:text-ink"
-          >
-            GitHub ↗
-          </a>
-          <a
-            href={`mailto:${links.email}`}
-            className="text-caption text-ink-3 transition-colors hover:text-ink"
-          >
-            {c.contact.email}
-          </a>
-          <a
-            href={links.resume}
-            target="_blank"
-            rel="noreferrer"
-            className="text-caption text-ink-3 transition-colors hover:text-ink"
-          >
-            {c.contact.resume} ↗
-          </a>
-        </div>
-      </div>
-    </footer>
-  )
+  const withLang = useLangHref()
+  return <footer className="compact-footer"><div className="shell">
+    <p><a href={links.portfolio}>{c.hero.name}</a><span>{c.portfolio.footer}</span></p>
+    <details className="archive-links"><summary>{c.portfolio.more}<span aria-hidden="true">＋</span></summary><ul>
+      <li><Link to={withLang('/work/taobao-analysis')}>{c.projects['taobao-analysis'].title} ↗</Link></li>
+      <li><Link to={withLang('/ai-evals')}>{c.nav.aiEvals} ↗</Link></li>
+      <li><Link to={withLang('/learning')}>{c.nav.learning} ↗</Link></li>
+      {c.moreWork.map((item, i) => moreWorkLinks[i] && <li key={item.title}><a href={moreWorkLinks[i]!} target="_blank" rel="noreferrer">{item.title} ↗</a></li>)}
+    </ul></details>
+  </div></footer>
 }

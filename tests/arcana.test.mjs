@@ -24,10 +24,10 @@ const { projects } = load('src/data/projects.ts')
 const { metricValues, projectMetricIds } = load('src/data/metrics.ts')
 const arcana = (studies) => studies.find((study) => study.slug === 'arcana')
 
-test('Arcana stays fourth and in development with usable case study and GitHub CTAs', () => {
-  assert.deepEqual(projects.map((project) => project.slug), ['seller-profit', 'stock-news', 'taobao-analysis', 'arcana'])
-  const project = projects[3]
-  assert.equal(project.index, '04')
+test('Arcana leads the selected work and in development with usable case study and GitHub CTAs', () => {
+  assert.deepEqual(projects.map((project) => project.slug), ['arcana', 'stock-news', 'seller-profit', 'taobao-analysis'])
+  const project = projects[0]
+  assert.equal(project.index, '01')
   assert.equal(project.status, 'development')
   assert.equal(project.ctas.find((cta) => cta.kind === 'caseStudy').href, '/work/arcana')
   assert.equal(project.ctas.find((cta) => cta.kind === 'github').href, 'https://github.com/Jaco-Yijie/arcana')

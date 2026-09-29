@@ -1,3 +1,4 @@
+import { portfolioZh } from './portfolio'
 import { projectOverrides } from '../data/projectUpdates'
 import type { Bundle } from './types'
 
@@ -12,11 +13,12 @@ import type { Bundle } from './types'
  *  - 数字与事实与英文版完全一致（数字来自 data/metrics.ts，此处不重复定义）
  */
 export const zh: Bundle = {
+  portfolio: portfolioZh,
   seo: {
     home: {
-      title: '王一杰 — AI 产品作品集',
+      title: '王一杰 — AI Product Builder & Creative Technologist',
       description:
-        '聚焦 AI 产品、大模型评测、Prompt Engineering 与数据分析的个人作品集。',
+        '王一杰的 AI Product / Creative Coding 个人作品集，记录 AI 产品、Agent、AI Coding 与创作实验。',
     },
     routeTitles: {
       '/work/stock-news/prd': 'A股板块新闻监控系统 — 完整 PRD V1.4 — 王一杰',
@@ -63,13 +65,13 @@ export const zh: Bundle = {
   },
 
   hero: {
-    eyebrow: 'AI 产品 · LLM Evaluation · 数据',
+    eyebrow: 'AI Product Builder · Creative Technologist',
     name: '王一杰',
     nameAlt: 'Jaco Wang',
     statement: '我关注如何把 AI 能力转化为真正可用的产品。',
     statementLines: ['我关注如何把 AI 能力', '转化为真正可用的产品。'],
     supporting:
-      '数据科学背景，专注 AI 产品设计、大模型评测、Prompt Engineering 与数据驱动的产品决策。',
+      '我关注 AI Product、Agent、Creative Coding 与 AI Native Workflow。喜欢从真实问题出发，用 AI、代码与快速实验，把一个想法真正做出来。',
     meta: '马来西亚国立大学 · 一周内可到岗 · 可实习半年以上',
   },
 
@@ -89,9 +91,9 @@ export const zh: Bundle = {
 
   sections: {
     workEyebrow: '精选项目',
-    workTitle: '四个项目，四类不同的问题。',
+    workTitle: '把想法，做成作品。',
     workLead:
-      '它们各自解决的问题不一样：一个是我不得不重新划分的 AI 边界，一个是我拒绝越过的边界，一个是不需要我盯着也能跑的系统，还有一个是把数据变成决策。',
+      '从有体验感的 AI 产品，到可靠的自动化系统与实用工具。打开作品，也看看背后的产品判断。',
     evalsEyebrow: '大模型评测与 Prompt 系统',
     evalsTitle: 'Prompt Engineering 是系统设计的一部分。',
     evalsLead:
@@ -109,7 +111,7 @@ export const zh: Bundle = {
     aboutEyebrow: '关于我',
     aboutTitle: '模型能跑通之后的问题。',
     contactEyebrow: '联系',
-    contactTitle: '一周内可到岗。',
+    contactTitle: '一起，把想法做出来。',
     contactLead:
       '寻找 AI 产品实习机会 —— AI 产品、大模型应用、AI Agent 与工具方向均可。可实习半年以上。',
     problem: '问题',
@@ -161,7 +163,7 @@ export const zh: Bundle = {
   },
 
   footer: {
-    tagline: '王一杰 · Jaco Wang — AI 产品方向',
+    tagline: '在实验、迭代，以及和 AI 的无数次对话中持续构建。',
   },
 
   status: {

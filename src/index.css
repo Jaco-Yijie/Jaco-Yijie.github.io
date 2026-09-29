@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import './portfolio.css';
+@import './theme/tokens.css';
 
 @import '@fontsource-variable/inter-tight';
 @import '@fontsource-variable/source-serif-4';
@@ -10,21 +12,21 @@
    ============================================================ */
 @theme {
   /* Color — §3.1 中性色阶 */
-  --color-bg: #0a0b0d;
+  --color-bg: #0b0c0e;
   --color-surface-1: #101215;
   --color-surface-2: #16181c;
   --color-surface-3: #1c1f24;
   --color-line: #1e2126;
   --color-line-strong: #2a2e35;
-  --color-ink: #f4f6f8;
+  --color-ink: #f5f4ef;
   --color-ink-2: #a2aab5;
   --color-ink-3: #7b838f;
 
   /* Color — §3.2 单一强调色 */
-  --color-accent: #8aa2ff;
-  --color-accent-hover: #a3b6ff;
-  --color-accent-press: #6e88f0;
-  --color-accent-on: #0a0b0d;
+  --color-accent: #d8ccba;
+  --color-accent-hover: #eee4d4;
+  --color-accent-press: #b7a791;
+  --color-accent-on: #0b0c0e;
 
   /* Font — §2.1 */
   --font-display: 'Inter Tight Variable', 'PingFang SC', 'Noto Sans SC', system-ui, sans-serif;

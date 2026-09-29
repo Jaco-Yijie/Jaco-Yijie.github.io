@@ -1,34 +1,33 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-export type Lang = 'en' | 'zh'
+import { isLang, resolveLanguage, withLanguage, type Lang } from './preferences'
+export type { Lang } from './preferences'
 
 const STORAGE_KEY = 'portfolio-language'
 
-const isLang = (v: unknown): v is Lang => v === 'en' || v === 'zh'
-
-/**
- * 语言解析优先级（需求 §2）：
- *   1. URL ?lang 参数
- *   2. localStorage 上一次选择
- *   3. navigator.language 以 zh 开头
- *   4. fallback English
- */
 function resolveInitialLang(search: string): Lang {
-  const fromUrl = new URLSearchParams(search).get('lang')
-  if (isLang(fromUrl)) return fromUrl
-
+  let stored: string | null = null
   try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (isLang(stored)) return stored
+    stored = localStorage.getItem(STORAGE_KEY)
   } catch {
-    // localStorage 不可用（隐私模式等）时静默降级到下一优先级
+    // Continue with browser preferences when local storage is unavailable.
   }
-
-  if (typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('zh')) {
-    return 'zh'
-  }
-  return 'en'
+  const languages =
+    typeof navigator === 'undefined'
+      ? []
+      : navigator.languages?.length
+        ? navigator.languages
+        : [navigator.language]
+  return resolveLanguage(search, stored, languages)
 }
 
 type Ctx = { lang: Lang; setLang: (l: Lang) => void }
@@ -83,5 +82,5 @@ export const useLang = () => useContext(LanguageContext)
 /** 站内链接统一带上当前语言，避免点一下就跳回默认语言 */
 export function useLangHref() {
   const { lang } = useLang()
-  return useCallback((path: string) => `${path}${path.includes('?') ? '&' : '?'}lang=${lang}`, [lang])
+  return useCallback((path: string) => withLanguage(path, lang), [lang])
 }

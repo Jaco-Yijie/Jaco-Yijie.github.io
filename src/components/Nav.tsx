@@ -4,6 +4,7 @@ import { links } from '../data/links'
 import { useContent } from '../hooks'
 import { useLangHref } from '../i18n'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 /**
  * Navigation —— DESIGN_SYSTEM.md §14
@@ -16,10 +17,8 @@ export function Nav() {
 
   const items = [
     { label: c.nav.work, href: '/#work', hash: true },
-    { label: c.nav.capabilities, href: '/#capabilities', hash: true },
-    { label: c.nav.aiEvals, href: '/ai-evals', hash: false },
-    { label: c.nav.learning, href: '/learning', hash: false },
     { label: c.nav.about, href: '/#about', hash: true },
+    { label: c.nav.contact, href: '/#contact', hash: true },
   ]
 
   const [scrolled, setScrolled] = useState(false)
@@ -38,6 +37,15 @@ export function Nav() {
   // 路由变化时关闭抽屉
   useEffect(() => setOpen(false), [pathname])
 
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)')
+    const onChange = () => {
+      if (desktop.matches) setOpen(false)
+    }
+    desktop.addEventListener('change', onChange)
+    return () => desktop.removeEventListener('change', onChange)
+  }, [])
+
   // 打开时锁滚动 + Esc 关闭 + 焦点陷阱
   useEffect(() => {
     if (!open) return
@@ -51,7 +59,9 @@ export function Nav() {
         return
       }
       if (e.key !== 'Tab') return
-      const focusables = panelRef.current?.querySelectorAll<HTMLElement>('a[href], button')
+      const focusables = Array.from(
+        panelRef.current?.querySelectorAll<HTMLElement>('a[href], button, summary') ?? [],
+      ).filter((el) => el.getClientRects().length > 0)
       if (!focusables?.length) return
       const first = focusables[0]
       const last = focusables[focusables.length - 1]
@@ -76,20 +86,23 @@ export function Nav() {
     'text-body-s font-medium text-ink-2 transition-colors duration-[180ms] hover:text-ink'
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-100 h-[60px] transition-colors duration-[240ms] lg:h-[72px] ${
-        scrolled ? 'border-b border-line bg-bg/85 backdrop-blur-[12px]' : ''
-      }`}
-    >
-      <nav aria-label="Main" className="shell flex h-full items-center justify-between">
+    <header className={`floating-nav ${scrolled ? 'is-scrolled' : ''}`}>
+      <nav
+        aria-label={c.portfolio.navLabel}
+        className="nav-inner flex h-full items-center justify-between"
+      >
         <Link to={withLang('/')} className="text-[15px] font-semibold text-ink">
           {c.hero.name}
         </Link>
 
-        <div className="hidden items-center gap-7 lg:flex">
+        <div className="desktop-nav hidden items-center gap-6 lg:flex">
           {items.map((it) =>
             it.hash ? (
-              <a key={it.label} href={it.href} className={linkCls}>
+              <a
+                key={it.label}
+                href={`${withLang('/')}#${it.href.split('#')[1]}`}
+                className={linkCls}
+              >
                 {it.label}
               </a>
             ) : (
@@ -102,15 +115,17 @@ export function Nav() {
             href={links.resume}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${c.nav.resume} (opens in new tab)`}
+
             className="inline-flex h-9 items-center gap-2 rounded-md border border-line-strong px-4 text-body-s font-medium text-ink transition-colors duration-[180ms] hover:border-accent/30 hover:bg-accent/10"
           >
             {c.nav.resume} <span aria-hidden="true">↗</span>
           </a>
-          <span aria-hidden="true" className="h-4 w-px bg-line-strong" />
-          <LanguageSwitcher />
         </div>
 
+        <div className="nav-preferences">
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+        </div>
         <button
           ref={burgerRef}
           type="button"
@@ -130,7 +145,7 @@ export function Nav() {
           ref={panelRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Menu"
+          aria-label={c.portfolio.menuLabel}
           className="fixed inset-0 z-200 bg-bg lg:hidden"
         >
           <div className="shell flex h-[60px] items-center justify-between">
@@ -150,8 +165,9 @@ export function Nav() {
             </button>
           </div>
 
-          <div className="shell mt-6">
+          <div className="shell modal-preferences mt-6">
             <LanguageSwitcher size="lg" />
+            <ThemeSwitcher />
           </div>
 
           <div className="shell mt-8 flex flex-col gap-6">
@@ -159,7 +175,7 @@ export function Nav() {
               it.hash ? (
                 <a
                   key={it.label}
-                  href={it.href}
+                  href={`${withLang('/')}#${it.href.split('#')[1]}`}
                   onClick={() => setOpen(false)}
                   className="text-display-m text-ink"
                 >
