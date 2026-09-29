@@ -1,8 +1,7 @@
 import { Hero } from '../components/Hero'
 import { SelectedWork } from '../components/SelectedWork'
-import { CompactContact } from '../components/CompactContact'
 import { FeaturedExperiment } from '../components/FeaturedExperiment'
-import { BuilderAbout } from '../components/BuilderAbout'
+import { Closing } from '../components/Closing'
 
 export function HomePage() {
   return (
@@ -10,8 +9,7 @@ export function HomePage() {
       <Hero />
       <FeaturedExperiment />
       <SelectedWork />
-      <BuilderAbout />
-      <CompactContact />
+      <Closing />
     </>
   )
 }

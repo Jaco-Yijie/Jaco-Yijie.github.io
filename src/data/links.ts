@@ -15,6 +15,11 @@ export const isLive = (href: MaybeLink | undefined): href is string =>
 export const links = {
   github: 'https://github.com/Jaco-Yijie',
   email: 'wangyijie072022@gmail.com',
+  phone: '13787707345',
+  wechat: '13787707345',
+  /** 小红书号；真实主页 URL 尚未确认，不拼接 URL */
+  xiaohongshuId: '5333580423',
+  video: '/videos/jaco-motion.mp4',
   resume: '/resume/Jaco-Wang-Resume-CN.pdf',
   portfolio: 'https://jaco-yijie.github.io',
 

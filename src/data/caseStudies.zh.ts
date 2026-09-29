@@ -6,7 +6,7 @@ import type { CaseStudy } from './caseStudies'
  *
  * 与英文版严格对应：相同 slug、相同章节数与顺序、相同事实与数字。
  * 技术名词保留英文（LLM / Prompt / PRD / Python / Dify / Coze / RAG）。
- * 禁止展示：40% · 100% · 4/10 · 6/6 · 待复测 · Recall/F1/ROC-AUC · 准确率。
+ * 40% → 100% 仅用于用户确认的 PDD 数值一致性结果（同一 Eval Set）；仍不展示 Recall/F1/ROC-AUC · 准确率。
  */
 
 /* ═══════════════════════════════════════════════════════════
@@ -17,7 +17,7 @@ const sellerProfit: CaseStudy = {
   title: '拼多多新手卖家利润试算助手',
   titleZh: 'Seller Profit Calculator',
   tagline: 'Prompt 约束不够用，所以我从架构上重新划分了职责，让 LLM 不再有机会参与计算。',
-  meta: { role: '独立完成 — 产品、PRD、开发、评测', timeline: '2026.06 – 2026.07', context: 'Dify Chatflow' },
+  meta: { role: '独立完成 — 产品、PRD、开发、评测', timeline: '2026.05 – 2026.06', context: 'Dify Chatflow' },
   source: 'PRD v1–v5',
   chapters: [
     {
