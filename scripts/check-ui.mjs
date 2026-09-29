@@ -12,7 +12,7 @@ await mkdir(output, { recursive: true })
 const browser = await chromium.launch({ channel: 'chrome', headless: true })
 const results = []
 try {
-  for (const width of [320, 390, 900, 1440]) {
+  for (const width of [320, 375, 390, 430, 900, 1440]) {
     for (const lang of ['zh', 'en']) {
       const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: 'reduce' })
       const errors = []
@@ -82,7 +82,7 @@ try {
   assert.match(page.url(), /lang=en#prd-feature-5-1/)
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByRole('button', { name: /open menu/i }).click()
-  await page.getByRole('button', { name: '中文', exact: true }).filter({ visible: true }).click()
+  await page.getByRole('dialog', { name: 'Menu' }).getByRole('button', { name: '中文', exact: true }).click()
   await page.keyboard.press('Escape')
   await page.getByRole('button', { name: /^目录/ }).click()
   await page.screenshot({ path: `${output}/mobile-contents.png` })

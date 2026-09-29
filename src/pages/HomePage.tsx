@@ -1,24 +1,18 @@
 import { Hero } from '../components/Hero'
 import { SelectedWork } from '../components/SelectedWork'
-import {
-  EvalsFeature,
-  Capabilities,
-  MoreWork,
-  LatestLearning,
-  About,
-  Contact,
-} from '../components/HomeSections'
+import { Contact } from '../components/HomeSections'
+import { FeaturedExperiment } from '../components/FeaturedExperiment'
+import { ExperimentLab } from '../components/ExperimentLab'
+import { BuilderAbout } from '../components/BuilderAbout'
 
 export function HomePage() {
   return (
     <>
       <Hero />
+      <FeaturedExperiment />
       <SelectedWork />
-      <EvalsFeature />
-      <Capabilities />
-      <MoreWork />
-      <LatestLearning />
-      <About />
+      <ExperimentLab />
+      <BuilderAbout />
       <Contact />
     </>
   )

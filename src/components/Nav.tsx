@@ -16,10 +16,9 @@ export function Nav() {
 
   const items = [
     { label: c.nav.work, href: '/#work', hash: true },
-    { label: c.nav.capabilities, href: '/#capabilities', hash: true },
-    { label: c.nav.aiEvals, href: '/ai-evals', hash: false },
-    { label: c.nav.learning, href: '/learning', hash: false },
+    { label: c.portfolio.experiments, href: '/#experiments', hash: true },
     { label: c.nav.about, href: '/#about', hash: true },
+    { label: c.nav.contact, href: '/#contact', hash: true },
   ]
 
   const [scrolled, setScrolled] = useState(false)
@@ -37,6 +36,15 @@ export function Nav() {
 
   // 路由变化时关闭抽屉
   useEffect(() => setOpen(false), [pathname])
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)')
+    const onChange = () => {
+      if (desktop.matches) setOpen(false)
+    }
+    desktop.addEventListener('change', onChange)
+    return () => desktop.removeEventListener('change', onChange)
+  }, [])
 
   // 打开时锁滚动 + Esc 关闭 + 焦点陷阱
   useEffect(() => {
@@ -76,20 +84,20 @@ export function Nav() {
     'text-body-s font-medium text-ink-2 transition-colors duration-[180ms] hover:text-ink'
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-100 h-[60px] transition-colors duration-[240ms] lg:h-[72px] ${
-        scrolled ? 'border-b border-line bg-bg/85 backdrop-blur-[12px]' : ''
-      }`}
-    >
-      <nav aria-label="Main" className="shell flex h-full items-center justify-between">
+    <header className={`floating-nav ${scrolled ? 'is-scrolled' : ''}`}>
+      <nav aria-label="Main" className="nav-inner flex h-full items-center justify-between">
         <Link to={withLang('/')} className="text-[15px] font-semibold text-ink">
-          {c.hero.name}
+          JACO / 王一杰
         </Link>
 
         <div className="hidden items-center gap-7 lg:flex">
           {items.map((it) =>
             it.hash ? (
-              <a key={it.label} href={it.href} className={linkCls}>
+              <a
+                key={it.label}
+                href={`${withLang('/')}#${it.href.split('#')[1]}`}
+                className={linkCls}
+              >
                 {it.label}
               </a>
             ) : (
@@ -111,6 +119,9 @@ export function Nav() {
           <LanguageSwitcher />
         </div>
 
+        <div className="mobile-language lg:hidden">
+          <LanguageSwitcher />
+        </div>
         <button
           ref={burgerRef}
           type="button"
@@ -134,7 +145,7 @@ export function Nav() {
           className="fixed inset-0 z-200 bg-bg lg:hidden"
         >
           <div className="shell flex h-[60px] items-center justify-between">
-            <span className="text-[15px] font-semibold text-ink">{c.hero.name}</span>
+            <span className="text-[15px] font-semibold text-ink">JACO / 王一杰</span>
             <button
               type="button"
               onClick={() => {
@@ -159,7 +170,7 @@ export function Nav() {
               it.hash ? (
                 <a
                   key={it.label}
-                  href={it.href}
+                  href={`${withLang('/')}#${it.href.split('#')[1]}`}
                   onClick={() => setOpen(false)}
                   className="text-display-m text-ink"
                 >

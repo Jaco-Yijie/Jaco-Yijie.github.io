@@ -1,35 +1,52 @@
-import { links } from '../data/links'
-import { useLang } from '../i18n'
 import { useContent } from '../hooks'
 import { Button, Eyebrow } from './ui'
 
 export function Hero() {
   const c = useContent()
-  const { lang } = useLang()
-
   return (
-    <section id="hero" aria-labelledby="hero-heading">
-      <div className="shell flex flex-col pt-[96px] pb-12 lg:pt-[112px] lg:pb-14">
-        <Eyebrow>{c.hero.eyebrow}</Eyebrow>
-
-        <h1 id="hero-heading" className="mt-6 text-display-xl text-ink">
-          {c.hero.name}
-          <span className="mt-1 block text-[0.62em] font-medium text-ink-2">{c.hero.nameAlt}</span>
-        </h1>
-
-        <p className={`mt-6 text-ink ${lang === 'zh' ? 'max-w-[20em] text-[clamp(1.5rem,6.3vw,3.5rem)] leading-[1.2] font-semibold tracking-[-0.03em]' : 'max-w-[18ch] text-display-l text-balance'}`}>
-          {c.hero.statementLines ? c.hero.statementLines.map((line) => <span key={line} className="block">{line}</span>) : c.hero.statement}
-        </p>
-
-        <p className="mt-6 max-w-[640px] text-body-l text-ink-2">{c.hero.supporting}</p>
-
-        <p className="mt-5 text-caption text-ink-3">{c.hero.meta}</p>
-
-        <div className="mt-7 flex flex-wrap items-center gap-3">
-          <Button href="#work" variant="primary" size="lg">{c.cta.viewWork}</Button>
-          <Button href={links.resume} variant="secondary" size="lg" external>{c.cta.resume}</Button>
-          <a href={links.github} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center px-3 text-body-s text-ink-2 hover:text-accent">GitHub ↗</a>
+    <section id="hero" className="cinematic-hero" aria-labelledby="hero-heading">
+      <div className="hero-atmosphere" aria-hidden="true">
+        <div className="light-orbit" />
+        <div className="light-horizon" />
+      </div>
+      <div className="shell hero-inner">
+        <div className="hero-topline">
+          <Eyebrow>{c.hero.eyebrow}</Eyebrow>
+          <span aria-hidden="true">J / W — PORTFOLIO</span>
         </div>
+        <h1 id="hero-heading" className="hero-title">
+          {c.portfolio.heroLines.map((line, i) => (
+            <span key={line} style={{ animationDelay: `${i * 140}ms` }}>
+              {i === 2 ? <em>{line}</em> : line}
+            </span>
+          ))}
+        </h1>
+        <div className="hero-bottom">
+          <div>
+            <p className="hero-caption">{c.portfolio.heroCaption}</p>
+            <p className="hero-support">{c.hero.supporting}</p>
+            <div className="hero-actions">
+              <Button href="#work" variant="primary" size="lg">
+                {c.cta.viewWork}
+              </Button>
+              <Button href="#motion" variant="tertiary">
+                {c.portfolio.watch}
+              </Button>
+            </div>
+          </div>
+          <div className="hero-exploring">
+            <p>{c.portfolio.exploring}</p>
+            <ul>
+              {['AI Product', 'Agents', 'Creative Coding', 'AI × Motion'].map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <a className="scroll-cue" href="#motion">
+          {c.portfolio.scroll}
+          <span aria-hidden="true">↓</span>
+        </a>
       </div>
     </section>
   )

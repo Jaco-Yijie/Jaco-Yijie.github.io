@@ -1,12 +1,14 @@
+import { portfolioEn } from './portfolio'
 import { projectOverrides } from '../data/projectUpdates'
 import type { Bundle } from './types'
 
 export const en: Bundle = {
+  portfolio: portfolioEn,
   seo: {
     home: {
-      title: 'Jaco Wang — AI Product Portfolio',
+      title: 'Jaco Wang — AI Product Builder & Creative Technologist',
       description:
-        'AI product portfolio focused on LLM evaluation, prompt systems, product thinking and data.',
+        'Jaco Wang’s portfolio exploring AI products, agents, creative coding and AI-native workflows.',
     },
     routeTitles: {
       '/work/stock-news/prd': 'Stock News Intelligence — Full PRD V1.4 — Jaco Wang',
@@ -53,12 +55,12 @@ export const en: Bundle = {
   },
 
   hero: {
-    eyebrow: 'AI Product Candidate · Data Science',
+    eyebrow: 'AI Product Builder · Creative Technologist',
     name: 'Jaco Wang',
     nameAlt: '王一杰',
     statement: 'I build and evaluate practical AI products.',
     supporting:
-      'Data Science student working on AI product design, LLM evaluation, prompt systems, and data-driven product decisions.',
+      'I explore AI products, agents, creative coding and AI-native workflows — turning ideas into things people can actually use and experience.',
     meta: 'Universiti Kebangsaan Malaysia · Available within 1 week · 6+ month internship',
   },
 
@@ -78,9 +80,9 @@ export const en: Bundle = {
 
   sections: {
     workEyebrow: 'Selected Work',
-    workTitle: 'Four projects, four different problems.',
+    workTitle: 'Ideas, made tangible.',
     workLead:
-      'Each one is here for a different reason: a boundary I had to redesign, a boundary I refused to cross, a system that runs without me, and a dataset that produced a decision.',
+      'AI experiences, reliable systems and practical tools. Open the products, explore the decisions, and see how they were built.',
     evalsEyebrow: 'AI Evaluation & Prompt Engineering',
     evalsTitle: 'Prompt engineering is part of system design.',
     evalsLead:
@@ -100,7 +102,7 @@ export const en: Bundle = {
     aboutEyebrow: 'About',
     aboutTitle: 'What happens after the model works.',
     contactEyebrow: 'Contact',
-    contactTitle: 'Available within a week.',
+    contactTitle: 'Let’s make something real.',
     contactLead:
       'Looking for an AI product internship — AI product, LLM applications, or AI agent and tooling teams. Six months or longer.',
     problem: 'Problem',
@@ -154,7 +156,7 @@ export const en: Bundle = {
   },
 
   footer: {
-    tagline: 'Jaco Wang · 王一杰 — AI Product Candidate',
+    tagline: 'Built through experiments, iteration and too many conversations with AI.',
   },
 
   status: {

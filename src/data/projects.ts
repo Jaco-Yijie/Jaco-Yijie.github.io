@@ -24,11 +24,13 @@ export type ProjectShell = {
 export const projects: ProjectShell[] = [
   {
     index: '01',
-    slug: 'seller-profit',
-    metricIds: projectMetricIds['seller-profit'],
+    slug: 'arcana',
+    status: 'development',
+    metricIds: projectMetricIds.arcana,
     ctas: [
-      { kind: 'caseStudy', href: '/work/seller-profit', variant: 'tertiary' },
-      { kind: 'tryDemo', href: links.demos.sellerProfit, variant: 'primary', external: true },
+      { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
+      { kind: 'liveDemo', href: links.demos.arcana, variant: 'primary', external: true },
+      { kind: 'github', href: links.repos.arcana, variant: 'secondary', external: true },
     ],
   },
   {
@@ -44,20 +46,18 @@ export const projects: ProjectShell[] = [
   },
   {
     index: '03',
-    slug: 'taobao-analysis',
-    metricIds: projectMetricIds['taobao-analysis'],
-    ctas: [{ kind: 'caseStudy', href: '/work/taobao-analysis', variant: 'tertiary' }],
+    slug: 'seller-profit',
+    metricIds: projectMetricIds['seller-profit'],
+    ctas: [
+      { kind: 'caseStudy', href: '/work/seller-profit', variant: 'tertiary' },
+      { kind: 'tryDemo', href: links.demos.sellerProfit, variant: 'primary', external: true },
+    ],
   },
   {
     index: '04',
-    slug: 'arcana',
-    status: 'development',
-    metricIds: projectMetricIds.arcana,
-    ctas: [
-      { kind: 'caseStudy', href: '/work/arcana', variant: 'tertiary' },
-      { kind: 'liveDemo', href: links.demos.arcana, variant: 'primary', external: true },
-      { kind: 'github', href: links.repos.arcana, variant: 'secondary', external: true },
-    ],
+    slug: 'taobao-analysis',
+    metricIds: projectMetricIds['taobao-analysis'],
+    ctas: [{ kind: 'caseStudy', href: '/work/taobao-analysis', variant: 'tertiary' }],
   },
 ]
 

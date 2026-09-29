@@ -1,3 +1,4 @@
+import type { PortfolioCopy } from './portfolio'
 import type { MetricId } from '../data/metrics'
 
 /**
@@ -56,6 +57,7 @@ export type NoteCopy = {
 }
 
 export type Bundle = {
+  portfolio: PortfolioCopy
   seo: {
     home: { title: string; description: string }
     routeTitles: Record<string, string>
