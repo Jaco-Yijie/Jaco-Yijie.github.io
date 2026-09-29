@@ -1,135 +1,159 @@
+type WorkSummary = { title: string; summary: string; tags: string[]; imageAlt: string }
+
 export type PortfolioCopy = {
-  experiments: string
-  watch: string
-  exploring: string
-  scroll: string
+  identity: string
   heroLines: string[]
-  heroCaption: string
+  heroSummary: string
+  viewWork: string
+  watch: string
   featured: string
   motionTitle: string
-  motionSubtitle: string
-  motionBody: string[]
+  motionSummary: string
   role: string
-  roles: string[]
-  tech: string
+  roles: string
+  techLabel: string
+  tech: string[]
+  stageLabel: string
+  motionCredit: string
   play: string
   pause: string
   videoError: string
   openVideo: string
-  labTitle: string
-  labLead: string
-  labItems: { name: string; note: string }[]
+  workEyebrow: string
+  workTitle: string
+  viewProject: string
+  projects: Record<'arcana' | 'stock-news' | 'seller-profit', WorkSummary>
+  aboutEyebrow: string
   aboutTitle: string
-  aboutBody: string[]
+  aboutBody: string
   processTitle: string
   process: string[]
-  archive: string
-  profitLabel: string
-  profitNote: string
-  newsFlow: string[]
-}
-
-export const portfolioEn: PortfolioCopy = {
-  experiments: 'Experiments',
-  watch: 'Watch latest experiment',
-  exploring: 'Currently exploring',
-  scroll: 'Scroll to discover',
-  heroLines: ['Building with AI,', 'from idea', 'to experience.'],
-  heroCaption: 'Ideas are a beginning. Making them real is the interesting part.',
-  featured: '01 / Featured experiment',
-  motionTitle: 'AI × Motion',
-  motionSubtitle: 'Creative Coding Experiment',
-  motionBody: [
-    'Building animation with React, Remotion & AI Coding.',
-    'An AI Creative Coding experiment exploring how AI-assisted development can become part of the animation workflow.',
-    'Instead of building a traditional video editor demo, I turned the interface into a living world where the character enters the UI, moves clips, adds transitions, adjusts controls and completes the edit.',
-    'With Codex / Claude Code assisting the React + Remotion implementation, I explored the workflow through repeated previews, visual review and adjustments to the animation rhythm.',
-  ],
-  role: 'My role',
-  roles: [
-    'Creative Direction',
-    'Scene Breakdown',
-    'Motion Design',
-    'AI Coding Workflow',
-    'Visual Review',
-  ],
-  tech: 'Built with React, Remotion and AI-assisted coding.',
-  play: 'Play video',
-  pause: 'Pause video',
-  videoError: 'The video could not be loaded. Open the video file to try again.',
-  openVideo: 'Open video',
-  labTitle: 'Things I’m currently playing with.',
-  labLead:
-    'Not everything needs to become a product. Some things are worth exploring simply because they are interesting.',
-  labItems: [
-    { name: 'Agent', note: 'From intention to action' },
-    { name: 'AI Coding', note: 'Build, preview, iterate' },
-    { name: 'Remotion', note: 'Motion expressed in code' },
-    { name: 'Prompt Eval', note: 'Make failure observable' },
-    { name: 'MCP', note: 'Tools in context' },
-    { name: 'Harness Engineering', note: 'Shape the environment' },
-    { name: 'Creative Web', note: 'Interfaces with a point of view' },
-    { name: 'Multi-Agent', note: 'Explore collaboration' },
-  ],
-  aboutTitle: 'I like turning vague ideas into things that actually work.',
-  aboutBody: [
-    'I’m Jaco Wang, studying Computer Science / Data Science at Universiti Kebangsaan Malaysia.',
-    'I like finding out what AI can do by building with it: interviews, prototypes, prompts, evaluation, code, deployment and user testing. Then another iteration.',
-    'My interests meet at AI products, agents, AI-native workflows and creative coding. I use AI-assisted development to explore ideas and take responsibility for the direction, review and iteration.',
-  ],
-  processTitle: 'My way of building',
-  process: ['Problem', 'Prototype', 'Build', 'Test', 'Break', 'Learn', 'Build again'],
-  archive: 'More work & field notes',
-  profitLabel: 'LLM context variables',
-  profitNote: 'Calculation in Python. Interpretation with an LLM.',
-  newsFlow: ['News', 'Rules', 'LLM', 'Eval', 'Telegram'],
+  contactTitle: string
+  contactBody: string
+  more: string
+  footer: string
+  navLabel: string
+  menuLabel: string
+  themeLabel: string
+  themes: { light: string; dark: string; system: string }
 }
 
 export const portfolioZh: PortfolioCopy = {
-  experiments: '实验',
-  watch: '观看最新创作实验',
-  exploring: '正在探索',
-  scroll: '向下探索',
-  heroLines: ['Building with AI,', 'from idea', 'to experience.'],
-  heroCaption: '把想法做成真正能被体验的 AI 产品。',
-  featured: '01 / 创作实验',
-  motionTitle: 'AI × Motion',
-  motionSubtitle: '创作实验',
-  motionBody: [
-    '用 React、Remotion 与 AI Coding 探索程序化动画。',
-    '这是一次 AI Creative Coding 实验，探索 AI 辅助开发如何进入动画与内容创作工作流。',
-    '我尝试把一个普通的视频剪辑软件，变成一个角色真正生活其中的动画世界。角色会进入 UI、搬运素材、删除片段、添加转场、调整参数，并最终完成自己的视频。',
-    '通过 Codex / Claude Code 辅助完成 React + Remotion 实现，并通过不断预览、调整动画节奏和视觉效果，探索这套创作工作流。',
-  ],
-  role: '我负责的部分',
-  roles: ['创意方向', '场景拆解', '动画设计', 'AI Coding 工作流', '视觉审查'],
-  tech: '通过 AI Coding 协作，探索并完成 React + Remotion 创作。',
+  identity: '王一杰 · AI 产品构建者',
+  heroLines: ['把 AI 想法，', '做成真正能体验的产品。'],
+  heroSummary:
+    '我关注 AI 产品、智能体、AI 编程与创作实验，从真实问题出发，把想法做成能运行、能测试、能被体验的东西。',
+  viewWork: '查看作品',
+  watch: '查看最新实验',
+  featured: '01 / 最新实验',
+  motionTitle: 'AI × Motion 创作实验',
+  motionSummary: '让角色走进剪辑界面，用 AI 辅助编程把一次视频编辑变成动画。',
+  role: '我的角色',
+  roles: '创意方向 · 场景拆解 · 动画设计 · 视觉审查',
+  techLabel: '协作工具',
+  tech: ['React', 'Remotion', 'AI 辅助编程'],
+  stageLabel: '创作实验 / 001',
+  motionCredit: 'AI 动画创作实验',
   play: '播放视频',
   pause: '暂停视频',
-  videoError: '视频加载失败，可打开视频文件重试。',
-  openVideo: '打开视频',
-  labTitle: '最近正在折腾的东西。',
-  labLead: '不是所有实验都必须变成产品。有些东西，只是因为足够有意思。',
-  labItems: [
-    { name: 'Agent', note: '从意图到行动' },
-    { name: 'AI Coding', note: '构建、预览、迭代' },
-    { name: 'Remotion', note: '用代码表达动画' },
-    { name: 'Prompt Eval', note: '让失败可以被观察' },
-    { name: 'MCP', note: '让工具进入上下文' },
-    { name: 'Harness Engineering', note: '构建工作的环境' },
-    { name: 'Creative Web', note: '探索有表达力的界面' },
-    { name: 'Multi-Agent', note: '探索协作的可能' },
-  ],
-  aboutTitle: '我喜欢把模糊的想法，一点点做成真正能用的东西。',
-  aboutBody: [
-    '我是王一杰，目前在马来西亚国立大学学习计算机科学 / 数据科学。',
-    '我喜欢亲自把 AI 产品做出来：访谈、原型、Prompt、Eval、代码、部署、用户测试，然后继续修改。',
-    '我尤其感兴趣的是 AI Product、Agent、AI Native Workflow 与 Creative Coding。通过 AI Coding 协作探索实现，自己负责方向、审查和迭代。',
-  ],
+  videoError: '暂时无法播放，可打开视频文件重试。',
+  openVideo: '观看实验',
+  workEyebrow: '02 / 精选作品',
+  workTitle: '三个问题，三次实践。',
+  viewProject: '查看项目',
+  projects: {
+    arcana: {
+      title: 'Arcana AI 塔罗',
+      summary: '把抽牌交互、视觉牌组与 AI 解读，做成一次连贯的体验。',
+      tags: ['AI 产品', '交互设计', '视觉系统'],
+      imageAlt: 'Arcana 的交互抽牌界面',
+    },
+    'stock-news': {
+      title: 'A 股新闻监控',
+      summary: '让规则与大模型协作，把分散新闻整理成可追踪的行业线索。',
+      tags: ['自动化', '提示词', '回归评测'],
+      imageAlt: 'A 股新闻监控的新闻筛选界面',
+    },
+    'seller-profit': {
+      title: '拼多多利润试算',
+      summary: '用确定性代码负责计算，让 AI 帮助新手卖家理解利润。',
+      tags: ['用户研究', 'AI 评测', 'Python'],
+      imageAlt: '',
+    },
+  },
+  aboutEyebrow: '03 / 关于我',
+  aboutTitle: '先做出来，再认真打磨。',
+  aboutBody:
+    '我是王一杰，在马来西亚国立大学学习计算机科学与数据科学。我用 AI 辅助开发探索产品与创作，负责问题定义、体验判断和持续迭代。',
   processTitle: '我的构建方式',
-  process: ['发现问题', '原型', '构建', '测试', '打破', '学习', '再次构建'],
-  archive: '更多作品与项目笔记',
-  profitLabel: 'LLM 上下文变量',
-  profitNote: 'Python 负责计算，LLM 负责解释。',
-  newsFlow: ['新闻', '规则', 'LLM', '评测', 'Telegram'],
+  process: ['问题', '原型', '构建', '测试', '迭代'],
+  contactTitle: '一起，把想法做出来。',
+  contactBody: '欢迎交流 AI 产品、创作实验与合作机会。',
+  more: '更多项目与笔记',
+  footer: '在实践中，持续构建。',
+  navLabel: '主导航',
+  menuLabel: '导航菜单',
+  themeLabel: '主题',
+  themes: { light: '浅色', dark: '深色', system: '跟随系统' },
+}
+
+export const portfolioEn: PortfolioCopy = {
+  identity: 'Jaco Wang · AI Product Builder',
+  heroLines: ['AI ideas,', 'made into experiences.'],
+  heroSummary:
+    'I explore AI products, agents, AI-assisted coding and creative experiments — turning real problems into things people can use, test and experience.',
+  viewWork: 'Explore my work',
+  watch: 'Latest experiment',
+  featured: '01 / Latest experiment',
+  motionTitle: 'AI × Motion',
+  motionSummary:
+    'A character steps inside a video editor. Built into an animation through AI-assisted creative coding.',
+  role: 'My role',
+  roles: 'Creative direction · Scene breakdown · Motion design · Visual review',
+  techLabel: 'Built with',
+  tech: ['React', 'Remotion', 'AI-assisted coding'],
+  stageLabel: 'Experiment / 001',
+  motionCredit: 'Creative Coding Experiment',
+  play: 'Play video',
+  pause: 'Pause video',
+  videoError: 'Playback is unavailable. Open the video file to try again.',
+  openVideo: 'Watch experiment',
+  workEyebrow: '02 / Selected work',
+  workTitle: 'Three problems. Three explorations.',
+  viewProject: 'View project',
+  projects: {
+    arcana: {
+      title: 'Arcana AI Tarot',
+      summary:
+        'Card interactions, visual decks and AI readings, brought together in one experience.',
+      tags: ['AI Product', 'Interaction', 'Visual System'],
+      imageAlt: 'Arcana’s interactive card-shuffling screen',
+    },
+    'stock-news': {
+      title: 'A-Share News Monitor',
+      summary: 'Rules and language models turn scattered news into traceable industry signals.',
+      tags: ['Automation', 'Prompts', 'Regression Evals'],
+      imageAlt: 'The news filtering interface of A-Share News Monitor',
+    },
+    'seller-profit': {
+      title: 'PDD Profit Calculator',
+      summary: 'Code handles the calculation. AI helps first-time sellers understand their profit.',
+      tags: ['User Research', 'AI Evaluation', 'Python'],
+      imageAlt: '',
+    },
+  },
+  aboutEyebrow: '03 / About',
+  aboutTitle: 'Build it. Test it. Make it better.',
+  aboutBody:
+    'I’m Jaco Wang, studying Computer Science / Data Science at Universiti Kebangsaan Malaysia. I explore products and creative work with AI-assisted development, taking responsibility for the problem, experience and iteration.',
+  processTitle: 'My way of building',
+  process: ['Problem', 'Prototype', 'Build', 'Test', 'Iterate'],
+  contactTitle: 'Let’s make something real.',
+  contactBody: 'Open to conversations about AI products, creative work and collaboration.',
+  more: 'More projects & notes',
+  footer: 'Always building, always learning.',
+  navLabel: 'Main navigation',
+  menuLabel: 'Navigation menu',
+  themeLabel: 'Theme',
+  themes: { light: 'Light', dark: 'Dark', system: 'System' },
 }

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { LanguageProvider } from './i18n'
+import { ThemeProvider } from './theme'
 import { useContent } from './hooks'
 import { Seo } from './components/Seo'
 import { Nav } from './components/Nav'
@@ -65,7 +66,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <LanguageProvider>
-        <Shell />
+        <ThemeProvider><Shell /></ThemeProvider>
       </LanguageProvider>
     </BrowserRouter>
   )

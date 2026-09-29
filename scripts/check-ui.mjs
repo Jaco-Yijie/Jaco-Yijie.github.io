@@ -26,13 +26,13 @@ try {
         assert.ok(overflow <= 1, `${width} ${lang} ${route}: overflow ${overflow}`)
         if (route === '/') {
           assert.equal(await page.locator('#hero a[href="#work"]').count(), 1)
-          for (const slug of ['stock-news', 'arcana']) {
-            const trigger = page.locator('figure button[aria-haspopup="dialog"]').filter({ has: page.locator(`img[src*="${slug}.webp"]`) })
-            await trigger.click()
-            assert.equal(await page.locator('dialog[open]').count(), 1)
-            await page.keyboard.press('Escape')
-            await page.waitForFunction(() => !document.querySelector('dialog[open]'))
-            assert.equal(await trigger.evaluate((el) => el === document.activeElement), true)
+          assert.equal(await page.locator('#work .work-card').count(), 3)
+          for (const card of await page.locator('#work .work-card').all()) {
+            assert.equal(await card.locator('a').count(), 1, 'Each project has one focused link')
+          }
+          for (const img of await page.locator('#work img').all()) {
+            await img.scrollIntoViewIfNeeded()
+            await img.evaluate(image => image.decode())
           }
           await page.evaluate(() => scrollTo(0, 0))
         } else {
@@ -82,7 +82,7 @@ try {
   assert.match(page.url(), /lang=en#prd-feature-5-1/)
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByRole('button', { name: /open menu/i }).click()
-  await page.getByRole('dialog', { name: 'Menu' }).getByRole('button', { name: '中文', exact: true }).click()
+  await page.getByRole('dialog', { name: /Navigation menu|导航菜单/ }).getByRole('button', { name: '中', exact: true }).click()
   await page.keyboard.press('Escape')
   await page.getByRole('button', { name: /^目录/ }).click()
   await page.screenshot({ path: `${output}/mobile-contents.png` })
@@ -92,7 +92,7 @@ try {
   await page.evaluate(() => document.fonts.ready)
   await page.screenshot({ path: `${output}/mobile-arcana-header.png` })
   await page.goto(`${base}/?lang=zh`)
-  await page.locator('figure').first().scrollIntoViewIfNeeded()
+  await page.locator('.project-visual').first().scrollIntoViewIfNeeded()
   await page.waitForTimeout(500)
   await page.screenshot({ path: `${output}/mobile-stock-preview.png` })
   await page.close()

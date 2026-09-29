@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useLang } from '../i18n'
 import { Link } from 'react-router-dom'
 import { isLive, type MaybeLink } from '../data/links'
 
@@ -33,6 +34,7 @@ const sizeCls = {
 }
 
 export function Button({ href, variant = 'secondary', size = 'md', external = false, children }: ButtonProps) {
+  const { lang } = useLang()
   if (!isLive(href)) return null
 
   const base =
@@ -59,7 +61,7 @@ export function Button({ href, variant = 'secondary', size = 'md', external = fa
         href={href}
         target="_blank"
         rel="noreferrer"
-        aria-label={`${children} (opens in new tab)`}
+        aria-label={`${children} (${lang === 'zh' ? '在新标签页打开' : 'opens in new tab'})`}
         className={`${cls} group`}
       >
         {children}

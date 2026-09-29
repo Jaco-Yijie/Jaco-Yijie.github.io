@@ -11,13 +11,16 @@ export function LanguageSwitcher({ size = 'sm' }: { size?: 'sm' | 'lg' }) {
   const base =
     size === 'lg'
       ? 'text-body font-medium transition-colors duration-[180ms]'
-      : 'text-body-s font-medium transition-colors duration-[180ms]'
+      : 'min-h-11 min-w-8 text-body-s font-medium transition-colors duration-[180ms]'
 
-  const cls = (active: boolean) =>
-    `${base} ${active ? 'text-ink' : 'text-ink-3 hover:text-ink-2'}`
+  const cls = (active: boolean) => `${base} ${active ? 'text-ink' : 'text-ink-3 hover:text-ink-2'}`
 
   return (
-    <div className="flex items-center gap-2" role="group" aria-label={lang === 'zh' ? '语言' : 'Language'}>
+    <div
+      className="flex items-center gap-2"
+      role="group"
+      aria-label={lang === 'zh' ? '语言' : 'Language'}
+    >
       <button
         type="button"
         onClick={() => setLang('zh')}
@@ -25,10 +28,17 @@ export function LanguageSwitcher({ size = 'sm' }: { size?: 'sm' | 'lg' }) {
         lang="zh-CN"
         className={cls(lang === 'zh')}
       >
-        中文
+        中
       </button>
-      <span aria-hidden="true" className="text-ink-3/50">/</span>
-      <button type="button" onClick={() => setLang('en')} aria-pressed={lang === 'en'} className={cls(lang === 'en')}>
+      <span aria-hidden="true" className="text-ink-3/50">
+        /
+      </span>
+      <button
+        type="button"
+        onClick={() => setLang('en')}
+        aria-pressed={lang === 'en'}
+        className={cls(lang === 'en')}
+      >
         EN
       </button>
     </div>

@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './portfolio.css';
+@import './theme/tokens.css';
 
 @import '@fontsource-variable/inter-tight';
 @import '@fontsource-variable/source-serif-4';

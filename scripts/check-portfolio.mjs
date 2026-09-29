@@ -65,7 +65,7 @@ try {
     await control.click()
     await page.waitForFunction(() => !document.querySelector('video').paused)
     await control.click()
-    await page.locator('.archive-work summary').click()
+    await page.locator('.archive-links summary').click()
     const hrefs = await page
       .locator('a[href]')
       .evaluateAll((links) => [...new Set(links.map((link) => link.getAttribute('href')))])
@@ -95,6 +95,14 @@ try {
     ]) {
       await access(`dist${route}/index.html`)
       await page.goto(`${base}${route}?lang=${lang}`)
+      const originalLinks = {
+        '/work/arcana': ['https://arcana-e190.onrender.com', 'https://github.com/Jaco-Yijie/arcana'],
+        '/work/stock-news': ['https://stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app/', 'https://github.com/Jaco-Yijie/stock_news'],
+        '/work/seller-profit': ['https://udify.app/chat/NTlMX91jzOFzzQpo'],
+      }
+      for (const href of originalLinks[route] ?? []) {
+        assert.ok(await page.locator(`main a[href="${href}"]`).count() > 0, `Original CTA missing: ${href}`)
+      }
       assert.equal(await page.locator('main h1').count(), 1, route)
       assert.ok((await page.locator('main').innerText()).length > 150, route)
     }
@@ -108,11 +116,11 @@ try {
   await page.goto(`${base}/?lang=zh`)
   await page.getByRole('button', { name: '打开菜单' }).click()
   await page
-    .getByRole('dialog', { name: 'Menu' })
-    .getByRole('link', { name: '实验', exact: true })
+    .getByRole('dialog', { name: /Navigation menu|导航菜单/ })
+    .getByRole('link', { name: '项目', exact: true })
     .click()
-  await page.waitForFunction(() => location.hash === '#experiments')
-  assert.match(page.url(), /lang=zh#experiments/)
+  await page.waitForFunction(() => location.hash === '#work')
+  assert.match(page.url(), /lang=zh#work/)
   assert.equal(await page.evaluate(() => document.body.style.overflow), '')
   await page.getByRole('button', { name: '打开菜单' }).click()
   await page.setViewportSize({ width: 1440, height: 900 })

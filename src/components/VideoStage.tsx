@@ -22,7 +22,7 @@ export function VideoStage() {
         setVisible(entry.isIntersecting)
         if (entry.isIntersecting) setLoaded(true)
       },
-      { threshold: 0.15 },
+      { threshold: 0.35 },
     )
     observer.observe(stage.current)
     return () => observer.disconnect()
@@ -71,7 +71,7 @@ export function VideoStage() {
   return (
     <div className="video-canvas" ref={stage}>
       <span className="stage-index" aria-hidden="true">
-        EXPERIMENT / 001
+        {c.stageLabel}
       </span>
       <div className="video-frame">
         <video
@@ -86,7 +86,7 @@ export function VideoStage() {
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onError={() => setError(true)}
-          aria-label={`${c.motionTitle} ${c.motionSubtitle}`}
+          aria-label={c.motionTitle}
         />
         <button
           type="button"
@@ -101,7 +101,7 @@ export function VideoStage() {
           </span>
         </button>
         <div className="video-credit" aria-hidden="true">
-          AI × Motion<span>Creative Coding Experiment</span>
+          {c.motionCredit}
         </div>
       </div>
       {(error || playBlocked) && (
@@ -110,7 +110,7 @@ export function VideoStage() {
         </p>
       )}
       <span className="stage-footnote" aria-hidden="true">
-        REACT / REMOTION / AI CODING
+        {c.tech.join(' / ')}
       </span>
     </div>
   )

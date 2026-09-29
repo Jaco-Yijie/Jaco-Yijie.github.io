@@ -1,6 +1,6 @@
 import { useContent } from '../hooks'
 import { Reveal } from './motion'
-import { Eyebrow } from './ui'
+import { Eyebrow, Button } from './ui'
 import { VideoStage } from './VideoStage'
 
 export function FeaturedExperiment() {
@@ -12,27 +12,23 @@ export function FeaturedExperiment() {
           <Eyebrow>{c.featured}</Eyebrow>
           <h2 id="motion-heading" className="editorial-title">
             {c.motionTitle}
-            <em>{c.motionSubtitle}</em>
           </h2>
-          <div className="motion-description">
-            {c.motionBody.map((text, i) => (
-              <p key={text} className={i === 0 ? 'motion-lead' : undefined}>
-                {text}
-              </p>
-            ))}
-          </div>
+          <p className="motion-summary">{c.motionSummary}</p>
           <dl className="motion-details">
             <dt>{c.role}</dt>
+            <dd>{c.roles}</dd>
+            <dt>{c.techLabel}</dt>
             <dd>
               <ul>
-                {c.roles.map((role) => (
-                  <li key={role}>{role}</li>
+                {c.tech.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </dd>
-            <dt>TECH</dt>
-            <dd>{c.tech}</dd>
           </dl>
+          <Button href="/videos/jaco-motion.mp4" variant="tertiary" external>
+            {c.openVideo}
+          </Button>
         </Reveal>
         <VideoStage />
       </div>

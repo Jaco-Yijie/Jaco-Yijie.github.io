@@ -3,6 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Apply the saved/system theme before styles load to avoid a first-paint flash.
+      ;(() => {
+        let mode = 'system'
+        try {
+          const saved = localStorage.getItem('portfolio-theme')
+          if (['light', 'dark', 'system'].includes(saved)) mode = saved
+        } catch { /* System theme remains available without storage. */ }
+        const theme = mode === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode
+        document.documentElement.dataset.theme = theme
+        document.documentElement.dataset.themeMode = mode
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Jaco Wang — AI Product Builder &amp; Creative Technologist</title>
     <meta
