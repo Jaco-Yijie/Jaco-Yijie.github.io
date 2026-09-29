@@ -15,10 +15,12 @@ export function Nav() {
   const c = useContent()
   const withLang = useLangHref()
 
+  const n = c.portfolio.navItems
   const items = [
-    { label: c.nav.work, href: '/#work', hash: true },
-    { label: c.nav.about, href: '/#about', hash: true },
-    { label: c.nav.contact, href: '/#contact', hash: true },
+    { label: n.work, href: '/#work', hash: true },
+    { label: n.practice, href: '/ai-evals', hash: false },
+    { label: n.about, href: '/#about', hash: true },
+    { label: n.xhs, href: '/#xiaohongshu', hash: true },
   ]
 
   const [scrolled, setScrolled] = useState(false)
@@ -118,9 +120,13 @@ export function Nav() {
 
             className="inline-flex h-9 items-center gap-2 rounded-md border border-line-strong px-4 text-body-s font-medium text-ink transition-colors duration-[180ms] hover:border-accent/30 hover:bg-accent/10"
           >
-            {c.nav.resume} <span aria-hidden="true">↗</span>
+            {n.resume} <span aria-hidden="true">↗</span>
           </a>
         </div>
+
+        <a href={links.resume} target="_blank" rel="noreferrer" className="nav-resume-mobile lg:hidden">
+          {n.resume}
+        </a>
 
         <div className="nav-preferences">
           <LanguageSwitcher />
@@ -182,7 +188,7 @@ export function Nav() {
                   {it.label}
                 </a>
               ) : (
-                <Link key={it.label} to={withLang(it.href)} className="text-display-m text-ink">
+                <Link key={it.label} to={withLang(it.href)} onClick={() => setOpen(false)} className="text-display-m text-ink">
                   {it.label}
                 </Link>
               ),
@@ -193,7 +199,7 @@ export function Nav() {
               rel="noreferrer"
               className="text-display-m text-accent"
             >
-              {c.nav.resume} ↗
+              {n.resume} ↗
             </a>
           </div>
         </div>

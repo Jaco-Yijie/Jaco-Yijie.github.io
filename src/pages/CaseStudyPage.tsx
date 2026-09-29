@@ -11,6 +11,7 @@ import { Button, Eyebrow, Tag } from '../components/ui'
 import { StatusBadge } from '../components/StatusBadge'
 import { ReadingContents } from '../components/ReadingContents'
 import { Reveal } from '../components/motion'
+import { caseSummaries } from '../data/caseSummaries'
 
 /* ── 单个内容块渲染 —— DESIGN_SYSTEM §9.3 ────────────────── */
 function BlockView({ b, labels }: { b: Block; labels: { before: string; after: string; limitations: string } }) {
@@ -182,6 +183,8 @@ export function CaseStudyPage() {
   const all = getCaseStudies(lang)
   const idx = all.findIndex((x) => x.slug === slug)
   const next = all[(idx + 1) % all.length]
+  const summary = caseSummaries[lang][slug]
+  const labels = c.portfolio.caseSummary
 
   return (
     <>
@@ -261,6 +264,48 @@ export function CaseStudyPage() {
           </div>
         </section>
       )}
+
+      {/* 30 秒看懂 + 目录 */}
+      <section aria-labelledby="case-summary-heading" className="border-b border-line">
+        <div className="shell py-10 lg:py-12">
+          {summary && (
+            <>
+              <h2 id="case-summary-heading" className="text-heading-m text-ink">{labels.title}</h2>
+              <dl className="case-summary mt-5">
+                <div>
+                  <dt>{labels.problem}</dt>
+                  <dd>{summary.problem}</dd>
+                </div>
+                <div>
+                  <dt>{labels.decision}</dt>
+                  <dd>{summary.decision}</dd>
+                </div>
+                <div>
+                  <dt>{labels.result}</dt>
+                  <dd>
+                    <strong>{summary.result.value}</strong>
+                    {summary.result.text}
+                  </dd>
+                </div>
+              </dl>
+            </>
+          )}
+          <nav aria-label={labels.contents} className={`case-toc ${summary ? 'mt-8' : ''}`}>
+            {!summary && <h2 id="case-summary-heading" className="sr-only">{labels.contents}</h2>}
+            <p className="mb-3 text-label text-ink-3">{labels.contents}</p>
+            <ol>
+              {study.chapters.map((ch) => (
+                <li key={ch.num}>
+                  <a href={`#ch-${ch.num}`}>
+                    <span>{ch.num}</span>
+                    {ch.title}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
+      </section>
 
       {/* Body */}
       <div className="shell pt-12 pb-24 lg:py-20">

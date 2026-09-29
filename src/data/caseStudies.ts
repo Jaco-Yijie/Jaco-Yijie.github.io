@@ -3,7 +3,8 @@ import { arcanaQuickRead } from './projectUpdates'
  * Case Study 内容层。
  *
  * 所有事实来自 docs/CONTENT_AUDIT.md（v3）。禁止展示：
- *   40% · 100% · 4/10 · 6/6 · Pending · Recall/F1/ROC-AUC · 54% accuracy
+ *   4/10 · 6/6 · Pending · Recall/F1/ROC-AUC · 54% accuracy
+ * 40% → 100% is shown only as the user-confirmed PDD numeric-consistency result (same eval set).
  * 模块按内容动态显隐，不为结构完整硬塞不存在的信息。
  */
 
@@ -41,7 +42,7 @@ const sellerProfit: CaseStudy = {
   titleZh: '拼多多新手卖家利润试算助手',
   tagline:
     'Prompt constraints were not enough — so I redesigned the architecture so the LLM could no longer perform the calculation.',
-  meta: { role: 'Solo — product, PRD, build, evaluation', timeline: '2026.06 – 2026.07', context: 'Dify Chatflow' },
+  meta: { role: 'Solo — product, PRD, build, evaluation', timeline: '2026.05 – 2026.06', context: 'Dify Chatflow' },
   source: 'PRD v1–v5',
   chapters: [
     {

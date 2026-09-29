@@ -1,4 +1,5 @@
 import { useContent } from '../hooks'
+import { links } from '../data/links'
 import { Reveal } from './motion'
 import { Eyebrow, Button } from './ui'
 import { VideoStage } from './VideoStage'
@@ -26,7 +27,7 @@ export function FeaturedExperiment() {
               </ul>
             </dd>
           </dl>
-          <Button href="/videos/jaco-motion.mp4" variant="tertiary" external>
+          <Button href={links.video} variant="tertiary" external>
             {c.openVideo}
           </Button>
         </Reveal>

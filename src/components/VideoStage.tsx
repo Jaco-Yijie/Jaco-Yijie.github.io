@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useContent } from '../hooks'
+import { links } from '../data/links'
 import { usePrefersReducedMotion } from './motion'
 
 export function VideoStage() {
@@ -56,7 +57,7 @@ export function VideoStage() {
     }
     userPaused.current = false
     if (!loaded) {
-      el.src = '/videos/jaco-motion.mp4'
+      el.src = links.video
       setLoaded(true)
     }
     try {
@@ -76,7 +77,7 @@ export function VideoStage() {
       <div className="video-frame">
         <video
           ref={video}
-          src={loaded ? '/videos/jaco-motion.mp4' : undefined}
+          src={loaded ? links.video : undefined}
           poster="/videos/jaco-motion-poster.webp"
           muted
           loop
@@ -87,7 +88,9 @@ export function VideoStage() {
           onPause={() => setPlaying(false)}
           onError={() => setError(true)}
           aria-label={c.motionTitle}
-        />
+        >
+          <a href={links.video}>{c.openVideo}</a>
+        </video>
         <button
           type="button"
           className="video-toggle"
