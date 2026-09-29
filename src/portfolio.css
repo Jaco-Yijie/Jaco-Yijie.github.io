@@ -1280,3 +1280,141 @@ html[lang='zh-CN'] .editorial-title {
     transform: none;
   }
 }
+
+/* ── 页面长度压缩：保留全部内容，只收紧结构 ───────────── */
+.hero-inner {
+  min-height: 0;
+  padding-top: 132px;
+  padding-bottom: 64px;
+}
+.featured-grid {
+  padding-block: 40px;
+  gap: 56px;
+}
+.video-canvas {
+  padding: 30px 20px 34px;
+}
+.video-frame {
+  width: min(100%, 200px);
+}
+.compact-section {
+  padding-block: 48px;
+}
+.xhs-inner {
+  padding-block: 32px;
+}
+.compact-contact {
+  padding-block: 36px;
+}
+@media (max-width: 767px) {
+  .hero-inner {
+    padding-top: 100px;
+    padding-bottom: 36px;
+  }
+  /* Motion：文案与竖版视频并排 */
+  .featured-grid {
+    grid-template-columns: minmax(0, 1fr) 118px;
+    align-items: start;
+    gap: 16px;
+    padding-block: 28px;
+  }
+  .motion-details {
+    display: none;
+  }
+  .featured-copy > a {
+    margin-top: 12px;
+  }
+  .video-canvas {
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .stage-index,
+  .stage-footnote {
+    display: none;
+  }
+  .video-frame {
+    width: 118px;
+    border-radius: 10px;
+  }
+  .video-control {
+    left: 6px;
+    bottom: 6px;
+    min-height: 30px;
+    padding-inline: 8px;
+  }
+  .video-error {
+    font-size: 11px;
+  }
+  /* 作品：横向滑动，一次一张 */
+  .compact-section {
+    padding-block: 32px;
+  }
+  .work-grid {
+    display: flex;
+    gap: 12px;
+    margin-inline: -16px;
+    padding-inline: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+  }
+  .work-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .work-card {
+    flex: 0 0 84%;
+    scroll-snap-align: start;
+  }
+  .project-copy > p:not(.project-result) {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* About / 小红书 / 联系 */
+  .about-copy {
+    font-size: 13.5px;
+    line-height: 1.8;
+  }
+  .about-facts {
+    margin-top: 14px;
+    gap: 6px;
+  }
+  .about-facts > div {
+    font-size: 13px;
+    grid-template-columns: 44px 1fr;
+  }
+  .practice-links {
+    margin-top: 18px;
+    padding-top: 10px;
+    gap: 0 18px;
+  }
+  .xhs-inner {
+    padding-block: 26px;
+    gap: 12px;
+  }
+  .xhs-id {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+  .compact-contact {
+    padding-block: 28px;
+  }
+  .compact-contact > .shell {
+    gap: 16px;
+  }
+  .contact-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+  }
+  .contact-list dd {
+    font-size: 13px;
+  }
+  .contact-list > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
