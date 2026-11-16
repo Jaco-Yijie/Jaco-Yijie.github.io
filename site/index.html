@@ -365,6 +365,30 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer}
 }
 
 
+
+/* ---------- 首屏数据条 ---------- */
+.hstats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s4u); margin-top:var(--s5u); padding-top:var(--s4u); border-top:1px solid var(--line)}
+.hstats>div{display:flex; flex-direction:column; gap:4px; min-width:0}
+.hstats b{font-family:var(--font-serif); font-size:clamp(19px,2.1vw,25px); line-height:1.15; font-weight:500; letter-spacing:-.01em; color:var(--ink); font-variant-numeric:tabular-nums}
+.hstats span{font-family:var(--font-mono); font-size:12px; line-height:1.55; letter-spacing:.05em; color:var(--ink-3)}
+/* ---------- 作品卡：用户证据 ---------- */
+.wev{display:flex; gap:8px; align-items:baseline; margin:8px 0 0; font-size:12.5px; line-height:1.6; color:var(--ink-2)}
+.wev b{flex:none; font-family:var(--font-mono); font-size:12px; font-weight:400; letter-spacing:.12em; text-transform:uppercase; color:var(--amber)}
+/* ---------- 评测三段式 ---------- */
+.steps{list-style:none; margin:var(--s5u) 0 0; padding:0; display:grid; gap:9px}
+.steps li{display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:baseline; font-size:13px; line-height:1.7; color:var(--band-ink-2)}
+.steps .no{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; color:var(--band-acc)}
+.steps b{color:var(--band-ink); font-weight:500}
+/* ---------- 仓库：课程练习标签 ---------- */
+.repo .kind{font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:var(--amber); border:1px solid color-mix(in srgb, var(--amber) 34%, transparent); border-radius:var(--r-ctl); padding:1px 7px}
+@media (max-width:640px){
+  .hstats{grid-template-columns:1fr; gap:10px; margin-top:var(--s4u); padding-top:var(--s3u)}
+  .hstats>div{flex-direction:row; align-items:baseline; gap:10px}
+  .hstats b{font-size:19px; min-width:92px}
+  .hstats span{flex:1}
+  .wev{font-size:12.5px; margin-top:7px}
+  .steps li{font-size:12.5px; line-height:1.7}
+}
 /* ---------- 更多仓库：真实 GitHub 清单 ---------- */
 .more{padding-block:var(--s6u); border-top:1px solid var(--line)}
 .repo-list{margin:var(--s5u) 0 0; padding:0; list-style:none; border-top:1px solid var(--line)}
@@ -623,12 +647,17 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
     <div class="shell hero-in">
       <div class="hero-copy">
         <p class="eye" data-t="hero.eye">AI 产品构建者 · Creative Technologist</p>
-        <h1 class="serif" data-t-html="hero.h1">把 AI 想法，<br>做成真正<em>能体验</em>的产品。</h1>
-        <p class="lead" data-t-html="hero.lead">从真实问题出发，用 AI、代码和评测，把想法做成能运行、能验证、能被体验的产品。我在意的是<b>模型可以为什么负责</b>——以及它越界时你怎么发现。</p>
+        <h1 class="serif" data-t-html="hero.h1">我做 AI 产品，<br>并且知道它<em>什么时候在骗人</em>。</h1>
+        <p class="lead" data-t-html="hero.lead">从真实问题出发，用 AI、代码和评测，把想法做成能运行、能验证的东西。我在意的是<b>模型可以为什么负责</b>——以及它越界时你怎么发现。</p>
         <div class="hmeta">
           <span data-t="hero.m1">UKM · 计算机科学与数据科学</span>
           <span data-t="hero.m2">最快 3 天到岗</span>
           <span data-t="hero.m3">可实习 6 个月以上</span>
+        </div>
+        <div class="hstats">
+          <div><b class="num" data-t="hero.s1n">40% → 100%</b><span data-t="hero.s1l">LLM 计算准确率（同一 Eval Set）</span></div>
+          <div><b class="num" data-t="hero.s2n">785</b><span data-t="hero.s2l">条回归断言 · 5 组检查</span></div>
+          <div><b class="num" data-t="hero.s3n">2</b><span data-t="hero.s3l">位真实用户完成试用（n=2，是观察不是比例）</span></div>
         </div>
         <div class="cta">
           <a class="btn btn-solid" href="#work" data-t="hero.cta1">查看作品
@@ -730,14 +759,15 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
           </div>
           <div class="copy">
             <span class="tag"><i aria-hidden="true"></i><span data-t="w1.tag">可体验 Demo</span></span>
-            <h3 class="wtitle"><a href="#" data-t="w1.title">Arcana · 沉浸式 AI 塔罗</a></h3>
+            <h3 class="wtitle"><a href="https://github.com/Jaco-Yijie/arcana" target="_blank" rel="noreferrer" data-t="w1.title">Arcana · 沉浸式 AI 塔罗</a></h3>
             <p class="wjudge" data-t="w1.judge">让 AI 直接「抽牌」，会把确定的牌面事实和概率性的解读混在一起。我把它拆成：引擎抽牌、LLM 只负责解释。</p>
+            <p class="wev"><b data-t="ui.evidence">证据</b><span data-t="w1.wev">线上入口可用 · 仍在上线迭代</span></p>
             <p class="evidence"><b class="num">785</b><span data-t="w1.ev">条断言 · 5 组检查 · Mock provider</span></p>
             <div class="acts">
-              <a class="btn btn-ghost" href="#" data-t="w1.cta1">案例详情
+              <a class="btn btn-ghost" href="https://github.com/Jaco-Yijie/arcana" target="_blank" rel="noreferrer" data-t="w1.cta1">案例详情
                 <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
               </a>
-              <a class="btn btn-solid" href="#" target="_blank" rel="noreferrer" data-t="w1.cta2">在线体验
+              <a class="btn btn-solid" href="https://arcana-e190.onrender.com" target="_blank" rel="noreferrer" data-t="w1.cta2">在线体验
                 <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
               </a>
             </div>
@@ -753,12 +783,13 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
             </div>
             <div class="card-body">
               <span class="tag"><i aria-hidden="true"></i><span data-t="w2.tag">已上线运行</span></span>
-              <h3 class="wtitle"><a href="#" data-t="w2.title">A 股板块新闻监控</a></h3>
+              <h3 class="wtitle"><a href="https://github.com/Jaco-Yijie/stock_news" target="_blank" rel="noreferrer" data-t="w2.title">A 股板块新闻监控</a></h3>
               <p class="wjudge" data-t="w2.judge">规则负责判断，只有低置信度的新闻才交给 LLM 复核——把模型放在它不容易出错的位置。</p>
+              <p class="wev"><b data-t="ui.evidence">证据</b><span data-t="w2.wev">Streamlit Cloud 已上线 · 持续迭代</span></p>
               <p class="evidence"><b class="num">38</b><span data-t="w2.ev">个板块 · 70+ 条回归断言</span></p>
               <div class="acts">
-                <a class="btn btn-ghost" href="#" data-t="w2.cta1">案例详情</a>
-                <a class="btn btn-solid" href="#" target="_blank" rel="noreferrer" data-t="w2.cta2">在线体验</a>
+                <a class="btn btn-ghost" href="https://github.com/Jaco-Yijie/stock_news" target="_blank" rel="noreferrer" data-t="w2.cta1">案例详情</a>
+                <a class="btn btn-solid" href="https://stocknews-c8bdpgjep9n7zrxkscggbh.streamlit.app/" target="_blank" rel="noreferrer" data-t="w2.cta2">在线体验</a>
               </div>
             </div>
           </article>
@@ -774,12 +805,12 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
             </div></div>
             <div class="card-body">
               <span class="tag"><i aria-hidden="true"></i><span data-t="w3.tag">可直接体验</span></span>
-              <h3 class="wtitle"><a href="#" data-t="w3.title">拼多多卖家利润试算</a></h3>
+              <h3 class="wtitle" data-t="w3.title">拼多多卖家利润试算</h3>
               <p class="wjudge" data-t="w3.judge">LLM 自算数只有 40% 一致，所以把计算移进代码，模型只解释结果——上下文变量从 16 个减到 2 个。</p>
+              <p class="wev"><b data-t="ui.evidence">证据</b><span data-t="w3.wev">2 位真实用户试用：一位改变了决定，一位没有（n=2）</span></p>
               <p class="evidence"><b class="num">16 → 2</b><span data-t="w3.ev">进入模型的变量</span></p>
               <div class="acts">
-                <a class="btn btn-ghost" href="#" data-t="w3.cta1">案例详情</a>
-                <a class="btn btn-solid" href="#" target="_blank" rel="noreferrer" data-t="w3.cta2">在线体验</a>
+                <a class="btn btn-solid" href="https://udify.app/chat/NTlMX91jzOFzzQpo" target="_blank" rel="noreferrer" data-t="w3.cta2">在线体验</a>
               </div>
             </div>
           </article>
@@ -814,7 +845,6 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
         </dl>
         <div class="motion-acts">
           <a class="btn btn-solid" href="/videos/jaco-motion.mp4" target="_blank" rel="noreferrer" data-t="mo.cta1">原片外开</a>
-          <a class="btn btn-ghost" href="#" data-t="mo.cta2">实验说明</a>
         </div>
       </div>
     </div>
@@ -837,9 +867,9 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
         <li class="repo"><a href="https://github.com/Jaco-Yijie/stock_news" target="_blank" rel="noreferrer"><span class="name">stock_news<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">A 股板块新闻的收集、缓存、去重与筛选面板</span><span class="meta"><span class="lang">Python · Streamlit</span><span class="date">2026-09</span></span></a></li>
         <li class="repo"><a href="https://github.com/Jaco-Yijie/arcana" target="_blank" rel="noreferrer"><span class="name">arcana<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">沉浸式线上塔罗：用户亲手洗牌/切牌/翻牌，模型只解读已定的牌</span><span class="meta"><span class="lang">TypeScript</span><span class="date">2026-10</span></span></a></li>
         <li class="repo"><a href="https://github.com/Jaco-Yijie/finger-magic-show" target="_blank" rel="noreferrer"><span class="name">finger-magic-show<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">交互实验仓库</span><span class="meta"><span class="lang">JavaScript</span><span class="date">2026-06</span></span></a></li>
-        <li class="repo"><a href="https://github.com/Jaco-Yijie/titanic-survival-prediction" target="_blank" rel="noreferrer"><span class="name">titanic-survival-prediction<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">逻辑回归与探索性分析的经典练习</span><span class="meta"><span class="lang">Jupyter</span><span class="date">2026-04</span></span></a></li>
-        <li class="repo"><a href="https://github.com/Jaco-Yijie/basic-house-price-analysis" target="_blank" rel="noreferrer"><span class="name">basic-house-price-analysis<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">房价预测的基础建模练习</span><span class="meta"><span class="lang">Jupyter</span><span class="date">2026-04</span></span></a></li>
         <li class="repo"><a href="https://github.com/Jaco-Yijie/Jaco-Yijie.github.io" target="_blank" rel="noreferrer"><span class="name">Jaco-Yijie.github.io<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">你现在看的这个网站的源码</span><span class="meta"><span class="lang">TypeScript</span><span class="date">2026-09</span></span></a></li>
+        <li class="repo"><a href="https://github.com/Jaco-Yijie/titanic-survival-prediction" target="_blank" rel="noreferrer"><span class="name">titanic-survival-prediction<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">逻辑回归与探索性分析的经典练习</span><span class="meta"><span class="lang">Jupyter</span><span class="kind" data-t="more.kind">课程练习</span><span class="date">2026-04</span></span></a></li>
+        <li class="repo"><a href="https://github.com/Jaco-Yijie/basic-house-price-analysis" target="_blank" rel="noreferrer"><span class="name">basic-house-price-analysis<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span class="desc">房价预测的基础建模练习</span><span class="meta"><span class="lang">Jupyter</span><span class="kind" data-t="more.kind">课程练习</span><span class="date">2026-04</span></span></a></li>
       </ul>
     </div>
   </section>
@@ -848,9 +878,14 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
       <div>
         <p class="eye" data-t="mth.eye">评测方法 / Evaluation</p>
         <h2 class="serif" data-t="mth.title">约束失效时，先问它该落在哪一层。</h2>
-        <a class="tlink" href="#" data-t="mth.cta">完整方法与失败记录
+        <a class="tlink" href="https://github.com/Jaco-Yijie/Jaco-Yijie.github.io/blob/main/docs/CONTENT_AUDIT.md" target="_blank" rel="noreferrer" data-t="mth.cta">完整方法与失败记录
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
         </a>
+        <ol class="steps">
+          <li><span class="no">01</span><span data-t="mth.st1">先定义「什么算失败」——不是先写 Prompt</span></li>
+          <li><span class="no">02</span><span data-t="mth.st2">构造覆盖边界的 Eval Set——10 组用例，包含对抗样本</span></li>
+          <li><span class="no">03</span><span data-t="mth.st3">用置信区间说实话——10 个样本 100% 通过，真实含义是 [74%, 100%]</span></li>
+        </ol>
       </div>
       <ul class="stats">
         <li><b class="num" data-count="10">10</b><span data-t="mth.s1">组评测用例：覆盖边界，不只顺利路径</span></li>
@@ -867,6 +902,7 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
         <h2 class="serif" data-t="ab.title">模型能跑通之后，问题才真正开始。</h2>
         <p data-t="ab.p1">我是王一杰，在马来西亚国立大学（UKM）读计算机科学与数据科学。项目大多从一个「看起来对、其实不对」的模型输出开始。</p>
         <p data-t="ab.p2">我会自己做用户访谈、写 PRD、定义什么算失败，把原型搭出来，然后想办法把它弄坏。</p>
+        <p data-t="ab.p3">我把自己定位成一个「人 + AI 编队闭环交付」的构建者：自己做用户访谈、写 PRD、定评测标准、搭原型、然后想办法把它弄坏——而不是只写 Prompt 或只写代码。</p>
         <div class="chips">
           <span class="chip">Agent</span><span class="chip">Context Engineering</span><span class="chip">RAG</span><span class="chip">Creative AI</span>
         </div>
@@ -882,8 +918,7 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
         <a class="mail" href="mailto:wangyijie072022@gmail.com">wangyijie072022@gmail.com</a>
         <div class="contact-grid">
           <div class="crow">
-            <span><span class="k" data-t="ct.wechat">微信</span>13787707345</span>
-            <button class="copy" type="button" data-copy="13787707345" data-state="idle" data-t="ui.copy">复制</button>
+            <span><span class="k" data-t="ct.wechat">微信</span><span data-t="ct.wx">加微信请邮件索取</span></span>
           </div>
           <div class="crow">
             <span><span class="k" data-t="ct.xhs">小红书</span>5333580423</span>
@@ -963,11 +998,14 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
     zh: {
       "ui.skip":"跳到作品","ui.theme":"主题","ui.lang":"语言","ui.light":"浅色","ui.dark":"深色","ui.auto":"跟随系统",
       "ui.light2":"浅色","ui.dark2":"深色","ui.auto2":"系统","ui.resume":"简历","ui.menu":"打开菜单","ui.close":"关闭菜单",
-      "ui.copy":"复制","ui.copied":"已复制","ui.failed":"手动复制",
+      "ui.copy":"复制","ui.copied":"已复制","ui.failed":"手动复制","ui.evidence":"证据",
       "nav.work":"作品","nav.motion":"创作实验","nav.method":"评测方法","nav.about":"关于","nav.contact":"联系",
       "hero.eye":"AI 产品构建者 · Creative Technologist",
-      "hero.h1":"把 AI 想法，<br>做成真正<em>能体验</em>的产品。",
-      "hero.lead":"从真实问题出发，用 AI、代码和评测，把想法做成能运行、能验证、能被体验的产品。我在意的是<b>模型可以为什么负责</b>——以及它越界时你怎么发现。",
+      "hero.h1":"我做 AI 产品，<br>并且知道它<em>什么时候在骗人</em>。",
+      "hero.lead":"从真实问题出发，用 AI、代码和评测，把想法做成能运行、能验证的东西。我在意的是<b>模型可以为什么负责</b>——以及它越界时你怎么发现。",
+      "hero.s1n":"40% → 100%","hero.s1l":"LLM 计算准确率（同一 Eval Set）",
+      "hero.s2n":"785","hero.s2l":"条回归断言 · 5 组检查",
+      "hero.s3n":"2","hero.s3l":"位真实用户完成试用（n=2，是观察不是比例）",
       "hero.m1":"UKM · 计算机科学与数据科学","hero.m2":"最快 3 天到岗","hero.m3":"可实习 6 个月以上",
       "hero.cta1":"查看作品","hero.cta2":"下载简历","hero.cta3":"或直接聊一聊",
       "demo.live":"现场演示","demo.kicker":"Eval / 03","demo.title":"同一道利润题，两种做法。",
@@ -981,13 +1019,16 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
       "w1.tag":"可体验 Demo","w1.title":"Arcana · 沉浸式 AI 塔罗",
       "w1.judge":"让 AI 直接「抽牌」，会把确定的牌面事实和概率性的解读混在一起。我把它拆成：引擎抽牌、LLM 只负责解释。",
       "w1.ev":"条断言 · 5 组检查","w1.cta1":"案例详情","w1.cta2":"在线体验",
+      "w1.wev":"线上入口可用 · 仍在上线迭代",
       "w2.tag":"已上线运行","w2.title":"A 股板块新闻监控",
       "w2.judge":"规则负责判断，只有低置信度的新闻才交给 LLM 复核——把模型放在它不容易出错的位置。",
       "w2.ev":"个板块 · 70+ 断言","w2.cta1":"案例详情","w2.cta2":"在线体验",
+      "w2.wev":"Streamlit Cloud 已上线 · 持续迭代",
       "w3.tag":"可直接体验","w3.title":"拼多多卖家利润试算",
       "w3.judge":"LLM 自算数只有 40% 一致，所以把计算移进代码，模型只解释结果——上下文变量从 16 个减到 2 个。",
       "w3.p1":"模型直算","w3.p2":"沙箱计算","w3.pn":"同一 Eval Set · 10 组用例",
       "w3.ev":"进入模型的变量","w3.cta1":"案例详情","w3.cta2":"在线体验",
+      "w3.wev":"2 位真实用户试用：一位改变了决定，一位没有（n=2）",
       "w4.tag":"创作实验","w4.title":"AI × Motion 创作实验",
       "w4.judge":"让角色走进剪辑界面：一次用 AI 辅助编程完成的动画实验，React + Remotion。",
       "w4.ev":"单条实验片","w4.cta1":"实验说明","w4.cta2":"观看实验片",
@@ -1004,25 +1045,32 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
       "exp.pending2":"待补","exp.desc2":"如果没有第二段，这一行直接删掉，版式不会塌。",
       "exp.note":"把信息发我：公司 / 职位 / 起止时间 / 三条结果（带数字最好），我按这一栏重写措辞，再把「待补」去掉。",
       "more.eye":"更多仓库 / GITHUB","more.title":"想看代码，这里都是公开的。",
-      "more.lead":"作品集里放得下的是三件；其余的过程、练习和每天在写的东西，都在仓库里，随时可以点开看提交记录。",
+      "more.lead":"作品集里放得下的是三件；其余的过程、练习和每天在写的东西，都在仓库里，随时可以点开看提交记录。","more.kind":"课程练习",
       "mth.eye":"评测方法 / Evaluation","mth.title":"约束失效时，先问它该落在哪一层。","mth.cta":"完整方法与失败记录",
       "mth.s1":"组评测用例","mth.s2":"条断言 · 五组检查","mth.s3":"上下文变量",
+      "mth.st1":"先定义「什么算失败」——不是先写 Prompt",
+      "mth.st2":"构造覆盖边界的 Eval Set——10 组用例，包含对抗样本",
+      "mth.st3":"用置信区间说实话——10 个样本 100% 通过，真实含义是 [74%, 100%]",
       "ab.eye":"关于我 / About","ab.title":"模型能跑通之后，问题才真正开始。",
       "ab.p1":"我是王一杰，在马来西亚国立大学（UKM）读计算机科学与数据科学。项目大多从一个「看起来对、其实不对」的模型输出开始。",
       "ab.p2":"我会自己做用户访谈、写 PRD、定义什么算失败，把原型搭出来，然后想办法把它弄坏。",
+      "ab.p3":"我把自己定位成一个「人 + AI 编队闭环交付」的构建者：自己做用户访谈、写 PRD、定评测标准、搭原型、然后想办法把它弄坏——而不是只写 Prompt 或只写代码。",
       "ab.f1k":"教育","ab.f1v":"UKM · 计算机科学与数据科学","ab.f2k":"方向","ab.f2v":"AI 产品 · 大模型评测 · Prompt 系统",
       "ab.f3k":"到岗","ab.f3v":"最快 3 天 · 可实习 6 个月以上","ab.f4k":"在做","ab.f4v":"Agent 与 Context Engineering 实践记录",
-      "ct.eye":"联系 / Contact","ct.wechat":"微信","ct.xhs":"小红书","ct.resume":"简历",
+      "ct.eye":"联系 / Contact","ct.wechat":"微信","ct.xhs":"小红书","ct.resume":"简历","ct.wx":"加微信请邮件索取",
       "ft.line":"王一杰 · 2026 · 内容与数字均来自真实项目","ft.resume":"简历 PDF ↗","ft.top":"返回顶部"
     },
     en: {
       "ui.skip":"Skip to work","ui.theme":"Theme","ui.lang":"Language","ui.light":"Light","ui.dark":"Dark","ui.auto":"System",
       "ui.light2":"Light","ui.dark2":"Dark","ui.auto2":"System","ui.resume":"Résumé","ui.menu":"Open menu","ui.close":"Close menu",
-      "ui.copy":"Copy","ui.copied":"Copied","ui.failed":"Copy manually",
+      "ui.copy":"Copy","ui.copied":"Copied","ui.failed":"Copy manually","ui.evidence":"Evidence",
       "nav.work":"Work","nav.motion":"Motion","nav.method":"Evaluation","nav.about":"About","nav.contact":"Contact",
       "hero.eye":"AI Product Builder · Creative Technologist",
-      "hero.h1":"I turn AI ideas into<br><em>things you can actually try</em>.",
-      "hero.lead":"I start from real problems and use AI, code and evaluation to ship products that run, that can be verified, that can be experienced. What I care about is <b>what the model should be responsible for</b> — and how you notice when it steps out.",
+      "hero.h1":"I build AI products —<br>and I know when they <em>lie</em>.",
+      "hero.lead":"Starting from real problems, I use AI, code and evaluation to ship things that run, that can be verified. What I care about is <b>what the model should be responsible for</b> — and how you notice when it steps out.",
+      "hero.s1n":"40% → 100%","hero.s1l":"LLM calculation accuracy (same eval set)",
+      "hero.s2n":"785","hero.s2l":"regression assertions · 5 check groups",
+      "hero.s3n":"2","hero.s3l":"real users tested it (n=2 — an observation, not a rate)",
       "hero.m1":"UKM · Computer Science & Data Science","hero.m2":"Available in 3 days","hero.m3":"Internship 6+ months",
       "hero.cta1":"See the work","hero.cta2":"Download résumé","hero.cta3":"Or just say hi",
       "demo.live":"Live demo","demo.kicker":"Eval / 03","demo.title":"One profit question, two approaches.",
@@ -1036,13 +1084,16 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
       "w1.tag":"Playable demo","w1.title":"Arcana · Immersive AI Tarot",
       "w1.judge":"Letting AI draw the cards mixes certain card facts with probabilistic reading. I split it: the engine draws, the LLM only explains.",
       "w1.ev":"assertions · 5 check groups","w1.cta1":"Case study","w1.cta2":"Try it",
+      "w1.wev":"Public entry live · still iterating",
       "w2.tag":"Live","w2.title":"A-Share Sector News Monitor",
       "w2.judge":"Rules make the call; only low-confidence news reaches the LLM for review — the model sits where it is least likely to be wrong.",
       "w2.ev":"sectors · 70+ assertions","w2.cta1":"Case study","w2.cta2":"Try it",
+      "w2.wev":"Live on Streamlit Cloud · still iterating",
       "w3.tag":"Try it","w3.title":"Seller Profit Calculator",
       "w3.judge":"The model agreed with itself on only 40% of arithmetic cases, so the math moved into code — the model just explains. Context variables went from 16 to 2.",
       "w3.p1":"Model math","w3.p2":"Sandbox math","w3.pn":"Same eval set · 10 cases",
       "w3.ev":"variables reaching the model","w3.cta1":"Case study","w3.cta2":"Try it",
+      "w3.wev":"Two real users tried it: one changed their decision, one did not (n=2)",
       "w4.tag":"Creative experiment","w4.title":"AI × Motion",
       "w4.judge":"Putting a character inside an editing timeline: an animation experiment built with AI-assisted coding, React + Remotion.",
       "w4.ev":"single experiment","w4.cta1":"Read the notes","w4.cta2":"Watch the film",
@@ -1059,15 +1110,19 @@ a.crow:hover{border-color:var(--line-2); background:var(--s2)}
       "exp.pending2":"to fill","exp.desc2":"If there is no second entry, delete this row — the layout holds.",
       "exp.note":"Send me: company / role / dates / three results (numbers help). I will rewrite the copy and remove the “to fill” tags.",
       "more.eye":"More on GitHub","more.title":"If you want code, it is all public.",
-      "more.lead":"Three projects fit on this page. The rest — process, practice, and what I write day to day — live in the repos, commits included.",
+      "more.lead":"Three projects fit on this page. The rest — process, practice, and what I write day to day — live in the repos, commits included.","more.kind":"Coursework",
       "mth.eye":"Evaluation","mth.title":"When a constraint fails, ask which layer it belongs to.","mth.cta":"Full method and failure log",
       "mth.s1":"eval cases","mth.s2":"assertions · 5 groups","mth.s3":"context variables",
+      "mth.st1":"Define what counts as failure first — not the prompt",
+      "mth.st2":"Build an eval set that covers the edges — 10 cases, adversarial ones included",
+      "mth.st3":"Report intervals, not points — 10 of 10 passing really means [74%, 100%]",
       "ab.eye":"About","ab.title":"The hard part starts once the model runs.",
       "ab.p1":"I am Yijie Wang, studying Computer Science and Data Science at UKM, Malaysia. Most of my projects start with a model output that looks right and is not.",
       "ab.p2":"I run the interviews, write the PRD, define what counts as failure, build the prototype — then try to break it.",
+      "ab.p3":"I position myself as a builder who ships in a human + AI formation: I run the interviews, write the PRD, define what counts as failure, build the prototype, and then try to break it — rather than stopping at prompts or stopping at code.",
       "ab.f1k":"Education","ab.f1v":"UKM · Computer Science & Data Science","ab.f2k":"Focus","ab.f2v":"AI product · LLM evaluation · prompt systems",
       "ab.f3k":"Start","ab.f3v":"Within 3 days · 6+ months","ab.f4k":"Building","ab.f4v":"Agent and context engineering notes",
-      "ct.eye":"Contact","ct.wechat":"WeChat","ct.xhs":"RedNote","ct.resume":"Résumé",
+      "ct.eye":"Contact","ct.wechat":"WeChat","ct.xhs":"RedNote","ct.resume":"Résumé","ct.wx":"WeChat via email",
       "ft.line":"Yijie Wang · 2026 · every number comes from a real project","ft.resume":"Résumé PDF ↗","ft.top":"Back to top"
     }
   };
